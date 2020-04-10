@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  db:
+    container_name: postgres_db
+    image: postgres
+    ports:
+      - "5432:5432"
+
+  web:
+    container_name: server
+    build: .
+    command: python src/manage.py runserver 0.0.0.0:8000
+    volumes:
+    - .:/code
+    ports:
+    - 80:8000
+    depends_on:
+      - db
+
+  pgadmin:
+    container_name: pgadmin4_
+    image: dpage/pgadmin4
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 5555:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
