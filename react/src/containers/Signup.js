@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Col, AutoComplete, Tooltip, Row, Typography } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Col, AutoComplete, Row, Typography, Alert } from 'antd';
+import { QuestionCircleOutlined, UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom'
@@ -14,36 +14,6 @@ const styles = {
     },
     titleStyle: {
         marginBottom: '5vh'
-    },
-    formItemLayout: {
-        labelCol: {
-            xs: {
-                span: 10
-            },
-            md: {
-                span: 6
-            }
-        },
-        wrapperCol: {
-            xs: {
-                span: 10
-            },
-            md: {
-                span: 12
-            }
-        },
-    },
-    tailFormItemLayout: {
-        wrapperCol: {
-            xs: {
-                span: 12,
-                offset: 0
-            },
-            sm: {
-                span: 16,
-                offset: 10
-            },
-        },
     }
 }
 
@@ -68,12 +38,28 @@ const Signup = (props) => {
         label: website,
         value: website,
     }));
+
+    const walkNestedObject = (obj, fn) => {
+        const values = Object.values(obj)
+
+        values.forEach(val =>
+            val && typeof val === "object" ? walkNestedObject(val, fn) : fn(val))
+    }
+
+    const writeError = (value) => {
+        return <Alert message={value} type="error" showIcon />
+    }
+
     return (
-        <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
+        < Row type="flex" justify="center" align="middle" style={styles.heightForTheRow} >
             <Col span={12}>
                 <Title justify="center" align="middle" style={styles.titleStyle}>Register</Title>
+
+                {(props.error) ? walkNestedObject(props.error, writeError) : null}
+                
+                {writeError('test')}
+
                 <Form
-                    {...styles.formItemLayout}
                     form={form}
                     name="register"
                     onFinish={onFinish}
@@ -82,21 +68,13 @@ const Signup = (props) => {
                 >
                     <Form.Item
                         name="username"
-                        label={
-                            <span> Nickname&nbsp;
-                                <Tooltip title="What do you want others to call you?">
-                                    <QuestionCircleOutlined />
-                                </Tooltip>
-                            </span>
-                        }
                         rules={[{ required: true, message: 'Please input your nickname!', whitespace: true }]}
                     >
-                        <Input />
+                        <Input placeholder="Username" prefix={<UserOutlined className="site-form-item-icon" />} />
                     </Form.Item>
 
                     <Form.Item
                         name="email"
-                        label="E-mail"
                         rules={[
                             {
                                 type: 'email',
@@ -109,13 +87,15 @@ const Signup = (props) => {
                         ]}
                     >
                         <AutoComplete options={websiteOptions} onChange={onWebsiteChange} >
-                            <Input />
+                            <Input
+                                placeholder="Email"
+                                prefix={<MailOutlined className="site-form-item-icon" />}
+                            />
                         </AutoComplete>
                     </Form.Item>
 
                     <Form.Item
                         name="password"
-                        label="Password"
                         rules={[
                             {
                                 required: true,
@@ -124,12 +104,14 @@ const Signup = (props) => {
                         ]}
                         hasFeedback
                     >
-                        <Input.Password />
+                        <Input.Password
+                            prefix={<LockOutlined className="site-form-item-icon" />}
+                            placeholder="Password"
+                        />
                     </Form.Item>
 
                     <Form.Item
                         name="password2"
-                        label="Confirm Password"
                         dependencies={['password']}
                         hasFeedback
                         rules={[
@@ -148,12 +130,15 @@ const Signup = (props) => {
                             }),
                         ]}
                     >
-                        <Input.Password />
+                        <Input.Password
+                            prefix={<LockOutlined className="site-form-item-icon" />}
+                            placeholder="Confirm password"
+                        />
                     </Form.Item>
 
-                    <Form.Item {...styles.tailFormItemLayout}>
+                    <Form.Item>
                         <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
-                            Signup
+                            Create account
                         </Button>
                             or
                         <NavLink style={{ marginRight: '10px' }} to='/login/'>
@@ -162,7 +147,7 @@ const Signup = (props) => {
                     </Form.Item>
                 </Form>
             </Col>
-        </Row>
+        </Row >
     );
 };
 

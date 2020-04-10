@@ -10,10 +10,10 @@ const { Title, Text } = Typography;
 
 const styles = {
   heightForTheRow: {
-    minHeight: '80vh'
+    minHeight: '80vh',
   },
   titleStyle: {
-    marginBottom: '5vh'
+    marginBottom: '10px'
   },
   errorMessage: {
     marginBottom: '10px'
@@ -45,7 +45,7 @@ const Login = (props) => {
   return (
     <div>
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
-        <Col span={6}>
+        <Col xs={24} sm={6}>
           <Title align="middle" style={styles.titleStyle}>Login</Title>
 
           {errorMessage ?
