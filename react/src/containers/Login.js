@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Form, Input, Button, Spin, Row, Col, Typography } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Spin, Row, Col, Typography, Alert } from 'antd';
+import { LoadingOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom'
@@ -15,35 +15,8 @@ const styles = {
   titleStyle: {
     marginBottom: '5vh'
   },
-  formItemLayout: {
-    labelCol: {
-      xs: {
-        span: 10
-      },
-      md: {
-        span: 6
-      }
-    },
-    wrapperCol: {
-      xs: {
-        span: 10
-      },
-      md: {
-        span: 12
-      }
-    },
-  },
-  tailFormItemLayout: {
-    wrapperCol: {
-      xs: {
-        span: 12,
-        offset: 0
-      },
-      sm: {
-        span: 16,
-        offset: 10
-      },
-    },
+  errorMessage: {
+    marginBottom: '10px'
   }
 }
 
@@ -61,9 +34,7 @@ const Login = (props) => {
 
   let errorMessage = null;
   if (props.error) {
-    errorMessage = (
-      <p>Something went wrong.</p>
-    )
+    errorMessage = 'Invalid username or password.'
   }
 
   // in case theres a token in localstorage that means the users is logged in
@@ -74,9 +45,13 @@ const Login = (props) => {
   return (
     <div>
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
-        <Col span={12}>
+        <Col span={6}>
           <Title align="middle" style={styles.titleStyle}>Login</Title>
-          <Text type="danger" align="middle">{errorMessage}</Text>
+
+          {errorMessage ?
+            <Alert style={styles.errorMessage} message={errorMessage} type="error" showIcon /> :
+            null}
+
           {props.loading ?
             <Spin indicator={antIcon} />
             :
@@ -89,7 +64,6 @@ const Login = (props) => {
               onFinishFailed={onFinishFailed}
             >
               <Form.Item
-                label="Username"
                 name="username"
                 rules={[
                   {
@@ -98,11 +72,10 @@ const Login = (props) => {
                   },
                 ]}
               >
-                <Input />
+                <Input placeholder="Username" prefix={<UserOutlined className="site-form-item-icon" />} />
               </Form.Item>
 
               <Form.Item
-                label="Password"
                 name="password"
                 rules={[
                   {
@@ -111,10 +84,10 @@ const Login = (props) => {
                   },
                 ]}
               >
-                <Input.Password />
+                <Input.Password placeholder="Password" prefix={<LockOutlined className="site-form-item-icon" />} />
               </Form.Item>
 
-              <Form.Item orientation="center" {...styles.tailFormItemLayout}>
+              <Form.Item orientation="center">
                 <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
                   Login
                 </Button>
