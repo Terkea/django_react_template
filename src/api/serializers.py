@@ -12,51 +12,45 @@ class UserSerializer(UserDetailsSerializer):
     avatar = serializers.CharField(source="userprofile.avatar", allow_null=True, allow_blank=True, default=None)
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('address',)
-        fields = UserDetailsSerializer.Meta.fields + ('city',)
-        fields = UserDetailsSerializer.Meta.fields + ('postcode',)
-        fields = UserDetailsSerializer.Meta.fields + ('mobile_phone',)
-        fields = UserDetailsSerializer.Meta.fields + ('avatar',)
+        fields = UserDetailsSerializer.Meta.fields + ('address', 'city', 'postcode', 'mobile_phone', 'avatar', )
 
     def update(self, instance, validated_data):
         # disable update username when updating the user
         username = validated_data.pop('username', None)
 
         profile_data = validated_data.pop('userprofile', {})
-
-        # custom fields
+        
         address = profile_data.get('address')
         city = profile_data.get('city')
         postcode = profile_data.get('postcode')
         mobile_phone = profile_data.get('mobile_phone')
         avatar = profile_data.get('avatar')
-        
+
         instance = super(UserSerializer, self).update(instance, validated_data)
 
         # get and update user profile
-        profile = instance.address
+        profile = instance.userprofile
         if profile_data and address:
             profile.address = address
             profile.save()
 
-        profile = instance.city
+        if profile_data and address:
+            profile.address = address
+            profile.save()
+
         if profile_data and city:
             profile.city = city
             profile.save()
 
-        profile = instance.postcode
         if profile_data and postcode:
             profile.postcode = postcode
             profile.save()
 
-        profile = instance.mobile_phone
         if profile_data and mobile_phone:
             profile.mobile_phone = mobile_phone
             profile.save()
 
-        profile = instance.avatar
         if profile_data and avatar:
             profile.avatar = avatar
             profile.save()
-
         return instance
