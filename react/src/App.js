@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import BaseRouter from './BaseRouter';
 import 'antd/dist/antd.css';
 import * as actions from './store/actions/auth';
 
 import CustomLayout from './containers/Layout';
+
+import Login from './containers/Login';
+import Signup from './containers/Signup';
+import MyProfile from './containers/MyProfile/MyProfile';
 
 const App = (props) => {
 
@@ -16,9 +19,16 @@ const App = (props) => {
   return (
     <div>
       <Router>
-        {/* <CustomLayout {...props}> */}
-          <BaseRouter />
-        {/* </CustomLayout> */}
+        <Switch>
+
+          <Route {...props} exact path='/login/' component={Login} />
+          <Route {...props} exact path='/signup/' component={Signup} />
+          
+          <CustomLayout {...props}>
+            <Route exact path='/account' component={MyProfile} />
+          </CustomLayout>
+
+        </Switch>
       </Router>
     </div>
   );
