@@ -35,25 +35,14 @@ const authLogout = (state, action) => {
     });
 }
 
-// const handlers = {
-//     [actionTypes.AUTH_START]: authStart,
-//     [actionTypes.AUTH_SUCCESS]: authSuccess,
-//     [actionTypes.AUTH_FAIL]: authFail,
-//     [actionTypes.AUTH_LOGOUT]: authLogout,
-// }
-
-// const reducer = (state = initialState, action) =>
-//     handlers[action.type] ? handlers[action.type](state, action) : state
-
-const authReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case actionTypes.AUTH_START: return authStart(state, action);
-        case actionTypes.AUTH_SUCCESS: return authSuccess(state, action);
-        case actionTypes.AUTH_FAIL: return authFail(state, action);
-        case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
-        default:
-            return state;
-    }
+const handlers = {
+    [actionTypes.AUTH_START]: authStart,
+    [actionTypes.AUTH_SUCCESS]: authSuccess,
+    [actionTypes.AUTH_FAIL]: authFail,
+    [actionTypes.AUTH_LOGOUT]: authLogout,
 }
 
-export default authReducer;
+const reducer = (state = initialState, action) =>
+    handlers[action.type] ? handlers[action.type](state, action) : state
+
+export default reducer;

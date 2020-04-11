@@ -13,8 +13,6 @@ const App = (props) => {
     props.onTryAutoSignup();
   })
 
-  console.log('props in app', props);
-
   return (
     <div>
       <Router>

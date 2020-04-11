@@ -23,16 +23,13 @@ const getProfileFail = (state, action) => {
     });
 }
 
-
-
-const getProfileReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case actionTypes.GET_PROFILE_START: return getProfileStart(state, action);
-        case actionTypes.GET_PROFILE_SUCCESS: return getProfileSuccess(state, action);
-        case actionTypes.GET_PROFILE_FAIL: return getProfileFail(state, action);
-        default:
-            return state;
-    }
+const handlers = {
+    [actionTypes.GET_PROFILE_START]: getProfileStart,
+    [actionTypes.GET_PROFILE_SUCCESS]: getProfileSuccess,
+    [actionTypes.GET_PROFILE_FAIL]: getProfileFail,
 }
 
-export default getProfileReducer;
+const reducer = (state = initialState, action) =>
+    handlers[action.type] ? handlers[action.type](state, action) : state
+
+export default reducer;

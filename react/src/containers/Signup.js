@@ -160,8 +160,8 @@ const Signup = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        loading: state.loading,
-        error: state.error
+        loading: state.authentication.loading,
+        error: state.authentication.error
     }
 }
 
