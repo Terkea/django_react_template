@@ -32,15 +32,11 @@ const Login = (props) => {
     console.log('Failed:', errorInfo);
   };
 
-  let errorMessage = null;
-  if (props.error) {
-    errorMessage = 'Invalid username or password.'
-  }
-
   // in case theres a token in localstorage that means the users is logged in
   if (localStorage.getItem('token')) {
     props.history.push('/');
   }
+  
 
   return (
     <div>
@@ -48,9 +44,11 @@ const Login = (props) => {
         <Col xs={24} sm={6}>
           <Title align="middle" style={styles.titleStyle}>Login</Title>
 
-          {errorMessage ?
-            <Alert style={styles.errorMessage} message={errorMessage} type="error" showIcon /> :
-            null}
+          {/* display the errors if there are any*/}
+          {props.error
+            ? <Alert style={styles.errorMessage} message={props.error} type="error" showIcon />
+            : null
+          }
 
           {props.loading ?
             <Spin indicator={antIcon} />

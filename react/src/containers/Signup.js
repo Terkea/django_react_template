@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Col, AutoComplete, Row, Typography, Alert } from 'antd';
-import { QuestionCircleOutlined, UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom'
@@ -14,6 +14,9 @@ const styles = {
     },
     titleStyle: {
         marginBottom: '5vh'
+    },
+    errorMessage: {
+        marginBottom: '10px'
     }
 }
 
@@ -39,25 +42,22 @@ const Signup = (props) => {
         value: website,
     }));
 
-    const walkNestedObject = (obj, fn) => {
-        const values = Object.values(obj)
-
-        values.forEach(val =>
-            val && typeof val === "object" ? walkNestedObject(val, fn) : fn(val))
-    }
-
-    const writeError = (value) => {
-        return <Alert message={value} type="error" showIcon />
-    }
-
     return (
         < Row type="flex" justify="center" align="middle" style={styles.heightForTheRow} >
             <Col span={12}>
                 <Title justify="center" align="middle" style={styles.titleStyle}>Register</Title>
 
-                {(props.error) ? walkNestedObject(props.error, writeError) : null}
-                
-                {writeError('test')}
+                {/* display the errors if there are any*/}
+                {props.error
+                    ? props.error.map((error, index) =>
+                        <Alert
+                            style={styles.errorMessage}
+                            message={error}
+                            key={index}
+                            type="error"
+                            showIcon />)
+                    : null
+                }
 
                 <Form
                     form={form}
