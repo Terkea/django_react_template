@@ -52,10 +52,23 @@ export const authLogin = (username, password) => dispatch => {
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err => {
-            dispatch(authFail(err))
+            dispatch(authFail(Object.keys(err.response.data).map((key) => err.response.data[key])))
         })
 }
 
+
+/**
+*
+* Makes an API request to the given URL
+* if the response is valid then it stores on localStorage the token
+* along with the expirationDate for the given time
+* after it dispatches authSuccess and checkAuthTimeout
+*
+* In case there's an error we'll grab it with err.response.data
+* Since our backend returns errors as a naster object
+* we'll have to decompose it and build an array out of that
+* before pasing it to the view where it has to be rendered
+*/
 export const authSignup = (username, email, password1, password2) => dispatch => {
     dispatch(authStart());
     axios.post('http://127.0.0.1:8000/rest-auth/registration/', {
@@ -73,10 +86,18 @@ export const authSignup = (username, email, password1, password2) => dispatch =>
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err => {
-            dispatch(authFail(err.response.data))
+            dispatch(authFail(Object.keys(err.response.data).map((key) => err.response.data[key])))
         })
 }
 
+/**
+* If there's no token in localStorage
+* log out the user
+* 
+* if there's a token
+*  check its validity and dispatch the appropriate action
+*
+*/
 export const authCheckState = () => dispatch => {
     const token = localStorage.getItem('token');
     if (token === undefined) {
