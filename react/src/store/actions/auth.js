@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from '../../axiosConfig';
 import * as actionTypes from './actionTypes';
 
 export const authStart = () => {
@@ -39,7 +39,7 @@ export const checkAuthTimeout = expirationTime => {
 
 export const authLogin = (username, password) => dispatch => {
     dispatch(authStart());
-    axios.post('http://127.0.0.1:8000/rest-auth/login/', {
+    axiosInstance.post('/rest-auth/login/', {
         username: username,
         password: password
     })
@@ -71,7 +71,7 @@ export const authLogin = (username, password) => dispatch => {
 */
 export const authSignup = (username, email, password1, password2) => dispatch => {
     dispatch(authStart());
-    axios.post('http://127.0.0.1:8000/rest-auth/registration/', {
+    axiosInstance.post('/rest-auth/registration/', {
         username: username,
         email: email,
         password1: password1,

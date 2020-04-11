@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Button, Spin, Row, Col, Typography, Alert } from 'antd';
-import { LoadingOutlined, UserOutlined, LockOutlined, RocketOutlined  } from '@ant-design/icons';
+import { LoadingOutlined, UserOutlined, LockOutlined, RocketOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
 import { NavLink, withRouter, Redirect } from 'react-router-dom'
@@ -53,9 +53,9 @@ const Login = (props) => {
     <div style={customLayout}>
 
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
-      {/* <Row type="flex" justify="center" align="middle"> */}
+        {/* <Row type="flex" justify="center" align="middle"> */}
         <Col xs={24} sm={6}>
-          <RocketOutlined  style={{fontSize: '150px', width: '100%', marginBottom: '30px'}} />
+          <RocketOutlined style={{ fontSize: '100px', width: '100%', marginBottom: '30px' }} />
           <Title align="middle" style={styles.titleStyle}>Login</Title>
 
           {/* display the errors if there are any*/}
