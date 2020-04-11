@@ -14,21 +14,21 @@ const CustomLayout = props => {
                 <Menu
                     theme="dark"
                     mode="horizontal"
-                    defaultSelectedKeys={['1']}
+                    // defaultSelectedKeys={['1']}
                     style={{ lineHeight: '64px' }}
                 >
-                    <Menu.Item key="1">
+                    <Menu.Item>
                         <Link to="/">Home</Link>
                     </Menu.Item>
 
                     {
                         props.isAuthenticated ?
-                            <Menu.Item key="2" onClick={props.logout}>
+                            <Menu.Item onClick={props.logout}>
                                 Logout
                         </Menu.Item>
                             :
-                            <Menu.Item key="2">
-                                <Link to="/login">Login</Link>
+                            <Menu.Item>
+                                <Link to="/login/">Login</Link>
                             </Menu.Item>
                     }
 
@@ -36,8 +36,8 @@ const CustomLayout = props => {
                         props.isAuthenticated ?
                             null
                             :
-                            < Menu.Item key="3">
-                                <Link to="/signup">Sign up</Link>
+                            < Menu.Item>
+                                <Link to="/signup/">Sign up</Link>
                             </Menu.Item>
                     }
 

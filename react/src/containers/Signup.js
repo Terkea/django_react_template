@@ -3,7 +3,7 @@ import { Form, Input, Button, Col, AutoComplete, Row, Typography, Alert } from '
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom'
+import { NavLink, withRouter, Redirect } from 'react-router-dom'
 import * as actions from '../store/actions/auth'; //this works like a namespace
 
 const { Title } = Typography;
@@ -13,7 +13,7 @@ const styles = {
         minHeight: '80vh'
     },
     titleStyle: {
-        marginBottom: '5vh'
+        marginBottom: '10px'
     },
     errorMessage: {
         marginBottom: '10px'
@@ -21,6 +21,8 @@ const styles = {
 }
 
 const Signup = (props) => {
+
+
     const [form] = Form.useForm();
 
     const onFinish = values => {
@@ -42,9 +44,14 @@ const Signup = (props) => {
         value: website,
     }));
 
+    // in case theres a token in localstorage that means the users is logged in
+    if (localStorage.getItem('token')) {
+        return <Redirect to='/' />
+    }
+
     return (
         < Row type="flex" justify="center" align="middle" style={styles.heightForTheRow} >
-            <Col span={12}>
+            <Col xs={24} sm={6}>
                 <Title justify="center" align="middle" style={styles.titleStyle}>Register</Title>
 
                 {/* display the errors if there are any*/}

@@ -12,7 +12,6 @@ import * as actions from '../../store/actions/auth'; //this works like a namespa
 
 // destructure the props
 const { Title } = Typography;
-const { SubMenu } = Menu;
 
 const styles = {
     heightForTheRow: {
@@ -32,7 +31,7 @@ const MyProfile = (props) => {
             <Title justify="center" align="middle" style={styles.titleStyle}>My account</Title>
             <Row type="flex" style={styles.heightForTheRow}>
                 <Router>
-                    <Col span={8}>
+                    <Col span={4}>
                         <Menu
                             // onClick={handleClick}
                             style={{ width: '100%' }}
@@ -48,7 +47,7 @@ const MyProfile = (props) => {
                             </Menu.Item>
                         </Menu>
                     </Col>
-                    <Col span={20}>
+                    <Col span={18} style={{ width: '100%' }}>
                         <Switch>
                             {/* <Route exact path="/" component={Login} /> */}
                             <Route exact path={`${url}/basic/`} component={BasicSettings} />

@@ -3,7 +3,7 @@ import { Form, Input, Button, Spin, Row, Col, Typography, Alert } from 'antd';
 import { LoadingOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
-import { NavLink, withRouter } from 'react-router-dom'
+import { NavLink, withRouter, Redirect } from 'react-router-dom'
 import * as actions from '../store/actions/auth'; //this works like a namespace
 
 const { Title, Text } = Typography;
@@ -32,11 +32,13 @@ const Login = (props) => {
     console.log('Failed:', errorInfo);
   };
 
+  const testing_variable = 'testing'
+
   // in case theres a token in localstorage that means the users is logged in
   if (localStorage.getItem('token')) {
-    props.history.push('/');
+    return <Redirect to='/' />
   }
-  
+
 
   return (
     <div>
