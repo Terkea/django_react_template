@@ -22,6 +22,10 @@ export const getProfileFail = (error) => {
     }
 }
 
+
+// TODO: 
+// the request is valid but still needs more testing
+// try to link the auth reducer to this one if possible
 export const getProfile = () => dispatch => {
 
     const token = localStorage.getItem('token');
@@ -31,6 +35,7 @@ export const getProfile = () => dispatch => {
         dispatch(getProfileFail('No token provided'))
     }
     else {
+        axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
         axiosInstance.get('/rest-auth/user/')
             .then(res => {
                 dispatch(getProfileSuccess(res.data))
