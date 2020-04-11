@@ -3,23 +3,27 @@ import { updateObject } from '../utility';
 
 const initialState = {
     error: null,
+    profile: null
 }
 
 const getProfileStart = (state, action) => {
     return updateObject(state, {
-        error: null
+        error: null,
+        profile: null
     });
 }
 
 const getProfileSuccess = (state, action) => {
     return updateObject(state, {
         error: null,
+        profile: action.payload
     });
 }
 
 const getProfileFail = (state, action) => {
     return updateObject(state, {
-        error: null,
+        error: action.error,
+        profile: null
     });
 }
 

@@ -23,9 +23,10 @@ const App = (props) => {
 
           <Route {...props} exact path='/login/' component={Login} />
           <Route {...props} exact path='/signup/' component={Signup} />
-          
+
+
           <CustomLayout {...props}>
-            <Route exact path='/account' component={MyProfile} />
+            <Route path='/my_profile/' component={MyProfile} />
           </CustomLayout>
 
         </Switch>
