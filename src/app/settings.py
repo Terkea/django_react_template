@@ -153,3 +153,9 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 CSRF_COOKIE_NAME = "csrftoken"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication'
+    ]
+}
