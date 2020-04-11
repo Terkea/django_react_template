@@ -9,6 +9,8 @@ const { Header, Content, Footer } = Layout;
 const CustomLayout = props => {
     const { pathname } = useLocation()
 
+    console.log("HERE", props)
+
     return (
         <Layout className="layout" style={{ minHeight: '100vh', overflow: "auto" }}>
             <Header>

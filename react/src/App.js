@@ -13,6 +13,8 @@ const App = (props) => {
     props.onTryAutoSignup();
   })
 
+  console.log('props in app', props);
+
   return (
     <div>
       <Router>
@@ -27,7 +29,7 @@ const App = (props) => {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.token !== null
+    isAuthenticated: state.authentication.token !== null
   }
 }
 
