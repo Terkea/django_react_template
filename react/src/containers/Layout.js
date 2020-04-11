@@ -26,7 +26,7 @@ const CustomLayout = props => {
 
                     {
                         props.isAuthenticated ?
-                            <Menu.Item key="/login/" onClick={props.logout}>
+                            <Menu.Item key="/logout/" onClick={props.logout}>
                                 Logout
                             </Menu.Item>
                             :
