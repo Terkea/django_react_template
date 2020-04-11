@@ -16,9 +16,9 @@ const App = (props) => {
   return (
     <div>
       <Router>
-        <CustomLayout {...props}>
+        {/* <CustomLayout {...props}> */}
           <BaseRouter />
-        </CustomLayout>
+        {/* </CustomLayout> */}
       </Router>
     </div>
   );

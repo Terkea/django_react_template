@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Button, Spin, Row, Col, Typography, Alert } from 'antd';
-import { LoadingOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
+import { LoadingOutlined, UserOutlined, LockOutlined, RocketOutlined  } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
 import { NavLink, withRouter, Redirect } from 'react-router-dom'
@@ -10,7 +10,8 @@ const { Title, Text } = Typography;
 
 const styles = {
   heightForTheRow: {
-    minHeight: '80vh',
+    minHeight: '100%',
+    background: 'rgba(220, 220, 220, 0.2)'
   },
   titleStyle: {
     marginBottom: '10px'
@@ -32,18 +33,29 @@ const Login = (props) => {
     console.log('Failed:', errorInfo);
   };
 
-  const testing_variable = 'testing'
-
   // in case theres a token in localstorage that means the users is logged in
   if (localStorage.getItem('token')) {
     return <Redirect to='/' />
   }
 
+  const customLayout = {
+    backgroundImage: "url(" + 'https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg)',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center 110px',
+    backgroundSize: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    overflow: 'auto'
+  }
 
   return (
-    <div>
+    <div style={customLayout}>
+
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
+      {/* <Row type="flex" justify="center" align="middle"> */}
         <Col xs={24} sm={6}>
+          <RocketOutlined  style={{fontSize: '150px', width: '100%', marginBottom: '30px'}} />
           <Title align="middle" style={styles.titleStyle}>Login</Title>
 
           {/* display the errors if there are any*/}
