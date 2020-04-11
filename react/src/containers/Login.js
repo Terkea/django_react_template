@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { NavLink, withRouter, Redirect } from 'react-router-dom'
 import * as actions from '../store/actions/auth'; //this works like a namespace
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const styles = {
   heightForTheRow: {
@@ -18,6 +18,21 @@ const styles = {
   },
   errorMessage: {
     marginBottom: '10px'
+  },
+  logo: {
+    fontSize: '100px',
+    width: '100%',
+    marginBottom: '30px'
+  },
+  svgBackground : {
+    backgroundImage: "url(" + 'https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg)',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center 110px',
+    backgroundSize: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    overflow: 'auto'
   }
 }
 
@@ -36,26 +51,14 @@ const Login = (props) => {
   // in case theres a token in localstorage that means the users is logged in
   if (localStorage.getItem('token')) {
     return <Redirect to='/' />
-  }
-
-  const customLayout = {
-    backgroundImage: "url(" + 'https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg)',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center 110px',
-    backgroundSize: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-    overflow: 'auto'
-  }
+  } 
 
   return (
-    <div style={customLayout}>
+    <div style={styles.svgBackground}>
 
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
-        {/* <Row type="flex" justify="center" align="middle"> */}
-        <Col xs={24} sm={6}>
-          <RocketOutlined style={{ fontSize: '100px', width: '100%', marginBottom: '30px' }} />
+        <Col xs={16} sm={6}>
+          <RocketOutlined style={styles.logo} />
           <Title align="middle" style={styles.titleStyle}>Login</Title>
 
           {/* display the errors if there are any*/}
@@ -99,16 +102,22 @@ const Login = (props) => {
                 <Input.Password placeholder="Password" prefix={<LockOutlined className="site-form-item-icon" />} />
               </Form.Item>
 
-              <Form.Item orientation="center">
-                <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
-                  Login
-                </Button>
-                or
-                <NavLink style={{ marginRight: '10px' }} to='/signup/'>
-                  {" "}Register
-                </NavLink>
+              <Form.Item>
+                <Row align="middle">
+                  <Col span={18}>
+                    <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
+                      Login
+                  </Button>
+                  or
+                  <NavLink style={{ marginRight: '10px' }} to='/signup/'>
+                      {" "}Register
+                  </NavLink>
+                  </Col>
+                  <Col span={6}>
+                    <NavLink to='/signup/'>{" "}Recover password?</NavLink>
+                  </Col>
+                </Row>
               </Form.Item>
-
             </Form>
           }
         </Col>
