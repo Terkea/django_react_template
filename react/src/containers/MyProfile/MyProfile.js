@@ -2,14 +2,13 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 
-import { BrowserRouter as Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link, useLocation } from 'react-router-dom';
 import { Row, Col, Typography, Menu, Button, Layout } from 'antd';
 
 import BasicSettings from './Settings/Basic';
 import SecuritySettings from './Settings/Security';
 
 import * as actions from '../../store/actions/user'; //this works like a namespace
-
 
 // destructure the props
 const { Title } = Typography;
@@ -28,15 +27,18 @@ const styles = {
 }
 
 const MyProfile = (props) => {
-
     const getUrl = () => {
+        // This function can be used to reliably get the current url with 1 slash at the end
         const inconsistentUrl = props.match.url;
         const lastUrlChar = inconsistentUrl[inconsistentUrl.length - 1];
-
-        const url = ((lastUrlChar === '/') ? inconsistentUrl : (inconsistentUrl + '/'));
-
-        return url;
+        return ((lastUrlChar === '/') ? inconsistentUrl : (inconsistentUrl + '/'));
     }
+    const { pathname } = useLocation()
+
+    const url = getUrl();
+    //paths: 
+    const basicPATH = `${url}basic/`;
+    const securityPATH = `${url}security/`
 
     return (
         <div>
@@ -53,23 +55,22 @@ const MyProfile = (props) => {
                     <Col xs={24} md={4}>
                         <Menu
                             style={{ width: '100%' }}
-                            defaultSelectedKeys={['1']}
-                            defaultOpenKeys={['sub1']}
+                            selectedKeys={[pathname]}
                             mode="inline"
                         >
-                            <Menu.Item style={styles.menuItem} key="1">
-                                <Link to={`${getUrl()}basic/`}>
+                            <Menu.Item style={styles.menuItem} key={basicPATH}>
+                                <Link to={basicPATH}>
                                     <div>Basic Settings</div>
                                 </Link>
                             </Menu.Item>
-                            <Menu.Item style={styles.menuItem} key="2">
-                                <Link to={`${getUrl()}security/`}>
+                            <Menu.Item style={styles.menuItem} key={securityPATH}>
+                                <Link to={securityPATH}>
                                     <div>Security Settings</div>
                                 </Link>
                             </Menu.Item>
                         </Menu>
                     </Col>
-                    <Col xs={24} md={18} style={{padding: '8px 40px', width: '100%'}} >
+                    <Col xs={24} md={18} style={{ padding: '8px 40px', width: '100%' }} >
                         <Switch>
                             {/* <Route exact path="/" component={Login} /> */}
                             <Route exact path={`${getUrl()}basic/`} component={BasicSettings} />
