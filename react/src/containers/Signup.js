@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined, MailOutlined, RocketOutlined } from '@ant-d
 
 import { connect } from 'react-redux';
 import { NavLink, withRouter, Redirect } from 'react-router-dom'
-import * as actions from '../store/actions/auth'; //this works like a namespace
+import * as actions from '../store/actions/user'; //this works like a namespace
 
 const { Title } = Typography;
 
@@ -179,8 +179,8 @@ const Signup = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        loading: state.authentication.loading,
-        error: state.authentication.error
+        loading: state.user.loading,
+        error: state.user.error.register
     }
 }
 

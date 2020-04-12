@@ -5,7 +5,6 @@ import App from './App';
 
 // BOILERPLATE
 import allReducers from './store/reducers';
-import authentication from './store/reducers/auth'
 import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';

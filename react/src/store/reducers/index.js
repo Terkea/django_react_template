@@ -1,11 +1,10 @@
 import { combineReducers } from 'redux'
 
-import authReducer from './auth'
+import user from './user'
 import getProfileReducer from './getProfile'
 
 const allReducers = combineReducers({
-    authentication: authReducer,
-    profile: getProfileReducer
+    user: user
 })
 
 export default allReducers

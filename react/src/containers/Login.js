@@ -4,7 +4,7 @@ import { LoadingOutlined, UserOutlined, LockOutlined, RocketOutlined } from '@an
 
 import { connect } from 'react-redux';
 import { NavLink, withRouter, Redirect } from 'react-router-dom'
-import * as actions from '../store/actions/auth'; //this works like a namespace
+import * as actions from '../store/actions/user'; //this works like a namespace
 
 const { Title } = Typography;
 
@@ -24,7 +24,7 @@ const styles = {
     width: '100%',
     marginBottom: '30px'
   },
-  svgBackground : {
+  svgBackground: {
     backgroundImage: "url(" + 'https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg)',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center 110px',
@@ -51,7 +51,7 @@ const Login = (props) => {
   // in case theres a token in localstorage that means the users is logged in
   if (localStorage.getItem('token')) {
     return <Redirect to='/' />
-  } 
+  }
 
   return (
     <div style={styles.svgBackground}>
@@ -61,7 +61,10 @@ const Login = (props) => {
           <RocketOutlined style={styles.logo} />
           <Title align="middle" style={styles.titleStyle}>Login</Title>
 
+          
+          {/*  */}
           {/* display the errors if there are any*/}
+
           {props.error
             ? <Alert style={styles.errorMessage} message={props.error} type="error" showIcon />
             : null
@@ -128,8 +131,8 @@ const Login = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.authentication.loading,
-    error: state.authentication.error
+    loading: state.user.loading,
+    error: state.user.error.login
   }
 }
 

@@ -7,17 +7,33 @@ export const authStart = () => {
     }
 }
 
-export const authSuccess = token => {
+export const authSuccess = (token, profile) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        token: token
+        payload: {
+            token: token,
+            profile: profile
+        }
     }
 }
 
 export const authFail = error => {
     return {
         type: actionTypes.AUTH_FAIL,
-        error: error
+        error: {
+            login: error,
+            register: null
+        }
+    }
+}
+
+export const registerFail = error => {
+    return {
+        type: actionTypes.REGISTER_FAIL,
+        error: {
+            login: null,
+            register: error
+        }
     }
 }
 
@@ -48,7 +64,17 @@ export const authLogin = (username, password) => dispatch => {
             const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
-            dispatch(authSuccess(token));
+
+            axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
+            axiosInstance.get('/rest-auth/user/')
+                .then(res => {
+                    console.log('valid token', res.data)
+                    dispatch(authSuccess(token, res.data));
+                })
+                .catch(err => {
+                    dispatch(logout())
+                })
+
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err => {
@@ -82,11 +108,19 @@ export const authSignup = (username, email, password1, password2) => dispatch =>
             const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
-            dispatch(authSuccess(token));
+            axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
+            axiosInstance.get('/rest-auth/user/')
+                .then(res => {
+                    console.log('valid token', res.data)
+                    dispatch(authSuccess(token, res.data));
+                })
+                .catch(err => {
+                    dispatch(logout())
+                })
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err => {
-            dispatch(authFail(Object.keys(err.response.data).map((key) => err.response.data[key])))
+            dispatch(registerFail(Object.keys(err.response.data).map((key) => err.response.data[key])))
         })
 }
 
@@ -107,8 +141,17 @@ export const authCheckState = () => dispatch => {
         if (expirationDate <= new Date()) {
             dispatch(logout());
         } else {
-            dispatch(authSuccess(token));
+            axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
+            axiosInstance.get('/rest-auth/user/')
+                .then(res => {
+                    console.log('valid token', res.data)
+                    dispatch(authSuccess(token, res.data));
+                })
+                .catch(err => {
+                    dispatch(logout())
+                })
             dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
+
         }
     }
 }

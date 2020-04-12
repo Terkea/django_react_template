@@ -2,36 +2,58 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
 
 const initialState = {
-    token: null,
-    error: null,
-    loading: false
+    loading: false,
+    error: {
+        login: null,
+        register: null
+    },
+    payload: {
+        token: null,
+        profile: null
+    }
 }
 
-const authStart = (state, action) => {
+const authStart = (state) => {
     return updateObject(state, {
-        error: null,
         loading: true
     });
 }
 
 const authSuccess = (state, action) => {
     return updateObject(state, {
-        token: action.token,
-        error: null,
-        loading: false
+        payload: {
+            token: action.payload.token,
+            profile: action.payload.profile
+        },
+        error: {
+            login: null,
+            register: null
+        },
+        loading: false,
     });
 }
 
 const authFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
-        loading: false
+        loading: false,
     });
 }
 
-const authLogout = (state, action) => {
+const registerFail = (state, action) => {
     return updateObject(state, {
-        token: null
+        error: action.error,
+        loading: false,
+    });
+}
+
+
+const authLogout = (state) => {
+    return updateObject(state, {
+        payload: {
+            token: null,
+            profile: null
+        },
     });
 }
 
@@ -40,6 +62,7 @@ const handlers = {
     [actionTypes.AUTH_SUCCESS]: authSuccess,
     [actionTypes.AUTH_FAIL]: authFail,
     [actionTypes.AUTH_LOGOUT]: authLogout,
+    [actionTypes.REGISTER_FAIL]: registerFail,
 }
 
 const reducer = (state = initialState, action) =>

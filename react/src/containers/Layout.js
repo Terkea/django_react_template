@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link, withRouter, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../store/actions/auth';
+import * as actions from '../store/actions/user';
 
 const { Header, Content, Footer } = Layout;
 

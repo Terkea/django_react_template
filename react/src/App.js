@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import 'antd/dist/antd.css';
-import * as actions from './store/actions/auth';
+import * as actions from './store/actions/user';
 
 import CustomLayout from './containers/Layout';
 
@@ -38,7 +38,7 @@ const App = (props) => {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.authentication.token !== null
+    isAuthenticated: state.user.payload.token !== null
   }
 }
 
