@@ -26,6 +26,10 @@ const authSuccess = (state, action) => {
             token: action.payload.token,
             profile: action.payload.profile
         },
+        error: {
+            login: null,
+            register: null
+        },
         loading: false,
     });
 }

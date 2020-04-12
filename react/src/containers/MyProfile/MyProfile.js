@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 
 import { BrowserRouter as Switch, Route, Link } from 'react-router-dom';
-import { Row, Col, Typography, Menu, Button } from 'antd';
+import { Row, Col, Typography, Menu, Button, Layout } from 'antd';
 
 import BasicSettings from './Settings/Basic';
 import SecuritySettings from './Settings/Security';
@@ -17,22 +17,15 @@ const { Content } = Layout;
 
 const styles = {
     heightForTheRow: {
-        minHeight: '80vh'
+        minHeight: '70vh'
     },
     menuItem: {
         fontSize: '18px'
+    },
+    titleStyle: {
+        marginBottom: '30px'
     }
 }
-
-const menuPagetitle = {
-    // marginBottom: '12px',
-    // color: 'rgba(0, 0, 0, .85)',
-    fontWeight: '500',
-    // paddingLeft: 10,
-    fontSize: '1em',
-    // lineHeight: '28px',
-}
-
 
 const MyProfile = (props) => {
 
@@ -45,27 +38,8 @@ const MyProfile = (props) => {
         return url;
     }
 
-    // const profile = {
-    //     profile: {
-    //         pk: 12,
-    //         username: 'terkea',
-    //         email: '',
-    //         first_name: '123',
-    //         last_name: '123',
-    //         address: '13',
-    //         city: null,
-    //         postcode: null,
-    //         mobile_phone: '123',
-    //         avatar: 'test'
-    //     }
-    // }
-
-    // props.success(profile);
-
-
     return (
         <div>
-            <Title justify="center" align="middle" style={styles.titleStyle}>My account</Title>
             <Content
                 style={{
                     padding: 24,
@@ -74,24 +48,28 @@ const MyProfile = (props) => {
                     background: '#fff',
                 }}
             >
-                <Row type="flex" style={styles.heightForTheRow}>
-                    <Col span={4}>
+                <Title justify="center" align="middle" style={styles.titleStyle}>My account</Title>
+                <Row style={styles.heightForTheRow}>
+                    <Col xs={24} md={4}>
                         <Menu
-                            // onClick={handleClick}
                             style={{ width: '100%' }}
                             defaultSelectedKeys={['1']}
                             defaultOpenKeys={['sub1']}
                             mode="inline"
                         >
                             <Menu.Item style={styles.menuItem} key="1">
-                                <Link to={`${getUrl()}basic/`}><div style={menuPagetitle}>Basic Settings</div></Link>
+                                <Link to={`${getUrl()}basic/`}>
+                                    <div>Basic Settings</div>
+                                </Link>
                             </Menu.Item>
                             <Menu.Item style={styles.menuItem} key="2">
-                                <Link to={`${getUrl()}security/`}><div style={menuPagetitle}>Security Settings</div></Link>
+                                <Link to={`${getUrl()}security/`}>
+                                    <div>Security Settings</div>
+                                </Link>
                             </Menu.Item>
                         </Menu>
                     </Col>
-                    <Col span={18} style={{ width: '100%' }}>
+                    <Col xs={24} md={18} style={{padding: '8px 40px', width: '100%'}} >
                         <Switch>
                             {/* <Route exact path="/" component={Login} /> */}
                             <Route exact path={`${getUrl()}basic/`} component={BasicSettings} />
