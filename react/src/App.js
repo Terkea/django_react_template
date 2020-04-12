@@ -9,6 +9,7 @@ import CustomLayout from './containers/Layout';
 import Login from './containers/Login';
 import Signup from './containers/Signup';
 import MyProfile from './containers/MyProfile/MyProfile';
+import Errors from './containers/Errors/Error';
 
 const App = (props) => {
 
@@ -25,10 +26,11 @@ const App = (props) => {
           <Route {...props} exact path='/signup/' component={Signup} />
 
 
+          <Route path='/error/' component={Errors} />
+
           <CustomLayout {...props}>
             <Route path='/my_profile/' component={MyProfile} />
           </CustomLayout>
-
         </Switch>
       </Router>
     </div>
