@@ -13,6 +13,7 @@ import * as actions from '../../store/actions/user'; //this works like a namespa
 
 // destructure the props
 const { Title } = Typography;
+const { Content } = Layout;
 
 const styles = {
     heightForTheRow: {
@@ -23,6 +24,14 @@ const styles = {
     }
 }
 
+const menuPagetitle = {
+    // marginBottom: '12px',
+    // color: 'rgba(0, 0, 0, .85)',
+    fontWeight: '500',
+    // paddingLeft: 10,
+    fontSize: '1em',
+    // lineHeight: '28px',
+}
 
 
 const MyProfile = (props) => {
@@ -57,31 +66,40 @@ const MyProfile = (props) => {
     return (
         <div>
             <Title justify="center" align="middle" style={styles.titleStyle}>My account</Title>
-            <Row type="flex" style={styles.heightForTheRow}>
-                <Col span={4}>
-                    <Menu
-                        // onClick={handleClick}
-                        style={{ width: '100%' }}
-                        defaultSelectedKeys={['1']}
-                        defaultOpenKeys={['sub1']}
-                        mode="inline"
-                    >
-                        <Menu.Item style={styles.menuItem} key="1">
-                            <Link to={`${getUrl()}basic/`}>Basic Settings</Link>
-                        </Menu.Item>
-                        <Menu.Item style={styles.menuItem} key="2">
-                            <Link to={`${getUrl()}security/`}>Security Settings</Link>
-                        </Menu.Item>
-                    </Menu>
-                </Col>
-                <Col span={18} style={{ width: '100%' }}>
-                    <Switch>
-                        {/* <Route exact path="/" component={Login} /> */}
-                        <Route exact path={`${getUrl()}basic/`} component={BasicSettings} />
-                        <Route exact path={`${getUrl()}security/`} component={SecuritySettings} />
-                    </Switch>
-                </Col>
-            </Row>
+            <Content
+                style={{
+                    padding: 24,
+                    margin: 0,
+                    minHeight: 280,
+                    background: '#fff',
+                }}
+            >
+                <Row type="flex" style={styles.heightForTheRow}>
+                    <Col span={4}>
+                        <Menu
+                            // onClick={handleClick}
+                            style={{ width: '100%' }}
+                            defaultSelectedKeys={['1']}
+                            defaultOpenKeys={['sub1']}
+                            mode="inline"
+                        >
+                            <Menu.Item style={styles.menuItem} key="1">
+                                <Link to={`${getUrl()}basic/`}><div style={menuPagetitle}>Basic Settings</div></Link>
+                            </Menu.Item>
+                            <Menu.Item style={styles.menuItem} key="2">
+                                <Link to={`${getUrl()}security/`}><div style={menuPagetitle}>Security Settings</div></Link>
+                            </Menu.Item>
+                        </Menu>
+                    </Col>
+                    <Col span={18} style={{ width: '100%' }}>
+                        <Switch>
+                            {/* <Route exact path="/" component={Login} /> */}
+                            <Route exact path={`${getUrl()}basic/`} component={BasicSettings} />
+                            <Route exact path={`${getUrl()}security/`} component={SecuritySettings} />
+                        </Switch>
+                    </Col>
+                </Row>
+            </Content>
         </div>
     );
 };
