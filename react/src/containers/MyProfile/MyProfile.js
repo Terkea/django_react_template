@@ -1,13 +1,15 @@
-import React, { useState, Fragment } from 'react';
-import { Row, Col, Typography, Divider, List, Menu } from 'antd';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
+
+import { BrowserRouter as Switch, Route, Link } from 'react-router-dom';
+import { Row, Col, Typography, Menu, Button } from 'antd';
+
 import BasicSettings from './Settings/Basic';
 import SecuritySettings from './Settings/Security';
 
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import * as actions from '../../store/actions/user'; //this works like a namespace
 
-import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom'
 
 // destructure the props
 const { Title } = Typography;
@@ -33,6 +35,24 @@ const MyProfile = (props) => {
 
         return url;
     }
+
+    // const profile = {
+    //     profile: {
+    //         pk: 12,
+    //         username: 'terkea',
+    //         email: '',
+    //         first_name: '123',
+    //         last_name: '123',
+    //         address: '13',
+    //         city: null,
+    //         postcode: null,
+    //         mobile_phone: '123',
+    //         avatar: 'test'
+    //     }
+    // }
+
+    // props.success(profile);
+
 
     return (
         <div>
@@ -67,5 +87,19 @@ const MyProfile = (props) => {
 };
 
 
+const mapStateToProps = (state) => {
+    return {
+        loading: state.user.loading,
+        error: state.user.error.update_profile
+    }
+}
 
-export default connect(null, null)(MyProfile);
+const mapDispatchToProps = dispatch => {
+    return {
+        start: () => dispatch(actions.updateProfileStart()),
+        success: (new_profile) => dispatch(actions.updateProfileSuccess(new_profile)),
+        fail: (error) => dispatch(actions.updateProfileFail(error)),
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MyProfile));

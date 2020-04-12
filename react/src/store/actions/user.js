@@ -22,7 +22,6 @@ export const authFail = error => {
         type: actionTypes.AUTH_FAIL,
         error: {
             login: error,
-            register: null
         }
     }
 }
@@ -31,7 +30,6 @@ export const registerFail = error => {
     return {
         type: actionTypes.REGISTER_FAIL,
         error: {
-            login: null,
             register: error
         }
     }
@@ -43,6 +41,30 @@ export const logout = () => {
     return {
         type: actionTypes.AUTH_LOGOUT
     };
+}
+
+export const updateProfileStart = () => {
+    return {
+        type: actionTypes.UPDATE_PROFILE_START
+    }
+}
+
+export const updateProfileSuccess = (new_profile) => {
+    return {
+        type: actionTypes.UPDATE_PROFILE_SUCCESS,
+        payload: {
+            profile: new_profile
+        }
+    }
+}
+
+export const updateProfileFail = (error) => {
+    return {
+        type: actionTypes.UPDATE_PROFILE_FAIL,
+        error: {
+            update_profile: error
+        }
+    }
 }
 
 export const checkAuthTimeout = expirationTime => {
@@ -65,13 +87,7 @@ export const authLogin = (username, password) => dispatch => {
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
 
-            axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
-            axiosInstance.get('/rest-auth/user/')
-                .then(res => {
-                    console.log('valid token', res.data)
-                    dispatch(authSuccess(token, res.data));
-                })
-                .catch(err => dispatch(logout()))
+            dispatch(getProfile(token))
             
             dispatch(checkAuthTimeout(3600));
         })
@@ -106,14 +122,7 @@ export const authSignup = (username, email, password1, password2) => dispatch =>
             const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
-            axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
-            axiosInstance.get('/rest-auth/user/')
-                .then(res => {
-                    console.log('valid token', res.data)
-                    dispatch(authSuccess(token, res.data));
-                })
-                .catch(err => dispatch(logout()))
-            
+            dispatch(getProfile(token))
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err => {
@@ -124,7 +133,7 @@ export const authSignup = (username, email, password1, password2) => dispatch =>
 /**
 * If there's no token in localStorage
 * log out the user
-* 
+*
 * if there's a token
 *  check its validity and dispatch the appropriate action
 *
@@ -138,16 +147,19 @@ export const authCheckState = () => dispatch => {
         if (expirationDate <= new Date()) {
             dispatch(logout());
         } else {
-            axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
-            axiosInstance.get('/rest-auth/user/')
-                .then(res => {
-                    console.log('valid token', res.data)
-                    dispatch(authSuccess(token, res.data));
-                })
-                .catch(err => dispatch(logout()))
-            
+            dispatch(getProfile(token))
             dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
 
         }
     }
+}
+
+// verify the integrity of the token
+export const getProfile = token => dispatch => {
+    axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
+    axiosInstance.get('/rest-auth/user/')
+        .then(res => {
+            dispatch(authSuccess(token, res.data));
+        })
+        .catch(err => dispatch(logout()))
 }
