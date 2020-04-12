@@ -24,37 +24,43 @@ const styles = {
 
 
 const MyProfile = (props) => {
-    const url = props.match.url;
-    props.testing()
+
+    const getUrl = () => {
+        const inconsistentUrl = props.match.url;
+        const lastUrlChar = inconsistentUrl[inconsistentUrl.length - 1];
+
+        const url = ((lastUrlChar === '/') ? inconsistentUrl : (inconsistentUrl + '/'));
+
+        return url;
+    }
+
     return (
         <div>
             <Title justify="center" align="middle" style={styles.titleStyle}>My account</Title>
             <Row type="flex" style={styles.heightForTheRow}>
-                <Router>
-                    <Col span={4}>
-                        <Menu
-                            // onClick={handleClick}
-                            style={{ width: '100%' }}
-                            defaultSelectedKeys={['1']}
-                            defaultOpenKeys={['sub1']}
-                            mode="inline"
-                        >
-                            <Menu.Item style={styles.menuItem} key="1">
-                                <Link to={`${url}/basic/`}>Basic Settings</Link>
-                            </Menu.Item>
-                            <Menu.Item style={styles.menuItem} key="2">
-                                <Link to={`${url}/security/`}>Security Settings</Link>
-                            </Menu.Item>
-                        </Menu>
-                    </Col>
-                    <Col span={18} style={{ width: '100%' }}>
-                        <Switch>
-                            {/* <Route exact path="/" component={Login} /> */}
-                            <Route exact path={`${url}/basic/`} component={BasicSettings} />
-                            <Route exact path={`${url}/security/`} component={SecuritySettings} />
-                        </Switch>
-                    </Col>
-                </Router>
+                <Col span={4}>
+                    <Menu
+                        // onClick={handleClick}
+                        style={{ width: '100%' }}
+                        defaultSelectedKeys={['1']}
+                        defaultOpenKeys={['sub1']}
+                        mode="inline"
+                    >
+                        <Menu.Item style={styles.menuItem} key="1">
+                            <Link to={`${getUrl()}basic/`}>Basic Settings</Link>
+                        </Menu.Item>
+                        <Menu.Item style={styles.menuItem} key="2">
+                            <Link to={`${getUrl()}security/`}>Security Settings</Link>
+                        </Menu.Item>
+                    </Menu>
+                </Col>
+                <Col span={18} style={{ width: '100%' }}>
+                    <Switch>
+                        {/* <Route exact path="/" component={Login} /> */}
+                        <Route exact path={`${getUrl()}basic/`} component={BasicSettings} />
+                        <Route exact path={`${getUrl()}security/`} component={SecuritySettings} />
+                    </Switch>
+                </Col>
             </Row>
         </div>
     );
