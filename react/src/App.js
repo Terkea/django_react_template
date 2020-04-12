@@ -13,7 +13,7 @@ import MyProfile from './containers/MyProfile/MyProfile';
 const App = (props) => {
 
   useEffect(() => {
-    props.onTryAutoSignup();
+    props.autologin();
   })
 
   return (
@@ -44,7 +44,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState())
+    autologin: () => dispatch(actions.authCheckState())
   }
 }
 

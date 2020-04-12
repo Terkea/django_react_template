@@ -71,10 +71,8 @@ export const authLogin = (username, password) => dispatch => {
                     console.log('valid token', res.data)
                     dispatch(authSuccess(token, res.data));
                 })
-                .catch(err => {
-                    dispatch(logout())
-                })
-
+                .catch(err => dispatch(logout()))
+            
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err => {
@@ -114,9 +112,8 @@ export const authSignup = (username, email, password1, password2) => dispatch =>
                     console.log('valid token', res.data)
                     dispatch(authSuccess(token, res.data));
                 })
-                .catch(err => {
-                    dispatch(logout())
-                })
+                .catch(err => dispatch(logout()))
+            
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err => {
@@ -147,9 +144,8 @@ export const authCheckState = () => dispatch => {
                     console.log('valid token', res.data)
                     dispatch(authSuccess(token, res.data));
                 })
-                .catch(err => {
-                    dispatch(logout())
-                })
+                .catch(err => dispatch(logout()))
+            
             dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
 
         }

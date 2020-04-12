@@ -8,7 +8,6 @@ import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/ico
 
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom'
-import * as actions from '../../store/actions/getProfile'; //this works like a namespace
 
 // destructure the props
 const { Title } = Typography;
@@ -62,10 +61,5 @@ const MyProfile = (props) => {
 };
 
 
-const mapDispatchToProps = dispatch => {
-    return {
-        testing: () => dispatch(actions.getProfile())
-    }
-}
 
-export default connect(null, mapDispatchToProps)(MyProfile);
+export default connect(null, null)(MyProfile);
