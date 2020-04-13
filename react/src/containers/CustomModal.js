@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
-import { Modal } from 'antd';
+import { Modal, Row, Col } from 'antd';
+import { Fragment } from 'react';
 
 
 const CustomModal = props => {
@@ -8,28 +9,33 @@ const CustomModal = props => {
     const hideModal = () => {
         setVisibility(false);
     }
-    const dispatchOk = () => {
-        props.onOk()
-        if (props.validated !== false) { //if true then hide // if undefined then hide // if false then don't do anything
-            hideModal()
-        }
+
+    const onFinish = () => {
+        console.log('button clicked')
     }
+
+    const onFail = () => {
+        console.log('button clicked')
+    }
+
     return (
-        <div>
-            <div onClick={() => setVisibility(true)}>
+        <Row>
+            <Col onClick={() => setVisibility(true)}>
                 {props.clickComponent}
-            </div>
-            <Modal
-                title="Modal"
-                visible={visible}
-                onOk={dispatchOk}
-                onCancel={hideModal}
-                okText="OK"
-                cancelText="Cancel"
-            >
-                <p>{props.children}</p>
-            </Modal>
-        </div>
+            </Col>
+            <Col>
+                <Modal
+                    title="Modal"
+                    visible={visible}
+                    onOk={onFinish}
+                    onCancel={onFail}
+                    okText="OK"
+                    cancelText="Cancel"
+                >
+                    {props.children}
+                </Modal>
+            </Col>
+        </Row>
     )
 }
 export default CustomModal

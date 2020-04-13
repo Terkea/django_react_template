@@ -25,7 +25,6 @@ const App = (props) => {
           <Route {...props} exact path='/login/' component={Login} />
           <Route {...props} exact path='/signup/' component={Signup} />
 
-
           <Route path='/error/' component={Errors} />
 
           <CustomLayout {...props}>
