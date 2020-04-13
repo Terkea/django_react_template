@@ -41,7 +41,7 @@ const Basic = () => {
     };
     return (
         <Row>
-            <Col xs={24} md={14}>
+            <Col xs={24} sm={24} md={15} lg={12}>
                 <Title level={4} >Basic settings</Title>
                 <Form {...layout} layout="vertical" name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
                     <Form.Item

@@ -1,48 +1,55 @@
 import React from 'react'
-import { List, Typography, Divider } from 'antd';
+import { List, Avatar, Typography } from 'antd';
 
+
+const { Title } = Typography;
 
 const data = [
-    'Racing car sprays burning fuel into crowd.',
-    'Japanese princess to wed commoner.',
-    'Australian walks 100km after outback crash.',
-    'Man charged over missing wedding girl.',
-    'Los Angeles battles huge wildfires.',
+    {
+        title: 'Update Password',
+        description: "This link Opens a pop-up that lets you update your password (no, it doesn't, lmao)",
+        content: <a href="https://www.youtube.com">link</a>
+    },
+    {
+        title: 'Go to youtube',
+        description: "This link takes you to youtube",
+        content: <a href="https://www.youtube.com">link</a>
+    },
+    {
+        title: 'Go to youtube',
+        description: "This link takes you to youtube",
+        content: <a href="https://www.youtube.com">link</a>
+    },
+    {
+        title: 'Go to youtube',
+        description: "This link takes you to youtube",
+        content: <a href="https://www.youtube.com">link</a>
+    },
 ];
+
+
+
 
 export default function Security() {
     return (
         <div>
-            <Divider orientation="left">Default Size</Divider>
+
+            <Title level={4} >Security settings</Title>
             <List
-                header={<div>Header</div>}
-                footer={<div>Footer</div>}
-                bordered
+                itemLayout="horizontal"
                 dataSource={data}
                 renderItem={item => (
                     <List.Item>
-                        <Typography.Text mark>[ITEM]</Typography.Text> {item}
+                        <List.Item.Meta
+                            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                            title={<a href="https://ant.design">{item.title}</a>}
+                            description={item.description}
+                        />
+                        <div>{item.content}</div>
                     </List.Item>
                 )}
             />
-            <Divider orientation="left">Small Size</Divider>
-            <List
-                size="small"
-                header={<div>Header</div>}
-                footer={<div>Footer</div>}
-                bordered
-                dataSource={data}
-                renderItem={item => <List.Item>{item}</List.Item>}
-            />
-            <Divider orientation="left">Large Size</Divider>
-            <List
-                size="large"
-                header={<div>Header</div>}
-                footer={<div>Footer</div>}
-                bordered
-                dataSource={data}
-                renderItem={item => <List.Item>{item}</List.Item>}
-            />
-        </div>
+
+        </div >
     )
 }
