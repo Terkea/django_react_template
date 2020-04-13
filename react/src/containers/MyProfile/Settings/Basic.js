@@ -133,7 +133,7 @@ const Basic = () => {
                         <Input addonBefore={prefixSelector} style={{ width: '100%' }} placeholder="Phone Number" />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit">
+                        <Button block type="primary" htmlType="submit">
                             Submit
                         </Button>
                     </Form.Item>

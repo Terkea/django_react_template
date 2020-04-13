@@ -54,7 +54,7 @@ const MyProfile = (props) => {
                 >
                     <Title justify="center" align="middle" style={styles.titleStyle}>My account</Title>
                     <Row >
-                        <Col xs={24} md={7}>
+                        <Col xs={24} md={6}>
                             <Menu
                                 style={{ width: '100%' }}
                                 selectedKeys={[pathname]}
