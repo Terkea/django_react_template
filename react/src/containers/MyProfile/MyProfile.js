@@ -75,8 +75,8 @@ const MyProfile = (props) => {
                         <Col xs={24} sm={24} md={17} lg={17} style={{ padding: '8px 40px', width: '100%' }} >
                             <Switch>
                                 {/* <Route exact path="/" component={Login} /> */}
-                                <Route exact path={`${getUrl()}basic/`} component={BasicSettings} />
-                                <Route exact path={`${getUrl()}security/`} component={SecuritySettings} />
+                                <Route exact path={`${basicPATH}`} component={BasicSettings} />
+                                <Route exact path={`${securityPATH}`} component={SecuritySettings} />
                             </Switch>
                         </Col>
                     </Row>

@@ -1,36 +1,50 @@
-import React from 'react'
-import { List, Avatar, Typography } from 'antd';
+import React, { useState } from 'react'
+import { List, Avatar, Typography, Modal } from 'antd';
 
+
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+
+import SetPassword from './components/SetPassword'
+import CustomModal from '../../CustomModal'
 
 const { Title } = Typography;
+
 
 const data = [
     {
         title: 'Update Password',
-        description: "This link Opens a pop-up that lets you update your password (no, it doesn't, lmao)",
-        content: <a href="https://www.youtube.com">link</a>
+        description: "Current Password Strength: (this value will have to be stored when creating account)",
+        clickComponent: <a>Modify</a>,
+        showComponent: <SetPassword />,
+    },
+    {
+        title: 'Update Password',
+        description: "Current Password Strength: (this value will have to be stored when creating account)",
+        clickComponent: <a>Modify</a>,
+        showComponent: <SetPassword />
     },
     {
         title: 'Go to youtube',
         description: "This link takes you to youtube",
-        content: <a href="https://www.youtube.com">link</a>
+        clickComponent: <a>Modify</a>,
+        showComponent: <div>This will be the component to show</div>
     },
     {
         title: 'Go to youtube',
         description: "This link takes you to youtube",
-        content: <a href="https://www.youtube.com">link</a>
+        clickComponent: <a>Set</a>,
+        showComponent: <div>This will be the component to show</div>
     },
     {
         title: 'Go to youtube',
         description: "This link takes you to youtube",
-        content: <a href="https://www.youtube.com">link</a>
+        clickComponent: <a>View</a>,
+        showComponent: <a href="https://www.youtube.com">link</a>
     },
 ];
 
 
-
-
-export default function Security() {
+const Security = (props) => {
     return (
         <div>
 
@@ -45,7 +59,11 @@ export default function Security() {
                             title={<a href="https://ant.design">{item.title}</a>}
                             description={item.description}
                         />
-                        <div>{item.content}</div>
+                        <div>
+                            <CustomModal clickComponent={item.clickComponent}>
+                                <p>{item.showComponent}</p>
+                            </CustomModal>
+                        </div>
                     </List.Item>
                 )}
             />
@@ -53,3 +71,5 @@ export default function Security() {
         </div >
     )
 }
+
+export default Security;
