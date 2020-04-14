@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -35,25 +34,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # third party
-    'django.contrib.sites',
-    'rest_framework',
-    'rest_framework.authtoken',
     'corsheaders',
 
-    # https://django-rest-auth.readthedocs.io/en/latest/installation.html
     'rest_auth',
-    'rest_auth.registration',
+    'rest_framework',
+    'rest_framework.authtoken',
 
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
+    'drfpasswordless',
+
+
 
     # own
     'api',
 ]
+
+AUTH_USER_MODEL = 'api.User'
+
 # Application definition
 
 
@@ -154,9 +153,39 @@ CORS_ORIGIN_WHITELIST = (
 
 CSRF_COOKIE_NAME = "csrftoken"
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ]
+
+# This will avoid the need for an SMTP server as e-mails will be printed to the console. 
+# For more information, please refer to:
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# SMTP SETTINGS
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'dev.terkea@gmail.com'
+EMAIL_HOST_PASSWORD = 'Parola1@3'
+
+
+# REST_AUTH_SERIALIZERS = {'LOGIN_SERIALIZER': 'api.serializers.LoginSerializer'}
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+
+# passwordless config
+PASSWORDLESS_AUTH = {
+# Allowed auth types, can be EMAIL, MOBILE, or both.
+    'PASSWORDLESS_AUTH_TYPES': ['EMAIL'],
+
+    # The email the callback token is sent from
+    'PASSWORDLESS_EMAIL_NOREPLY_ADDRESS': "dev.terkea@gmail.com",
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':
+('rest_framework.authentication.TokenAuthentication',
+)}
+
+

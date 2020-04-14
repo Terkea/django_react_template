@@ -4,6 +4,7 @@ from rest_auth.serializers import UserDetailsSerializer
 
 
 class UserSerializer(UserDetailsSerializer):
+
     # not required field
     address = serializers.CharField(source="userprofile.address", allow_null=True, allow_blank=True, default=None)
     city = serializers.CharField(source="userprofile.city", allow_null=True, allow_blank=True, default=None)
@@ -12,12 +13,9 @@ class UserSerializer(UserDetailsSerializer):
     avatar = serializers.CharField(source="userprofile.avatar", allow_null=True, allow_blank=True, default=None)
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('address', 'city', 'postcode', 'mobile_phone', 'avatar', )
+        fields = UserDetailsSerializer.Meta.fields = ('pk', 'email', 'first_name', 'last_name', 'address', 'city', 'postcode', 'mobile_phone', 'avatar', )
 
     def update(self, instance, validated_data):
-        # disable update username when updating the user
-        username = validated_data.pop('username', None)
-
         profile_data = validated_data.pop('userprofile', {})
         
         address = profile_data.get('address')
