@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Spin, Row, Col, Typography, Alert, Steps, message, AutoComplete } from 'antd';
-import { LoadingOutlined, UserOutlined, LockOutlined, RocketOutlined, MailOutlined, ToolOutlined } from '@ant-design/icons';
+import {
+  LoadingOutlined,
+  UserOutlined,
+  LockOutlined,
+  RocketOutlined,
+  MailOutlined,
+  ToolOutlined,
+  SolutionOutlined,
+  SmileOutlined,
+  FileDoneOutlined,
+  CloseCircleOutlined
+} from '@ant-design/icons';
 
 import { connect } from 'react-redux';
 import { NavLink, withRouter, Redirect } from 'react-router-dom'
@@ -40,8 +51,6 @@ const styles = {
 
 
 
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
 const Login = (props) => {
 
   const [autoCompleteResult, setAutoCompleteResult] = useState([]);
@@ -76,6 +85,7 @@ const Login = (props) => {
   const steps = [
     {
       title: 'Email',
+      icon: <UserOutlined />,
       content: (
         <Form
           form={email_form}
@@ -111,6 +121,9 @@ const Login = (props) => {
     },
     {
       title: 'Token',
+      icon: (props.loading) ? ((props.error) ? <CloseCircleOutlined /> : <LoadingOutlined />) : (< FileDoneOutlined />),
+      error: (props.error) ? "error" : "",
+      description: (props.error) ? props.error.message : "",
       content: (
         <Form
           form={token_form}
@@ -132,6 +145,7 @@ const Login = (props) => {
     },
     {
       title: 'Login',
+      icon: <SmileOutlined />,
       content: 'Last-content',
     },
   ];
@@ -147,12 +161,11 @@ const Login = (props) => {
           <div>
             <Steps current={current}>
               {steps.map(item => (
-                <Step key={item.title} title={item.title} />
+                <Step key={item.title} title={item.title} icon={item.icon} status={item.error} description={item.description} />
               ))}
             </Steps>
             {/* incase theres no error and the token is valid, pass */}
             {/* make the steps more dynamic https://ant.design/components/steps/ */}
-            {console.log((props.error))}
             {(Array.isArray(props.error))
               ? props.error.map((error, index) =>
                 <Alert
@@ -161,7 +174,7 @@ const Login = (props) => {
                   key={index}
                   type="error"
                   showIcon />)
-              : (props.error) ? alert(props.error.message) : null
+              : null
             }
             <div className="steps-content" style={{ marginTop: '30px' }}>{steps[current].content}</div>
           </div>
