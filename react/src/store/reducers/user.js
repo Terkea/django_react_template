@@ -29,7 +29,6 @@ const authSuccess = (state, action) => {
         payload: {
             token: action.payload.token,
             profile: action.payload.profile,
-            email: state.payload.email,
         },
     });
 }
