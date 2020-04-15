@@ -152,7 +152,8 @@ const Login = (props) => {
             </Steps>
             {/* incase theres no error and the token is valid, pass */}
             {/* make the steps more dynamic https://ant.design/components/steps/ */}
-            {props.error
+            {console.log((props.error))}
+            {(Array.isArray(props.error))
               ? props.error.map((error, index) =>
                 <Alert
                   style={styles.errorMessage}
@@ -160,7 +161,7 @@ const Login = (props) => {
                   key={index}
                   type="error"
                   showIcon />)
-              : null
+              : (props.error) ? alert(props.error.message) : null
             }
             <div className="steps-content" style={{ marginTop: '30px' }}>{steps[current].content}</div>
           </div>
