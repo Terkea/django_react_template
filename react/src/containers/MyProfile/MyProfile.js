@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 
 import { Switch, Route, Link, useLocation } from 'react-router-dom';
 import { Row, Col, Typography, Menu, Button, Layout } from 'antd';
@@ -40,49 +40,59 @@ const MyProfile = (props) => {
     const basicPATH = `${url}basic/`;
     const securityPATH = `${url}security/`
 
-    return (
-        <Row justify="center">
-            <Col xs={24} sm={20} md={24} lg={18}>
+    // if (!localStorage.getItem('token')) { // uncomment when login works
+    //     return <Redirect to='/' />
+    // }
+    // else {
+    //     // props.start() // this doesn't work yet
+    // }
 
-                <Content
-                    style={{
-                        paddingTop: 24,
-                        margin: 0,
-                        minHeight: 280,
-                        background: '#fff',
-                    }}
-                >
-                    <Title justify="center" align="middle" style={styles.titleStyle}>My account</Title>
-                    <Row >
-                        <Col xs={24} md={6}>
-                            <Menu
-                                style={{ width: '100%' }}
-                                selectedKeys={[pathname]}
-                                mode="inline"
-                            >
-                                <Menu.Item style={styles.menuItem} key={basicPATH}>
-                                    <Link to={basicPATH}>
-                                        <div>Basic Settings</div>
-                                    </Link>
-                                </Menu.Item>
-                                <Menu.Item style={styles.menuItem} key={securityPATH}>
-                                    <Link to={securityPATH}>
-                                        <div>Security Settings</div>
-                                    </Link>
-                                </Menu.Item>
-                            </Menu>
-                        </Col>
-                        <Col xs={24} sm={24} md={17} lg={17} style={{ padding: '8px 40px', width: '100%' }} >
-                            <Switch>
-                                {/* <Route exact path="/" component={Login} /> */}
-                                <Route exact path={`${basicPATH}`}  component={BasicSettings} />
-                                <Route exact path={`${securityPATH}`} component={SecuritySettings} />
-                            </Switch>
-                        </Col>
-                    </Row>
-                </Content>
-            </Col>
-        </Row>
+    return (
+        <>
+            <Redirect to={basicPATH} /> {/*By Default Redirect to Basic Settings*/}
+            <Row justify="center">
+                <Col xs={24} sm={20} md={24} lg={18}>
+
+                    <Content
+                        style={{
+                            paddingTop: 24,
+                            margin: 0,
+                            minHeight: 280,
+                            background: '#fff',
+                        }}
+                    >
+                        <Title justify="center" align="middle" style={styles.titleStyle}>My account</Title>
+                        <Row >
+                            <Col xs={24} md={6}>
+                                <Menu
+                                    style={{ width: '100%' }}
+                                    selectedKeys={[pathname]}
+                                    mode="inline"
+                                >
+                                    <Menu.Item style={styles.menuItem} key={basicPATH}>
+                                        <Link to={basicPATH}>
+                                            <div>Basic Settings</div>
+                                        </Link>
+                                    </Menu.Item>
+                                    <Menu.Item style={styles.menuItem} key={securityPATH}>
+                                        <Link to={securityPATH}>
+                                            <div>Security Settings</div>
+                                        </Link>
+                                    </Menu.Item>
+                                </Menu>
+                            </Col>
+                            <Col xs={24} sm={24} md={17} lg={17} style={{ padding: '8px 40px', width: '100%' }} >
+                                <Switch>
+                                    {/* <Route exact path="/" component={Login} /> */}
+                                    <Route exact path={`${basicPATH}`} component={BasicSettings} />
+                                    <Route exact path={`${securityPATH}`} component={SecuritySettings} />
+                                </Switch>
+                            </Col>
+                        </Row>
+                    </Content>
+                </Col>
+            </Row>
+        </>
     );
 };
 

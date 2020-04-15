@@ -15,30 +15,35 @@ const { Title } = Typography;
 
 const data = [
     {
+        id: 1,
         title: 'Update Password',
         description: "Current Password Strength: (this value will have to be stored when creating account)",
         clickComponent: <a>Change</a>,
         showComponent: <SetPassword />,
     },
     {
+        id: 2,
         title: 'Update Password',
         description: "Current Password Strength: (this value will have to be stored when creating account)",
         clickComponent: <a>Modify</a>,
         showComponent: <SetPassword />
     },
     {
+        id: 3,
         title: 'Go to youtube',
         description: "This link takes you to youtube",
         clickComponent: <a>Modify</a>,
         showComponent: <div>This will be the component to show</div>
     },
     {
+        id: 4,
         title: 'Go to youtube',
         description: "This link takes you to youtube",
         clickComponent: <a>Set</a>,
         showComponent: <div>This will be the component to show</div>
     },
     {
+        id: 5,
         title: 'Go to youtube',
         description: "This link takes you to youtube",
         clickComponent: <a>View</a>,
@@ -47,12 +52,9 @@ const data = [
 ];
 
 
-
 const Security = (props) => {
-    props.start()
     return (
         <div>
-
             <Title level={4} >Security settings</Title>
             <List
                 itemLayout="horizontal"
@@ -64,24 +66,16 @@ const Security = (props) => {
                             description={item.description}
                         />
 
-                        <CustomModal clickComponent={item.clickComponent}>
+                        <CustomModal title={item.title} id={item.id} clickComponent={item.clickComponent}>
                             {item.showComponent}
                         </CustomModal>
 
                     </List.Item>
                 )}
             />
-
         </div >
     )
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        start: () => dispatch(actions.updateProfileStart()),
-        success: (new_profile) => dispatch(actions.updateProfileSuccess(new_profile)),
-        fail: (error) => dispatch(actions.updateProfileFail(error)),
-    }
-}
 
-export default withRouter(connect(null, mapDispatchToProps)(Security));
+export default Security;

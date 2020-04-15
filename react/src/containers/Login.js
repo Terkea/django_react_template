@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Spin, Row, Col, Typography, Alert, Steps, message, AutoComplete } from 'antd';
+import { Form, Input, Button, Modal, notification, Spin, Row, Col, Typography, Alert, Steps, message, AutoComplete } from 'antd';
 import {
   LoadingOutlined,
   UserOutlined,
@@ -16,6 +16,7 @@ import {
 import { connect } from 'react-redux';
 import { NavLink, withRouter, Redirect } from 'react-router-dom'
 import * as actions from '../store/actions/user'; //this works like a namespace
+
 
 const { Title, Text } = Typography;
 const { Step } = Steps;
@@ -152,7 +153,6 @@ const Login = (props) => {
 
   const [current, setCurrent] = useState(0);
   return (
-
     <div style={styles.svgBackground}>
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
         <Col xs={16} sm={6}>
@@ -174,7 +174,13 @@ const Login = (props) => {
                   key={index}
                   type="error"
                   showIcon />)
-              : null
+              : (props.error) ?
+                notification.error({
+                  message: props.error.message,
+                  description: "There was a problem connecting to our servers please try again later",
+                  onClose: () => props.history.push('/'),
+                })
+                : null
             }
             <div className="steps-content" style={{ marginTop: '30px' }}>{steps[current].content}</div>
           </div>
