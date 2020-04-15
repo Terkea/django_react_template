@@ -3,11 +3,7 @@ import { updateObject } from '../utility';
 
 const initialState = {
     loading: false,
-    error: {
-        login: null,
-        register: null,
-        update_profile: null
-    },
+    error: null,
     payload: {
         token: null,
         profile: null,
@@ -15,22 +11,12 @@ const initialState = {
     }
 }
 
-const authStart = (state) => {
+const authStart = (state, action) => {
     return updateObject(state, {
-        loading: true
-    });
-}
-
-const authGenerateToken = (state) => {
-    return updateObject(state, {
-        loading: true
-    });
-}
-
-const authGetEmail = (state, action) => {
-    return updateObject(state, {
-        loading: false,
+        loading: action.loading,
         payload: {
+            token: action.payload.token,
+            profile: action.payload.profile,
             email: action.payload.email,
         }
     });
@@ -38,45 +24,44 @@ const authGetEmail = (state, action) => {
 
 const authSuccess = (state, action) => {
     return updateObject(state, {
+        loading: action.loading,
+        error: action.error,
         payload: {
             token: action.payload.token,
-            profile: action.payload.profile
+            profile: action.payload.profile,
+            email: state.payload.email,
         },
-        error: {
-            login: null,
-            register: null
-        },
-        loading: false,
+    });
+}
+
+const authLoginCodeSentSuccess = (state, action) => {
+    return updateObject(state, {
+        loading: action.loading,
     });
 }
 
 const authFail = (state, action) => {
     return updateObject(state, {
+        loading: action.loading,
         error: action.error,
-        loading: false,
-        payload: {
-            profile: null,
-            email: null,
-            token: null
-        }
     });
 }
 
-
-const authLogout = (state) => {
+const authLogout = (state, action) => {
     return updateObject(state, {
+        loading: action.loading,
+        error: action.error,
         payload: {
-            token: null,
-            profile: null,
-            email: null
+            token: action.payload.token,
+            profile: action.payload.profile,
+            email: action.payload.email
         },
     });
 }
 
-
-const updateProfileStart = (state) => {
+const updateProfileStart = (state, action) => {
     return updateObject(state, {
-        loading: true
+        loading: action.loading
     });
 }
 
@@ -91,7 +76,7 @@ const updateProfileSuccess = (state, action) => {
 
 const updateProfileFail = (state, action) => {
     return updateObject(state, {
-        loading: false,
+        loading: action.loading,
         error: action.error,
     });
 }
@@ -99,10 +84,9 @@ const updateProfileFail = (state, action) => {
 
 const handlers = {
     [actionTypes.AUTH_START]: authStart,
+    [actionTypes.AUTH_LOGIN_CODE_SENT_SUCCESS]: authLoginCodeSentSuccess,
     [actionTypes.AUTH_SUCCESS]: authSuccess,
     [actionTypes.AUTH_FAIL]: authFail,
-    [actionTypes.AUTH_GET_EMAIL]: authGetEmail,
-    [actionTypes.AUTH_GENERATE_TOKEN]: authGenerateToken,
     [actionTypes.AUTH_LOGOUT]: authLogout,
 
     [actionTypes.UPDATE_PROFILE_START]: updateProfileStart,

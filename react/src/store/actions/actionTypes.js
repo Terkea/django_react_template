@@ -1,7 +1,7 @@
 // user reducer
 export const AUTH_START = "AUTH_START";
-export const AUTH_GET_EMAIL = "AUTH_GET_EMAIL";
 export const AUTH_GENERATE_TOKEN = "AUTH_GENERATE_TOKEN";
+export const AUTH_LOGIN_CODE_SENT_SUCCESS = "AUTH_LOGIN_CODE_SENT_SUCCESS";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_FAIL = "AUTH_FAIL";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";

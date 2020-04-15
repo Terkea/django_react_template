@@ -72,8 +72,10 @@ const Login = (props) => {
   const [email_form] = Form.useForm();
   const [token_form] = Form.useForm();
 
+  const isUserError = Array.isArray(props.error); // The error becomes an array if the server replies with the error
+
   const onFinishEmail = values => {
-    props.getEmail(values.email)
+    props.sendLoginCode(values.email)
     setCurrent(current + 1)
   }
 
@@ -150,6 +152,19 @@ const Login = (props) => {
       content: 'Last-content',
     },
   ];
+  useEffect(() => {
+    console.log(props)
+    if (props.error && !isUserError) {
+      notification.error({
+        message: props.error.message,
+        description: "There was a problem connecting to our servers please try again later",
+        duration: 0,
+        onClose: () => {
+          props.history.push('/');
+        },
+      });
+    };
+  })
 
   const [current, setCurrent] = useState(0);
   return (
@@ -166,7 +181,7 @@ const Login = (props) => {
             </Steps>
             {/* incase theres no error and the token is valid, pass */}
             {/* make the steps more dynamic https://ant.design/components/steps/ */}
-            {(Array.isArray(props.error))
+            {(isUserError)
               ? props.error.map((error, index) =>
                 <Alert
                   style={styles.errorMessage}
@@ -174,37 +189,30 @@ const Login = (props) => {
                   key={index}
                   type="error"
                   showIcon />)
-              : (props.error) ?
-                notification.error({
-                  message: props.error.message,
-                  description: "There was a problem connecting to our servers please try again later",
-                  onClose: () => props.history.push('/'),
-                })
-                : null
+              : null
             }
             <div className="steps-content" style={{ marginTop: '30px' }}>{steps[current].content}</div>
           </div>
 
         </Col>
       </Row>
-    </div>
+    </div >
   );
 };
 
 const mapStateToProps = (state) => {
   return {
     loading: state.user.loading,
-    error: state.user.error.login,
+    error: state.user.error,
     email: state.user.payload.email
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-
-    validateLoginCode: (email, loginCode) => dispatch(actions.validateLoginCode(email, loginCode)),
     // add the email to the state till the token is send over the email provided
-    getEmail: (email) => dispatch(actions.sendLoginCode(email))
+    sendLoginCode: (email) => dispatch(actions.authSendLoginCode(email)),
+    validateLoginCode: (email, loginCode) => dispatch(actions.authValidateLogin(email, loginCode)),
   }
 }
 

@@ -22,9 +22,10 @@ const App = (props) => {
     <div>
       <Router>
         <Switch>
-
-          <Route {...props} exact path='/login/' component={Login} />
-          <Route {...props} exact path='/signup/' component={Signup} />
+          {/* i read this is how you pass down props, but it causes a weird error on the console, I didn't look further into it but here you have it: */}
+          {/* <Route exact path="/login/" render={(props) => <Login {...props}/>} /> */}
+          <Route exact path='/login/' component={Login} />
+          <Route exact path='/signup/' component={Signup} />
 
           <Route path='/error/' component={Errors} />
 

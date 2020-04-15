@@ -1,24 +1,54 @@
 import axiosInstance from '../../axiosConfig';
 import * as actionTypes from './actionTypes';
 
-export const authStart = () => {
-    return {
-        type: actionTypes.AUTH_START
-    }
-}
+const SESSION_TIMEOUT = 3600;
 
-export const authGenerateToken = () => {
-    return {
-        type: actionTypes.AUTH_GENERATE_TOKEN
-    }
-}
 
-export const authGetEmail = (email) => {
+export const authStart = (email) => {
     return {
-        type: actionTypes.AUTH_GET_EMAIL,
+        type: actionTypes.AUTH_START,
         payload: {
+            token: null,
+            profile: null,
             email: email
-        }
+        },
+        loading: true
+    }
+}
+
+export const authValidateLogin = (email, loginCode) => dispatch => {
+    dispatch(authStart(email)); // shows loading again
+    axiosInstance.post('passwordless/auth/token/', {
+        email: email,
+        token: loginCode
+    }).then(res => {
+        dispatch(getProfile(res.data.token))
+        dispatch(authSuccess)
+    }).catch(err => {
+        dispatch(authFail(err))
+        dispatch(authLogout());
+    });
+}
+
+export const authSendLoginCode = email => dispatch => {
+    dispatch(authStart(email));
+    axiosInstance.post('passwordless/auth/email/', {
+        email: email
+    })
+        .then(res => {
+            dispatch(authLoginCodeSentSuccess());
+        })
+        .catch(err => {
+            dispatch(authFail(err));
+            dispatch(authLogout());
+            // dispatch(authFail(Object.keys(err.response.data).map((key) => err.response.data[key])));
+        })
+}
+
+export const authLoginCodeSentSuccess = (error) => {
+    return {
+        type: actionTypes.AUTH_LOGIN_CODE_SENT_SUCCESS,
+        loading: false,
     }
 }
 
@@ -28,38 +58,32 @@ export const authSuccess = (token, profile) => {
         payload: {
             token: token,
             profile: profile
-        }
+        },
+        loading: false,
+        error: null
     }
 }
 
-export const authFail = error => {
+export const authFail = (error) => {
     return {
         type: actionTypes.AUTH_FAIL,
-        error: {
-            login: error,
-        }
+        loading: false,
+        error: error,
     }
-}
-
-export const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expirationDate');
-    return {
-        type: actionTypes.AUTH_LOGOUT
-    };
 }
 
 export const updateProfileStart = () => {
     return {
-        type: actionTypes.UPDATE_PROFILE_START
+        type: actionTypes.UPDATE_PROFILE_START,
+        loading: true
     }
 }
 
-export const updateProfileSuccess = (new_profile) => {
+export const updateProfileSuccess = (profile) => {
     return {
         type: actionTypes.UPDATE_PROFILE_SUCCESS,
         payload: {
-            profile: new_profile
+            profile: profile
         }
     }
 }
@@ -67,24 +91,23 @@ export const updateProfileSuccess = (new_profile) => {
 export const updateProfileFail = (error) => {
     return {
         type: actionTypes.UPDATE_PROFILE_FAIL,
-        error: {
-            update_profile: error
-        }
+        loading: false,
+        error: error,
     }
 }
 
-export const checkAuthTimeout = expirationTime => {
+export const checkAuthTimeout = (expirationTime) => {
     return dispatch => {
         setTimeout(() => {
-            dispatch(logout());
+            dispatch(authLogout());
         }, expirationTime * 1000)
     }
 }
 
 /**
-*
-* Makes an API request to the given URL
-* if the response is valid then it stores on localStorage the token
+ *
+ * Makes an API request to the given URL
+ * if the response is valid then it stores on localStorage the token
 * along with the expirationDate for the given time
 * after it dispatches authSuccess and checkAuthTimeout
 *
@@ -101,42 +124,30 @@ export const authLogin = (username, password) => dispatch => {
     })
         .then(res => {
             const token = res.data.key;
-            const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+            const expirationDate = new Date(new Date().getTime() + SESSION_TIMEOUT * 1000);
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
-
             dispatch(getProfile(token))
-            
-            dispatch(checkAuthTimeout(3600));
+            dispatch(checkAuthTimeout(SESSION_TIMEOUT));
         })
         .catch(err => {
             dispatch(authFail(Object.keys(err.response.data).map((key) => err.response.data[key])))
         })
 }
 
-
-/**
-* If there's no token in localStorage
-* log out the user
-*
-* if there's a token
-*  check its validity and dispatch the appropriate action
-*
-*/
-export const authCheckState = () => dispatch => {
-    const token = localStorage.getItem('token');
-    if (token === undefined) {
-        dispatch(logout());
-    } else {
-        const expirationDate = new Date(localStorage.getItem('expirationDate'));
-        if (expirationDate <= new Date()) {
-            dispatch(logout());
-        } else {
-            dispatch(getProfile(token))
-            dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
-
-        }
-    }
+export const authLogout = () => {
+    if (localStorage.getItem('token')) { localStorage.removeItem('token') };
+    if (localStorage.getItem('expirationDate')) { localStorage.removeItem('expirationDate') };
+    return {
+        type: actionTypes.AUTH_LOGOUT,
+        loading: null,
+        error: null,
+        payload: {
+            token: null,
+            profile: null,
+            email: null
+        },
+    };
 }
 
 // verify the integrity of the token
@@ -146,33 +157,34 @@ export const getProfile = token => dispatch => {
         .then(res => {
             dispatch(authSuccess(token, res.data));
         })
-        .catch(err => dispatch(logout()))
-}
-
-
-export const sendLoginCode = email => dispatch => {
-    dispatch(authStart());
-    dispatch(authGetEmail(email));
-    axiosInstance.post('passwordless/auth/email/', {
-        email: email
-    }).then(res => {
-        console.log(res.data)
-    })
         .catch(err => {
-            dispatch(authFail(err))
-            console.log(err)
+            // dispatch(authFail(err));
+            authFail(Object.keys(err.response.data).map((key) => err.response.data[key]))
+            dispatch(authLogout());
         })
 }
 
-export const validateLoginCode = (email, loginCode) => dispatch => {
-    axiosInstance.post('passwordless/auth/token/', {
-        email: email,
-        token: loginCode
-    }).then(res => {
-        dispatch(getProfile(res.data.token))
-        dispatch(authSuccess)
-    }).catch(err => {
-        dispatch(authFail(err.response.data.token))
-        console.log(err.response.data)
-    })
+
+
+/**
+ * If there's no token in localStorage
+ * log out the user
+ *
+ * if there's a token
+ *  check its validity and dispatch the appropriate action
+ *
+ */
+export const authCheckState = () => dispatch => {
+    const token = localStorage.getItem('token');
+    if (token === undefined) {
+        dispatch(authLogout());
+    } else {
+        const expirationDate = new Date(localStorage.getItem('expirationDate'));
+        if (expirationDate <= new Date()) {
+            dispatch(authLogout());
+        } else {
+            dispatch(getProfile(token))
+            dispatch(checkAuthTimeout(SESSION_TIMEOUT));
+        }
+    }
 }
