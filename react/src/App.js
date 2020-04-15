@@ -13,9 +13,10 @@ import Errors from './containers/Errors/Error';
 
 const App = (props) => {
 
-  useEffect(() => {
-    props.autologin();
-  })
+  // disabled for now
+  // useEffect(() => {
+  //   props.autologin();
+  // })
 
   return (
     <div>

@@ -7,6 +7,21 @@ export const authStart = () => {
     }
 }
 
+export const authGenerateToken = () => {
+    return {
+        type: actionTypes.AUTH_GENERATE_TOKEN
+    }
+}
+
+export const authGetEmail = (email) => {
+    return {
+        type: actionTypes.AUTH_GET_EMAIL,
+        payload: {
+            email: email
+        }
+    }
+}
+
 export const authSuccess = (token, profile) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
@@ -22,15 +37,6 @@ export const authFail = error => {
         type: actionTypes.AUTH_FAIL,
         error: {
             login: error,
-        }
-    }
-}
-
-export const registerFail = error => {
-    return {
-        type: actionTypes.REGISTER_FAIL,
-        error: {
-            register: error
         }
     }
 }
@@ -75,6 +81,18 @@ export const checkAuthTimeout = expirationTime => {
     }
 }
 
+/**
+*
+* Makes an API request to the given URL
+* if the response is valid then it stores on localStorage the token
+* along with the expirationDate for the given time
+* after it dispatches authSuccess and checkAuthTimeout
+*
+* In case there's an error we'll grab it with err.response.data
+* Since our backend returns errors as a naster object
+* we'll have to decompose it and build an array out of that
+* before pasing it to the view where it has to be rendered
+*/
 export const authLogin = (username, password) => dispatch => {
     dispatch(authStart());
     axiosInstance.post('/rest-auth/login/', {
@@ -96,39 +114,6 @@ export const authLogin = (username, password) => dispatch => {
         })
 }
 
-
-/**
-*
-* Makes an API request to the given URL
-* if the response is valid then it stores on localStorage the token
-* along with the expirationDate for the given time
-* after it dispatches authSuccess and checkAuthTimeout
-*
-* In case there's an error we'll grab it with err.response.data
-* Since our backend returns errors as a naster object
-* we'll have to decompose it and build an array out of that
-* before pasing it to the view where it has to be rendered
-*/
-export const authSignup = (username, email, password1, password2) => dispatch => {
-    dispatch(authStart());
-    axiosInstance.post('/rest-auth/registration/', {
-        username: username,
-        email: email,
-        password1: password1,
-        password2: password2
-    })
-        .then(res => {
-            const token = res.data.key;
-            const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-            localStorage.setItem('token', token);
-            localStorage.setItem('expirationDate', expirationDate);
-            dispatch(getProfile(token))
-            dispatch(checkAuthTimeout(3600));
-        })
-        .catch(err => {
-            dispatch(registerFail(Object.keys(err.response.data).map((key) => err.response.data[key])))
-        })
-}
 
 /**
 * If there's no token in localStorage
@@ -162,4 +147,32 @@ export const getProfile = token => dispatch => {
             dispatch(authSuccess(token, res.data));
         })
         .catch(err => dispatch(logout()))
+}
+
+
+export const sendLoginCode = email => dispatch => {
+    dispatch(authStart());
+    dispatch(authGetEmail(email));
+    axiosInstance.post('passwordless/auth/email/', {
+        email: email
+    }).then(res => {
+        console.log(res.data)
+    })
+        .catch(err => {
+            dispatch(authFail(err))
+            console.log(err)
+        })
+}
+
+export const validateLoginCode = (email, loginCode) => dispatch => {
+    axiosInstance.post('passwordless/auth/token/', {
+        email: email,
+        token: loginCode
+    }).then(res => {
+        dispatch(getProfile(res.data.token))
+        dispatch(authSuccess)
+    }).catch(err => {
+        dispatch(authFail(err.response.data.token))
+        console.log(err.response.data)
+    })
 }

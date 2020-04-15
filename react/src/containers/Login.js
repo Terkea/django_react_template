@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { NavLink, withRouter, Redirect } from 'react-router-dom'
 import * as actions from '../store/actions/user'; //this works like a namespace
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 const { Step } = Steps;
 
 
@@ -19,7 +19,7 @@ const styles = {
     marginBottom: '30px'
   },
   errorMessage: {
-    marginBottom: '10px'
+    marginTop: '30px'
   },
   logo: {
     fontSize: '100px',
@@ -44,22 +44,34 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const Login = (props) => {
 
+  const [autoCompleteResult, setAutoCompleteResult] = useState([]);
+
+  const onWebsiteChange = value => {
+    if (!value || value.search('@') !== -1) {
+      setAutoCompleteResult([]);
+    } else {
+      setAutoCompleteResult(['@gmail.com', '@hotmail.co.uk', '@hotmail.com', '@outlook.com', '@outlook.co.uk'].map(domain => `${value}${domain}`));
+    }
+  };
+
+  const websiteOptions = autoCompleteResult.map(website => ({
+    label: website,
+    value: website,
+  }));
+
   const [email_form] = Form.useForm();
   const [token_form] = Form.useForm();
 
   const onFinishEmail = values => {
+    props.getEmail(values.email)
     setCurrent(current + 1)
-    console.log('email validated', values)
   }
 
   const onFinishToken = values => {
-    setCurrent(current + 1)
-    console.log('token validated', values)
+    console.log('HERE', props.email, values.token)
+    props.validateLoginCode(props.email, values.token)
   }
 
-  const onFailToken = values => {
-    console.log('token validation failed', values)
-  }
 
   const steps = [
     {
@@ -83,7 +95,13 @@ const Login = (props) => {
               },
             ]}
           >
-            <Input placeholder="Email" size={'large'} prefix={<MailOutlined className="site-form-item-icon" />} />
+            <AutoComplete options={websiteOptions} onChange={onWebsiteChange} >
+              <Input
+                placeholder="Email"
+                size={'large'}
+                prefix={<MailOutlined className="site-form-item-icon" />}
+              />
+            </AutoComplete>
           </Form.Item>
           <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
             Request token
@@ -97,10 +115,9 @@ const Login = (props) => {
         <Form
           form={token_form}
           onFinish={onFinishToken}
-          onFinishFailed={onFailToken}
           name="token"
         >
-          <Title level={5}>Check your inbox, the token we sent will run out of time in 15 minutes.</Title>
+          <Text level={5}>Check your inbox, the token we sent will run out of time in 15 minutes.</Text>
           <Form.Item
             name="token"
             rules={[{ required: true, message: 'Please input your token!', whitespace: true }]}
@@ -121,40 +138,33 @@ const Login = (props) => {
 
   const [current, setCurrent] = useState(0);
   return (
-    
-    <div style={styles.svgBackground}>
 
+    <div style={styles.svgBackground}>
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
         <Col xs={16} sm={6}>
           <RocketOutlined style={styles.logo} />
           <Title align="middle" style={styles.titleStyle}>Login</Title>
-
           <div>
             <Steps current={current}>
               {steps.map(item => (
                 <Step key={item.title} title={item.title} />
               ))}
             </Steps>
-            <div className="steps-content" style={{marginTop: '30px'}}>{steps[current].content}</div>
-            {/* <div className="steps-action">
-              {current < steps.length - 1 && (
-                <Button type="primary" onClick={() => setCurrent(current+1)}>
-                  Next
-                </Button>
-              )}
-              {current === steps.length - 1 && (
-                <Button type="primary" onClick={() => message.success('Processing complete!')}>
-                  Done
-                </Button>
-              )}
-              {current > 0 && (
-                <Button style={{ margin: 8 }} onClick={() => setCurrent(current - 1)}>
-                  Previous
-                </Button>
-              )}
-            </div> */}
+            {/* incase theres no error and the token is valid, pass */}
+            {/* make the steps more dynamic https://ant.design/components/steps/ */}
+            {props.error
+              ? props.error.map((error, index) =>
+                <Alert
+                  style={styles.errorMessage}
+                  message={error}
+                  key={index}
+                  type="error"
+                  showIcon />)
+              : null
+            }
+            <div className="steps-content" style={{ marginTop: '30px' }}>{steps[current].content}</div>
           </div>
-         
+
         </Col>
       </Row>
     </div>
@@ -164,13 +174,17 @@ const Login = (props) => {
 const mapStateToProps = (state) => {
   return {
     loading: state.user.loading,
-    error: state.user.error.login
+    error: state.user.error.login,
+    email: state.user.payload.email
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (username, password) => dispatch(actions.authLogin(username, password)),
+
+    validateLoginCode: (email, loginCode) => dispatch(actions.validateLoginCode(email, loginCode)),
+    // add the email to the state till the token is send over the email provided
+    getEmail: (email) => dispatch(actions.sendLoginCode(email))
   }
 }
 
