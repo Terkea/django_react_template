@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
-import { Form, Input, Button, Spin, Row, Col, Typography, Alert } from 'antd';
-import { LoadingOutlined, UserOutlined, LockOutlined, RocketOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from 'react';
+import { Form, Input, Button, Spin, Row, Col, Typography, Alert, Steps, message, AutoComplete } from 'antd';
+import { LoadingOutlined, UserOutlined, LockOutlined, RocketOutlined, MailOutlined, ToolOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
 import { NavLink, withRouter, Redirect } from 'react-router-dom'
 import * as actions from '../store/actions/user'; //this works like a namespace
 
 const { Title } = Typography;
+const { Step } = Steps;
+
 
 const styles = {
   heightForTheRow: {
@@ -14,7 +16,7 @@ const styles = {
     background: 'rgba(220, 220, 220, 0.2)'
   },
   titleStyle: {
-    marginBottom: '10px'
+    marginBottom: '30px'
   },
   errorMessage: {
     marginBottom: '10px'
@@ -36,24 +38,90 @@ const styles = {
   }
 }
 
+
+
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const Login = (props) => {
 
-  const onFinish = values => {
-    props.onAuth(values.username, values.password)
-  };
+  const [email_form] = Form.useForm();
+  const [token_form] = Form.useForm();
 
-  const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
-  };
-
-  // in case theres a token in localstorage that means the users is logged in
-  if (localStorage.getItem('token')) {
-    return <Redirect to='/' />
+  const onFinishEmail = values => {
+    setCurrent(current + 1)
+    console.log('email validated', values)
   }
 
+  const onFinishToken = values => {
+    setCurrent(current + 1)
+    console.log('token validated', values)
+  }
+
+  const onFailToken = values => {
+    console.log('token validation failed', values)
+  }
+
+  const steps = [
+    {
+      title: 'Email',
+      content: (
+        <Form
+          form={email_form}
+          onFinish={onFinishEmail}
+          name="email"
+        >
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              },
+              {
+                required: true,
+                message: 'Please input your E-mail!',
+              },
+            ]}
+          >
+            <Input placeholder="Email" size={'large'} prefix={<MailOutlined className="site-form-item-icon" />} />
+          </Form.Item>
+          <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
+            Request token
+          </Button>
+        </Form>
+      ),
+    },
+    {
+      title: 'Token',
+      content: (
+        <Form
+          form={token_form}
+          onFinish={onFinishToken}
+          onFinishFailed={onFailToken}
+          name="token"
+        >
+          <Title level={5}>Check your inbox, the token we sent will run out of time in 15 minutes.</Title>
+          <Form.Item
+            name="token"
+            rules={[{ required: true, message: 'Please input your token!', whitespace: true }]}
+          >
+            <Input placeholder="Token" maxLength={6} size={'large'} prefix={< ToolOutlined className="site-form-item-icon" />} />
+          </Form.Item>
+          <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
+            Validate Token
+          </Button>
+        </Form >
+      ),
+    },
+    {
+      title: 'Login',
+      content: 'Last-content',
+    },
+  ];
+
+  const [current, setCurrent] = useState(0);
   return (
+    
     <div style={styles.svgBackground}>
 
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
@@ -61,68 +129,32 @@ const Login = (props) => {
           <RocketOutlined style={styles.logo} />
           <Title align="middle" style={styles.titleStyle}>Login</Title>
 
-          
-          {/*  */}
-          {/* display the errors if there are any*/}
-
-          {props.error
-            ? <Alert style={styles.errorMessage} message={props.error} type="error" showIcon />
-            : null
-          }
-
-          {props.loading ?
-            <Spin indicator={antIcon} />
-            :
-            <Form
-              name="basic"
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-            >
-              <Form.Item
-                name="username"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your username!',
-                  },
-                ]}
-              >
-                <Input placeholder="Username" prefix={<UserOutlined className="site-form-item-icon" />} />
-              </Form.Item>
-
-              <Form.Item
-                name="password"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your password!',
-                  },
-                ]}
-              >
-                <Input.Password placeholder="Password" prefix={<LockOutlined className="site-form-item-icon" />} />
-              </Form.Item>
-
-              <Form.Item>
-                <Row align="middle">
-                  <Col span={18}>
-                    <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
-                      Login
-                  </Button>
-                  or
-                  <NavLink style={{ marginRight: '10px' }} to='/signup/'>
-                      {" "}Register
-                  </NavLink>
-                  </Col>
-                  <Col span={6}>
-                    <NavLink to='/signup/'>{" "}Recover password?</NavLink>
-                  </Col>
-                </Row>
-              </Form.Item>
-            </Form>
-          }
+          <div>
+            <Steps current={current}>
+              {steps.map(item => (
+                <Step key={item.title} title={item.title} />
+              ))}
+            </Steps>
+            <div className="steps-content" style={{marginTop: '30px'}}>{steps[current].content}</div>
+            {/* <div className="steps-action">
+              {current < steps.length - 1 && (
+                <Button type="primary" onClick={() => setCurrent(current+1)}>
+                  Next
+                </Button>
+              )}
+              {current === steps.length - 1 && (
+                <Button type="primary" onClick={() => message.success('Processing complete!')}>
+                  Done
+                </Button>
+              )}
+              {current > 0 && (
+                <Button style={{ margin: 8 }} onClick={() => setCurrent(current - 1)}>
+                  Previous
+                </Button>
+              )}
+            </div> */}
+          </div>
+         
         </Col>
       </Row>
     </div>
