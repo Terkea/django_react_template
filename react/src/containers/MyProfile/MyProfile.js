@@ -100,7 +100,7 @@ const MyProfile = (props) => {
 const mapStateToProps = (state) => {
     return {
         loading: state.user.loading,
-        error: state.user.error.update_profile
+        // error: state.user.error.update_profile
     }
 }
 
@@ -108,7 +108,7 @@ const mapDispatchToProps = dispatch => {
     return {
         start: () => dispatch(actions.updateProfileStart()),
         success: (new_profile) => dispatch(actions.updateProfileSuccess(new_profile)),
-        fail: (error) => dispatch(actions.updateProfileFail(error)),
+        // fail: (error) => dispatch(actions.updateProfileFail(error)),
     }
 }
 

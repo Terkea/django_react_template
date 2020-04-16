@@ -24,8 +24,11 @@ export const authValidateLogin = (email, loginCode) => dispatch => {
     }).then(res => {
         dispatch(getProfile(res.data.token))
         dispatch(authSuccess)
-    }).catch(err => {
-        dispatch(authFail(err))
+        console.log("RES HERE MOTHERFUCKER")
+        console.log(res.data.token)
+    }).catch(err => { // Axios catch error returns javascript error not server response
+        // The server does not reply to wrong tokens 
+        dispatch(authFail(err.response.data.token))
         dispatch(authLogout());
     });
 }
@@ -38,8 +41,8 @@ export const authSendLoginCode = email => dispatch => {
         .then(res => {
             dispatch(authLoginCodeSentSuccess());
         })
-        .catch(err => {
-            dispatch(authFail(err));
+        .catch(err => { // Axios catch error returns javascript error not server response
+            dispatch(authFail(err.message));
             dispatch(authLogout());
             // dispatch(authFail(Object.keys(err.response.data).map((key) => err.response.data[key])));
         })
@@ -131,7 +134,7 @@ export const authLogin = (username, password) => dispatch => {
             dispatch(checkAuthTimeout(SESSION_TIMEOUT));
         })
         .catch(err => {
-            dispatch(authFail(Object.keys(err.response.data).map((key) => err.response.data[key])))
+            dispatch(err.message) // authFail(Object.keys(err.response.data).map((key) => err.response.data[key]))
         })
 }
 
@@ -157,9 +160,9 @@ export const getProfile = token => dispatch => {
         .then(res => {
             dispatch(authSuccess(token, res.data));
         })
-        .catch(err => {
+        .catch(err => { // Axios catch error returns javascript error not server response
             // dispatch(authFail(err));
-            authFail(Object.keys(err.response.data).map((key) => err.response.data[key]))
+            authFail(err.message) // what is this by the way? old : Object.keys(err.response.data).map((key) => err.response.data[key])
             dispatch(authLogout());
         })
 }

@@ -21,7 +21,6 @@ import * as actions from '../store/actions/user'; //this works like a namespace
 const { Title, Text } = Typography;
 const { Step } = Steps;
 
-
 const styles = {
   heightForTheRow: {
     minHeight: '100%',
@@ -72,7 +71,6 @@ const Login = (props) => {
   const [email_form] = Form.useForm();
   const [token_form] = Form.useForm();
 
-  const isUserError = Array.isArray(props.error); // The error becomes an array if the server replies with the error
 
   const onFinishEmail = values => {
     props.sendLoginCode(values.email)
@@ -80,7 +78,6 @@ const Login = (props) => {
   }
 
   const onFinishToken = values => {
-    console.log('HERE', props.email, values.token)
     props.validateLoginCode(props.email, values.token)
   }
 
@@ -125,8 +122,7 @@ const Login = (props) => {
     {
       title: 'Token',
       icon: (props.loading) ? ((props.error) ? <CloseCircleOutlined /> : <LoadingOutlined />) : (< FileDoneOutlined />),
-      error: (props.error) ? "error" : "",
-      description: (props.error) ? props.error.message : "",
+      error: (props.error) ? "error" : "",  //  TODO this doesn't rerender,""
       content: (
         <Form
           form={token_form}
@@ -153,17 +149,24 @@ const Login = (props) => {
     },
   ];
   useEffect(() => {
-    console.log(props)
-    if (props.error && !isUserError) {
-      notification.error({
-        message: props.error.message,
-        description: "There was a problem connecting to our servers please try again later",
-        duration: 0,
-        onClose: () => {
-          props.history.push('/');
-        },
-      });
-    };
+    if (props.error) {
+      if (Array.isArray(props.error)) {
+        let i;
+        for (i in props.error) {
+          notification.error({
+            message: "Error",
+            description: props.error[i],
+            duration: 0,
+          });
+        }
+      } else {
+        notification.error({
+          message: "Error",
+          description: props.error,
+          duration: 0,
+        });
+      }
+    }
   })
 
   const [current, setCurrent] = useState(0);
@@ -175,22 +178,13 @@ const Login = (props) => {
           <Title align="middle" style={styles.titleStyle}>Login</Title>
           <div>
             <Steps current={current}>
+              {console.log((props.error) ? "error" : "")}
               {steps.map(item => (
                 <Step key={item.title} title={item.title} icon={item.icon} status={item.error} description={item.description} />
               ))}
             </Steps>
             {/* incase theres no error and the token is valid, pass */}
             {/* make the steps more dynamic https://ant.design/components/steps/ */}
-            {(isUserError)
-              ? props.error.map((error, index) =>
-                <Alert
-                  style={styles.errorMessage}
-                  message={error}
-                  key={index}
-                  type="error"
-                  showIcon />)
-              : null
-            }
             <div className="steps-content" style={{ marginTop: '30px' }}>{steps[current].content}</div>
           </div>
 
