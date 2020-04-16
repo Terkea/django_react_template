@@ -7,7 +7,6 @@ import * as actions from './store/actions/user';
 import CustomLayout from './containers/Layout';
 
 import Login from './containers/Login';
-import Signup from './containers/Signup';
 import MyProfile from './containers/MyProfile/MyProfile';
 import Errors from './containers/Errors/Error';
 
@@ -23,8 +22,8 @@ const App = (props) => {
         <Switch>
           {/* i read this is how you pass down props, but it causes a weird error on the console, I didn't look further into it but here you have it: */}
           {/* <Route exact path="/login/" render={(props) => <Login {...props}/>} /> */}
-          <Route {...props} exact path='/login/' component={Login} />
-          <Route {...props} exact path='/signup/' component={Signup} />
+          <Route exact path='/login/' component={Login} />
+          <Route exact path='/signup/' render={() => <Login formTitle="Register" />} />
 
           <Route path='/error/' component={Errors} />
 

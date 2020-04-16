@@ -61,6 +61,9 @@ const Login = (props) => {
   const [current, setCurrent] = useState(0);
   const [autoCompleteResult, setAutoCompleteResult] = useState([]);
 
+  const formTitle = (props.formTitle) ? props.formTitle : "Login";
+
+
   const onWebsiteChange = value => {
     if (!value || value.search('@') !== -1) {
       setAutoCompleteResult([]);
@@ -170,7 +173,7 @@ const Login = (props) => {
       ),
     },
     {
-      title: 'Login',
+      title: formTitle,
       icon: <SmileOutlined />,
       content: (
         <div align="middle">
@@ -217,7 +220,7 @@ const Login = (props) => {
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
         <Col xs={16} sm={6}>
           <RocketOutlined style={styles.logo} />
-          <Title align="middle" style={styles.titleStyle}>Login</Title>
+          <Title align="middle" style={styles.titleStyle}>{formTitle}</Title>
           <div>
             <Steps current={current}>
               {console.log((props.error) ? "error" : "")}
