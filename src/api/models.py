@@ -83,11 +83,11 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     
     # custom fields for user
-    address = models.CharField(max_length=100, null=True)
-    city = models.CharField(max_length=20, null=True)
-    postcode = models.CharField(max_length=10, null=True)
-    mobile_phone = models.CharField(max_length=20, null=True)
-    avatar = models.CharField(max_length=100, null=True)
+    address = models.CharField(max_length=100, default="")
+    city = models.CharField(max_length=20, default="")
+    postcode = models.CharField(max_length=10, default="")
+    mobile_phone = models.CharField(max_length=20, default="")
+    avatar = models.CharField(max_length=100, default="")
 
 @receiver(post_save, sender=User)
 def create_profile_for_user(sender, instance=None, created=False, **kwargs):

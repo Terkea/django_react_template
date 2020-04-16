@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, InputNumber, Button, Avatar, Badge, Typography, Row, Col, Select } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
+import { connect } from 'react-redux';
+import { withRouter, Redirect } from 'react-router-dom'
+
+import * as actions from '../../../store/actions/user'; //this works like a namespace
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -35,38 +39,40 @@ const prefixSelector = (
 );
 
 
-const Basic = () => {
+const Basic = (props) => {
+    // console.log(props)
+    // console.log(props.profile)
+    if (props.isAuthenticated) {
+        return <Redirect to='/' />
+    }
+
     const onFinish = values => {
-        console.log(values);
+        console.log({ "profile": values });
     };
+
     return (
+        // for some reason if u access this page by the url it complains about null field values
+        // but if u go to home then navigate here everything seems to work all right
+        // i blame you for this bug
+        // i've spend hours trying to debug
+        // jokes aside, i believe it has something to do with the way were passing down the props
+        // if u get rid of the props when initializing the component it crashes, same for mapStateToProps
         <Row>
             <Col xs={24} sm={24} md={15} lg={12}>
                 <Title level={4} >Basic settings</Title>
                 <Form {...layout} layout="vertical" name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
                     <Form.Item
-                        name={'username'}
-                        rules={[
-                            {
-                                min: 0,
-                                max: 25,
-                            },
-                        ]}
-                    >
-                        <Input placeholder="Username" />
-                    </Form.Item>
-                    <Form.Item
                         name={'email'}
                         rules={[
                             {
-                                type: 'email',
                                 min: 0,
                                 max: 80,
                             },
                         ]}
                     >
-                        <Input placeholder="Email" />
+                        <Input disabled value={props.profile.email} placeholder="Email" />
                     </Form.Item>
+
                     <Form.Item
                         name={'first_name'}
                         rules={[
@@ -76,8 +82,9 @@ const Basic = () => {
                             },
                         ]}
                     >
-                        <Input placeholder="First Name" />
+                        <Input value={props.profile.first_name} placeholder="First Name" />
                     </Form.Item>
+
                     <Form.Item
                         name={'last_name'}
                         rules={[
@@ -87,8 +94,9 @@ const Basic = () => {
                             },
                         ]}
                     >
-                        <Input placeholder="Last Name" />
+                        <Input value={props.profile.last_name} placeholder="Last Name" />
                     </Form.Item>
+
                     <Form.Item
                         name={'address'}
                         rules={[
@@ -98,8 +106,9 @@ const Basic = () => {
                             },
                         ]}
                     >
-                        <Input placeholder="Address" />
+                        <Input value={props.profile.address} placeholder="Address" />
                     </Form.Item>
+
                     <Form.Item
                         name={'postcode'}
                         rules={[
@@ -109,8 +118,9 @@ const Basic = () => {
                             },
                         ]}
                     >
-                        <Input placeholder="Post Code" />
+                        <Input value={props.profile.postcode} placeholder="Post Code" />
                     </Form.Item>
+
                     <Form.Item
                         name={'city'}
                         rules={[
@@ -120,8 +130,9 @@ const Basic = () => {
                             },
                         ]}
                     >
-                        <Input placeholder="City" />
+                        <Input value={props.profile.city} placeholder="City" />
                     </Form.Item>
+
                     <Form.Item
                         name="mobile_phone"
                         rules={[{
@@ -130,9 +141,11 @@ const Basic = () => {
                             max: 80,
                         }]}
                     >
-                        <Input addonBefore={prefixSelector} style={{ width: '100%' }} placeholder="Phone Number" />
+                        <Input addonBefore={prefixSelector} style={{ width: '100%' }} value={props.profile.first_name} placeholder="Phone Number" />
                     </Form.Item>
+
                     <Form.Item>
+
                         <Button block type="primary" htmlType="submit">
                             Submit
                         </Button>
@@ -151,4 +164,20 @@ const Basic = () => {
     )
 }
 
-export default Basic;
+const mapStateToProps = (state) => {
+    return {
+        loading: state.user.loading,
+        profile: state.user.payload.profile,
+        // error: state.user.error
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        start: () => dispatch(actions.updateProfileStart()),
+        success: (new_profile) => dispatch(actions.updateProfileSuccess(new_profile)),
+        // fail: (error) => dispatch(actions.updateProfileFail(error)),
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Basic));

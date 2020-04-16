@@ -26,8 +26,10 @@ const CustomLayout = props => {
 
                     {
                         props.isAuthenticated ?
-                            <Menu.Item key="/logout/" onClick={props.logout}>
-                                Logout
+                            // heres a bug where on /security the menu item active class fades, 
+                            // same for my_profile/
+                            <Menu.Item key="/my_profile/basic/">
+                                <Link to="/my_profile/">My profile</Link>
                             </Menu.Item>
                             :
                             <Menu.Item key="/login/">
@@ -37,7 +39,9 @@ const CustomLayout = props => {
 
                     {
                         props.isAuthenticated ?
-                            null
+                            <Menu.Item key="/logout/" onClick={props.logout}>
+                                Logout
+                            </Menu.Item>
                             :
                             < Menu.Item key="/signup/">
                                 <Link to="/signup/">Sign up</Link>

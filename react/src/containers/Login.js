@@ -167,14 +167,14 @@ const Login = (props) => {
           notification.error({
             message: "Error",
             description: props.error[i],
-            duration: 0,
+            duration: 10,
           });
         }
       } else {
         notification.error({
           message: "Error",
           description: props.error,
-          duration: 0,
+          duration: 10,
         });
       }
     }

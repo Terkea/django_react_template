@@ -8,7 +8,6 @@ import { Row, Col, Typography, Menu, Button, Layout } from 'antd';
 import BasicSettings from './Settings/Basic';
 import SecuritySettings from './Settings/Security';
 
-import * as actions from '../../store/actions/user'; //this works like a namespace
 
 // destructure the props
 const { Title } = Typography;
@@ -40,12 +39,9 @@ const MyProfile = (props) => {
     const basicPATH = `${url}basic/`;
     const securityPATH = `${url}security/`
 
-    // if (!localStorage.getItem('token')) { // uncomment when login works
-    //     return <Redirect to='/' />
-    // }
-    // else {
-    //     // props.start() // this doesn't work yet
-    // }
+    if (props.isAuthenticated) {
+        return <Redirect to='/' />
+    }
 
     return (
         <>
@@ -84,8 +80,8 @@ const MyProfile = (props) => {
                             <Col xs={24} sm={24} md={17} lg={17} style={{ padding: '8px 40px', width: '100%' }} >
                                 <Switch>
                                     {/* <Route exact path="/" component={Login} /> */}
-                                    <Route exact path={`${basicPATH}`} component={BasicSettings} />
-                                    <Route exact path={`${securityPATH}`} component={SecuritySettings} />
+                                    <Route {...props} exact path={`${basicPATH}`} component={BasicSettings} />
+                                    <Route {...props} exact path={`${securityPATH}`} component={SecuritySettings} />
                                 </Switch>
                             </Col>
                         </Row>
@@ -96,20 +92,4 @@ const MyProfile = (props) => {
     );
 };
 
-
-const mapStateToProps = (state) => {
-    return {
-        loading: state.user.loading,
-        // error: state.user.error.update_profile
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        start: () => dispatch(actions.updateProfileStart()),
-        success: (new_profile) => dispatch(actions.updateProfileSuccess(new_profile)),
-        // fail: (error) => dispatch(actions.updateProfileFail(error)),
-    }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MyProfile));
+export default withRouter(connect(null, null)(MyProfile));

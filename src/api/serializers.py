@@ -6,11 +6,11 @@ from rest_auth.serializers import UserDetailsSerializer
 class UserSerializer(UserDetailsSerializer):
 
     # not required field
-    address = serializers.CharField(source="userprofile.address", allow_null=True, allow_blank=True, default=None)
-    city = serializers.CharField(source="userprofile.city", allow_null=True, allow_blank=True, default=None)
-    postcode = serializers.CharField(source="userprofile.postcode", allow_null=True, allow_blank=True, default=None)
-    mobile_phone = serializers.CharField(source="userprofile.mobile_phone", allow_null=True, allow_blank=True, default=None)
-    avatar = serializers.CharField(source="userprofile.avatar", allow_null=True, allow_blank=True, default=None)
+    address = serializers.CharField(source="userprofile.address", allow_null=True, allow_blank=True, default="")
+    city = serializers.CharField(source="userprofile.city", allow_null=True, allow_blank=True, default="")
+    postcode = serializers.CharField(source="userprofile.postcode", allow_null=True, allow_blank=True, default="")
+    mobile_phone = serializers.CharField(source="userprofile.mobile_phone", allow_null=True, allow_blank=True, default="")
+    avatar = serializers.CharField(source="userprofile.avatar", allow_null=True, allow_blank=True, default="")
 
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields = ('pk', 'email', 'first_name', 'last_name', 'address', 'city', 'postcode', 'mobile_phone', 'avatar', )
