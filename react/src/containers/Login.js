@@ -62,6 +62,7 @@ const Login = (props) => {
   const [autoCompleteResult, setAutoCompleteResult] = useState([]);
 
   const formTitle = (props.formTitle) ? props.formTitle : "Login";
+  const formSuccessTitle = (props.formSuccessTitle) ? props.formSuccessTitle : "Login Success";
 
 
   const onWebsiteChange = value => {
@@ -173,7 +174,7 @@ const Login = (props) => {
       ),
     },
     {
-      title: formTitle,
+      title: formSuccessTitle,
       icon: <SmileOutlined />,
       content: (
         <div align="middle">

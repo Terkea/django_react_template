@@ -23,7 +23,9 @@ const App = (props) => {
           {/* i read this is how you pass down props, but it causes a weird error on the console, I didn't look further into it but here you have it: */}
           {/* <Route exact path="/login/" render={(props) => <Login {...props}/>} /> */}
           <Route exact path='/login/' component={Login} />
-          <Route exact path='/signup/' render={() => <Login formTitle="Register" />} />
+          {/* Signup is the same page as success because due to this method of authentification registering is not required
+          but it will be implemented anyways as visitors may not know this */}
+          <Route exact path='/signup/' render={() => <Login formTitle="Register" formSuccessTitle="Register Success" />} />
 
           <Route path='/error/' component={Errors} />
 
