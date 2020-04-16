@@ -47,7 +47,15 @@ const styles = {
   }
 }
 
-
+const goBackButton = {
+  type: "danger",
+  htmlType: "submit",
+  style: {
+    marginLeft: '10px',
+    float: "right",
+    marginTop: "10px"
+  }
+}
 
 const Login = (props) => {
   const [current, setCurrent] = useState(0);
@@ -78,6 +86,7 @@ const Login = (props) => {
   const onFinishToken = values => {
     props.validateLoginCode(props.email, values.token);
   }
+
 
   const steps = [
     {
@@ -110,15 +119,24 @@ const Login = (props) => {
               />
             </AutoComplete>
           </Form.Item>
-          <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
-            Request token
+          <Row>
+            <Col sm={20} md={10}>
+              <Button type="primary" htmlType="submit" style={{ marginRight: '10px', marginTop: "10px" }}>
+                Request token
           </Button>
-        </Form>
+            </Col>
+            <Col sm={13} md={14}>
+              <Button {...goBackButton} onClick={() => { props.history.push('/') }}>
+                Go Back
+              </Button>
+            </Col>
+          </Row>
+        </Form >
       ),
     },
     {
       title: 'Token',
-      icon: (props.loading) ? ((props.error) ? <CloseCircleOutlined /> : <LoadingOutlined />) : (< FileDoneOutlined />),
+      icon: (props.error) ? <CloseCircleOutlined /> : ((props.loading) ? <LoadingOutlined /> : (< FileDoneOutlined />)),
       error: (props.error) ? "error" : "",
       content: (
         <Form
@@ -133,9 +151,21 @@ const Login = (props) => {
           >
             <Input placeholder="Token" maxLength={6} size={'large'} prefix={< ToolOutlined className="site-form-item-icon" />} />
           </Form.Item>
-          <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
-            Validate Token
+          <Row>
+            <Col sm={20} md={10}>
+              <Button type="primary" htmlType="submit" style={{ marginRight: '10px', marginTop: "10px" }}>
+                Request token
           </Button>
+            </Col>
+            <Col sm={13} md={14}>
+              <Button {...goBackButton} onClick={() => {
+                props.resetUserState();
+                setCurrent(0);
+              }}>
+                Go Back
+              </Button>
+            </Col>
+          </Row>
         </Form >
       ),
     },
@@ -145,10 +175,10 @@ const Login = (props) => {
       content: (
         <div align="middle">
           <Title level={4} style={{ marginBottom: '30px' }} >Welcome back, we'll redirect you to the homepage in one moment.</Title>
-          <Spin justify="center" align="middle" />
+          <LoadingOutlined style={{ fontSize: '3em' }} />
           {/* execute the following only if the current step is login, which is has 2 as index value */}
           {/* for some reason i cant get rid of the timeoutid */}
-          {current === 2 ? (setTimeout(() => props.history.push('/'), 3000)) : null}
+          <div style={{ display: "none" }}>{current === 2 ? setTimeout(() => props.history.push('/'), 3000) : null}</div>
         </div>
       ),
     },
@@ -220,6 +250,7 @@ const mapDispatchToProps = dispatch => {
     // add the email to the state till the token is send over the email provided
     sendLoginCode: (email) => dispatch(actions.authSendLoginCode(email)),
     validateLoginCode: (email, loginCode) => dispatch(actions.authValidateLogin(email, loginCode)),
+    resetUserState: () => dispatch(actions.authLogout()),
   }
 }
 

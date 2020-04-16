@@ -48,48 +48,57 @@ const MyProfile = (props) => {
             <Redirect to={basicPATH} /> {/*By Default Redirect to Basic Settings*/}
             <Row justify="center">
                 <Col xs={24} sm={20} md={24} lg={18}>
-
-                    <Content
-                        style={{
-                            paddingTop: 24,
-                            margin: 0,
-                            minHeight: 280,
-                            background: '#fff',
-                        }}
-                    >
-                        <Title justify="center" align="middle" style={styles.titleStyle}>My account</Title>
-                        <Row >
-                            <Col xs={24} md={6}>
-                                <Menu
-                                    style={{ width: '100%' }}
-                                    selectedKeys={[pathname]}
-                                    mode="inline"
-                                >
-                                    <Menu.Item style={styles.menuItem} key={basicPATH}>
-                                        <Link to={basicPATH}>
-                                            <div>Basic Settings</div>
-                                        </Link>
-                                    </Menu.Item>
-                                    <Menu.Item style={styles.menuItem} key={securityPATH}>
-                                        <Link to={securityPATH}>
-                                            <div>Security Settings</div>
-                                        </Link>
-                                    </Menu.Item>
-                                </Menu>
-                            </Col>
-                            <Col xs={24} sm={24} md={17} lg={17} style={{ padding: '8px 40px', width: '100%' }} >
-                                <Switch>
-                                    {/* <Route exact path="/" component={Login} /> */}
-                                    <Route {...props} exact path={`${basicPATH}`} component={BasicSettings} />
-                                    <Route {...props} exact path={`${securityPATH}`} component={SecuritySettings} />
-                                </Switch>
-                            </Col>
-                        </Row>
-                    </Content>
+                    {(props.profile) ?
+                        <Content
+                            style={{
+                                paddingTop: 24,
+                                margin: 0,
+                                minHeight: 280,
+                                background: '#fff',
+                            }}
+                        >
+                            <Title justify="center" align="middle" style={styles.titleStyle}>My account</Title>
+                            <Row >
+                                <Col xs={24} md={6}>
+                                    <Menu
+                                        style={{ width: '100%' }}
+                                        selectedKeys={[pathname]}
+                                        mode="inline"
+                                    >
+                                        <Menu.Item style={styles.menuItem} key={basicPATH}>
+                                            <Link to={basicPATH}>
+                                                <div>Basic Settings</div>
+                                            </Link>
+                                        </Menu.Item>
+                                        <Menu.Item style={styles.menuItem} key={securityPATH}>
+                                            <Link to={securityPATH}>
+                                                <div>Security Settings</div>
+                                            </Link>
+                                        </Menu.Item>
+                                    </Menu>
+                                </Col>
+                                <Col xs={24} sm={24} md={17} lg={17} style={{ padding: '8px 40px', width: '100%' }} >
+                                    <Switch>
+                                        {/* <Route exact path="/" component={Login} /> */}
+                                        <Route exact path={`${basicPATH}`} component={BasicSettings} />
+                                        <Route exact path={`${securityPATH}`} component={SecuritySettings} />
+                                    </Switch>
+                                </Col>
+                            </Row>
+                        </Content>
+                        : null}
                 </Col>
             </Row>
         </>
     );
 };
 
-export default withRouter(connect(null, null)(MyProfile));
+const mapStateToProps = (state) => {
+    return {
+        loading: state.user.loading,
+        profile: state.user.payload.profile,
+        // error: state.user.error
+    }
+}
+
+export default withRouter(connect(mapStateToProps, null)(MyProfile));

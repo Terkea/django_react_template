@@ -43,9 +43,13 @@ export const authValidateLogin = (email, loginCode) => dispatch => {
         dispatch(getProfile(res.data.token))
         dispatch(checkAuthTimeout(SESSION_TIMEOUT));
     }).catch(err => {
-        // Axios catch error returns javascript error not server response
-        // The server does not reply to wrong tokens 
-        dispatch(authFail(err.response.data.token))
+        // Axios catch error returns javascript error or bad server response
+        // The server replies to wrong tokens with a response saying what the problem is
+        if (err.response) {
+            dispatch(authFail(err.response.data.token))
+        } else {
+            dispatch(authFail("Network Error"))
+        }
     });
 }
 
@@ -58,9 +62,8 @@ export const authSendLoginCode = email => dispatch => {
             dispatch(authLoginCodeSentSuccess());
         })
         .catch(err => {
-            // Axios catch error returns javascript error not server response
+            // Axios catch error returns javascript error or bad server response
             dispatch(authFail(err.message));
-            dispatch(authLogout());
         })
 }
 
@@ -145,7 +148,7 @@ export const getProfile = token => dispatch => {
             dispatch(authSuccess(token, res.data));
         })
         .catch(err => {
-            // Axios catch error returns javascript error not server response
+            // Axios catch error returns javascript error or bad server response
             // dispatch(authFail(err));
             authFail(err.message)
             dispatch(authLogout());

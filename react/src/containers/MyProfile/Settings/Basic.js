@@ -50,7 +50,7 @@ const Basic = (props) => {
         props.updateProfile(localStorage.getItem('token'), values)
     };
 
-    
+
 
     return (
         // for some reason if u access this page by the url it complains about null field values
@@ -72,7 +72,7 @@ const Basic = (props) => {
                             },
                         ]}
                     >
-                        
+
                         <Input disabled defaultValue={props.profile.email} placeholder="Email" />
                     </Form.Item>
 
