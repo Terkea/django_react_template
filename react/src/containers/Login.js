@@ -154,7 +154,7 @@ const Login = (props) => {
           <Row>
             <Col sm={20} md={10}>
               <Button type="primary" htmlType="submit" style={{ marginRight: '10px', marginTop: "10px" }}>
-                Request token
+                Validate token
           </Button>
             </Col>
             <Col sm={13} md={14}>
