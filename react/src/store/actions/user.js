@@ -193,7 +193,8 @@ export const updateProfile = (token, profile) => dispatch => {
             dispatch(getProfile(token))
         })
         .catch(err => {
-            console.log('failed updating', err)
-            dispatch(updateProfileFail(err.response.data))
+            // console.log('failed updating', err.message)
+            dispatch(updateProfileFail(err.message))    //this works
+            // dispatch(updateProfileFail(err.response.data))
         })
 }

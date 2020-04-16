@@ -29,7 +29,7 @@ const CustomLayout = props => {
                             // heres a bug where on /security the menu item active class fades, 
                             // same for my_profile/
                             <Menu.Item key="/my_profile/basic/">
-                                <Link to="/my_profile/">My profile</Link>
+                                <Link to="/my_profile/">My Profile</Link>
                             </Menu.Item>
                             :
                             <Menu.Item key="/login/">
