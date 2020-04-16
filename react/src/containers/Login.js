@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Modal, notification, Spin, Row, Col, Typography, Alert, Steps, message, AutoComplete } from 'antd';
+import { Form, Input, Button, notification, Row, Col, Typography, Steps, AutoComplete } from 'antd';
 import {
   LoadingOutlined,
   UserOutlined,
-  LockOutlined,
   RocketOutlined,
   MailOutlined,
   ToolOutlined,
-  SolutionOutlined,
   SmileOutlined,
   FileDoneOutlined,
   CloseCircleOutlined
 } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
-import { NavLink, withRouter, Redirect } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import * as actions from '../store/actions/user'; //this works like a namespace
 
 

@@ -156,15 +156,16 @@ CSRF_COOKIE_NAME = "csrftoken"
 
 # This will avoid the need for an SMTP server as e-mails will be printed to the console. 
 # For more information, please refer to:
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # SMTP SETTINGS
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'dev.terkea@gmail.com'
-EMAIL_HOST_PASSWORD = 'Parola1@3'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 
 
 # REST_AUTH_SERIALIZERS = {'LOGIN_SERIALIZER': 'api.serializers.LoginSerializer'}

@@ -36,15 +36,16 @@ export const authValidateLogin = (email, loginCode) => dispatch => {
         email: email,
         token: loginCode
     }).then(res => {
+        const token = res.data.token;
+        const expirationDate = new Date(new Date().getTime() + SESSION_TIMEOUT);
+        localStorage.setItem('token', token);
+        localStorage.setItem('expirationDate', expirationDate);
         dispatch(getProfile(res.data.token))
-        dispatch(authSuccess)
-        console.log("RES HERE MOTHERFUCKER")
-        console.log(res.data.token)
+        dispatch(checkAuthTimeout(SESSION_TIMEOUT));
     }).catch(err => {
         // Axios catch error returns javascript error not server response
         // The server does not reply to wrong tokens 
-        dispatch(authFail(err.response.data.token))
-        dispatch(authLogout());
+        dispatch(authFail(err.response.data))
     });
 }
 
@@ -63,7 +64,7 @@ export const authSendLoginCode = email => dispatch => {
         })
 }
 
-export const authLoginCodeSentSuccess = (error) => {
+export const authLoginCodeSentSuccess = () => {
     return {
         type: actionTypes.AUTH_LOGIN_CODE_SENT_SUCCESS,
         loading: false,
@@ -137,6 +138,7 @@ export const authLogout = () => {
     };
 }
 
+
 // verify the integrity of the token
 export const getProfile = token => dispatch => {
     axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
@@ -148,11 +150,9 @@ export const getProfile = token => dispatch => {
             // Axios catch error returns javascript error not server response
             // dispatch(authFail(err));
             authFail(err.message)
-            // what is this by the way? old : Object.keys(err.response.data).map((key) => err.response.data[key])
             dispatch(authLogout());
         })
 }
-
 
 
 /**
