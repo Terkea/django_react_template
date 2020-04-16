@@ -2,7 +2,7 @@ import axiosInstance from '../../axiosConfig';
 import * as actionTypes from './actionTypes';
 
 // one year
-const SESSION_TIMEOUT = 3600 * 24 * 365; 
+const SESSION_TIMEOUT = 3600 * 24 * 365;
 
 
 export const authStart = (email) => {
@@ -98,12 +98,10 @@ export const updateProfileStart = () => {
     }
 }
 
-export const updateProfileSuccess = (profile) => {
+export const updateProfileSuccess = () => {
     return {
         type: actionTypes.UPDATE_PROFILE_SUCCESS,
-        payload: {
-            profile: profile
-        }
+        loading: false,
     }
 }
 
@@ -111,16 +109,16 @@ export const updateProfileFail = (error) => {
     return {
         type: actionTypes.UPDATE_PROFILE_FAIL,
         loading: false,
-        error: error,
+        error: error
     }
 }
 
-export const checkAuthTimeout = (expirationTime) => {
-    return dispatch => {
-        setTimeout(() => {
-            dispatch(authLogout());
-        }, expirationTime * 1000)
-    }
+// this doesnt make any sense
+export const checkAuthTimeout = (expirationTime) => dispatch => {
+    setTimeout(() => {
+        dispatch(authLogout());
+    }, expirationTime * 1000)
+
 }
 
 export const authLogout = () => {
@@ -176,4 +174,23 @@ export const authCheckState = () => dispatch => {
             dispatch(checkAuthTimeout(SESSION_TIMEOUT));
         }
     }
+}
+
+
+// theres a lot of work left to be done in here 
+// but since you can only test it by accessing home 
+// and navigating to my profile
+// i ll try fixing that first
+export const updateProfile = (token, profile) => dispatch => {
+    dispatch(updateProfileStart())
+    axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
+    axiosInstance.put('/rest-auth/user/', profile)
+        .then(res => {
+            dispatch(updateProfileSuccess())
+            dispatch(getProfile(token))
+        })
+        .catch(err => {
+            console.log('failed updating', err)
+            dispatch(updateProfileFail(err.response.data))
+        })
 }

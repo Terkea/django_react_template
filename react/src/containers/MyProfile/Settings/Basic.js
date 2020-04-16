@@ -47,8 +47,10 @@ const Basic = (props) => {
     }
 
     const onFinish = values => {
-        console.log({ "profile": values });
+        props.updateProfile(localStorage.getItem('token'), values)
     };
+
+    
 
     return (
         // for some reason if u access this page by the url it complains about null field values
@@ -70,7 +72,8 @@ const Basic = (props) => {
                             },
                         ]}
                     >
-                        <Input disabled value={props.profile.email} placeholder="Email" />
+                        
+                        <Input disabled defaultValue={props.profile.email} placeholder="Email" />
                     </Form.Item>
 
                     <Form.Item
@@ -82,7 +85,7 @@ const Basic = (props) => {
                             },
                         ]}
                     >
-                        <Input value={props.profile.first_name} placeholder="First Name" />
+                        <Input defaultValue={props.profile.first_name} placeholder="First Name" />
                     </Form.Item>
 
                     <Form.Item
@@ -94,7 +97,7 @@ const Basic = (props) => {
                             },
                         ]}
                     >
-                        <Input value={props.profile.last_name} placeholder="Last Name" />
+                        <Input defaultValue={props.profile.last_name} placeholder="Last Name" />
                     </Form.Item>
 
                     <Form.Item
@@ -106,7 +109,7 @@ const Basic = (props) => {
                             },
                         ]}
                     >
-                        <Input value={props.profile.address} placeholder="Address" />
+                        <Input defaultValue={props.profile.address} placeholder="Address" />
                     </Form.Item>
 
                     <Form.Item
@@ -118,7 +121,7 @@ const Basic = (props) => {
                             },
                         ]}
                     >
-                        <Input value={props.profile.postcode} placeholder="Post Code" />
+                        <Input defaultValue={props.profile.postcode} placeholder="Post Code" />
                     </Form.Item>
 
                     <Form.Item
@@ -130,7 +133,7 @@ const Basic = (props) => {
                             },
                         ]}
                     >
-                        <Input value={props.profile.city} placeholder="City" />
+                        <Input defaultValue={props.profile.city} placeholder="City" />
                     </Form.Item>
 
                     <Form.Item
@@ -141,7 +144,7 @@ const Basic = (props) => {
                             max: 80,
                         }]}
                     >
-                        <Input addonBefore={prefixSelector} style={{ width: '100%' }} value={props.profile.first_name} placeholder="Phone Number" />
+                        <Input addonBefore={prefixSelector} style={{ width: '100%' }} defaultValue={props.profile.first_name} placeholder="Phone Number" />
                     </Form.Item>
 
                     <Form.Item>
@@ -174,9 +177,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        start: () => dispatch(actions.updateProfileStart()),
         success: (new_profile) => dispatch(actions.updateProfileSuccess(new_profile)),
-        // fail: (error) => dispatch(actions.updateProfileFail(error)),
+        updateProfile: (token, profile) => dispatch(actions.updateProfile(token, profile))
     }
 }
 
