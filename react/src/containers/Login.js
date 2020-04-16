@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, notification, Row, Col, Typography, Steps, AutoComplete } from 'antd';
+import { Form, Input, Button, notification, Row, Col, Typography, Steps, AutoComplete, Spin } from 'antd';
 import {
   LoadingOutlined,
   UserOutlined,
@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import * as actions from '../store/actions/user'; //this works like a namespace
 
 
@@ -50,7 +50,7 @@ const styles = {
 
 
 const Login = (props) => {
-
+  const [current, setCurrent] = useState(0);
   const [autoCompleteResult, setAutoCompleteResult] = useState([]);
 
   const onWebsiteChange = value => {
@@ -76,9 +76,8 @@ const Login = (props) => {
   }
 
   const onFinishToken = values => {
-    props.validateLoginCode(props.email, values.token)
+    props.validateLoginCode(props.email, values.token);
   }
-
 
   const steps = [
     {
@@ -120,14 +119,14 @@ const Login = (props) => {
     {
       title: 'Token',
       icon: (props.loading) ? ((props.error) ? <CloseCircleOutlined /> : <LoadingOutlined />) : (< FileDoneOutlined />),
-      error: (props.error) ? "error" : "",  //  TODO this doesn't rerender,""
+      error: (props.error) ? "error" : "",
       content: (
         <Form
           form={token_form}
           onFinish={onFinishToken}
           name="token"
         >
-          <Text level={5}>Check your inbox, the token we sent will run out of time in 15 minutes.</Text>
+          <Text align="middle" level={5}>Check your inbox, the token we sent will run out of time in 15 minutes.</Text>
           <Form.Item
             name="token"
             rules={[{ required: true, message: 'Please input your token!', whitespace: true }]}
@@ -143,10 +142,24 @@ const Login = (props) => {
     {
       title: 'Login',
       icon: <SmileOutlined />,
-      content: 'Last-content',
+      content: (
+        <div align="middle">
+          <Title level={4} style={{ marginBottom: '30px' }} >Welcome back, we'll redirect you to the homepage in one moment.</Title>
+          <Spin justify="center" align="middle" />
+          {/* execute the following only if the current step is login, which is has 2 as index value */}
+          {/* for some reason i cant get rid of the timeoutid */}
+          {current === 2 ? (setTimeout(() => props.history.push('/'), 3000)) : null}
+        </div>
+      ),
     },
   ];
+
   useEffect(() => {
+    // if theres a token go to the login step
+    if (localStorage.getItem('token')) {
+      setCurrent(2)
+    }
+
     if (props.error) {
       if (Array.isArray(props.error)) {
         let i;
@@ -167,7 +180,8 @@ const Login = (props) => {
     }
   })
 
-  const [current, setCurrent] = useState(0);
+
+
   return (
     <div style={styles.svgBackground}>
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
@@ -182,6 +196,7 @@ const Login = (props) => {
               ))}
             </Steps>
             {/* incase theres no error and the token is valid, pass */}
+            {/* {current == 2 && localStorage.getItem('token') ? setCurrent(3) : null} */}
             {/* make the steps more dynamic https://ant.design/components/steps/ */}
             <div className="steps-content" style={{ marginTop: '30px' }}>{steps[current].content}</div>
           </div>
@@ -196,7 +211,7 @@ const mapStateToProps = (state) => {
   return {
     loading: state.user.loading,
     error: state.user.error,
-    email: state.user.payload.email
+    email: state.user.payload.email,
   }
 }
 

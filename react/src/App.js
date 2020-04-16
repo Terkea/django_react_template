@@ -14,9 +14,9 @@ import Errors from './containers/Errors/Error';
 const App = (props) => {
 
   // disabled for now
-  // useEffect(() => {
-  //   props.autologin();
-  // })
+  useEffect(() => {
+    props.autologin();
+  })
 
   return (
     <div>
@@ -24,8 +24,8 @@ const App = (props) => {
         <Switch>
           {/* i read this is how you pass down props, but it causes a weird error on the console, I didn't look further into it but here you have it: */}
           {/* <Route exact path="/login/" render={(props) => <Login {...props}/>} /> */}
-          <Route exact path='/login/' component={Login} />
-          <Route exact path='/signup/' component={Signup} />
+          <Route {...props} exact path='/login/' component={Login} />
+          <Route {...props} exact path='/signup/' component={Signup} />
 
           <Route path='/error/' component={Errors} />
 

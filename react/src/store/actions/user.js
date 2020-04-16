@@ -45,7 +45,7 @@ export const authValidateLogin = (email, loginCode) => dispatch => {
     }).catch(err => {
         // Axios catch error returns javascript error not server response
         // The server does not reply to wrong tokens 
-        dispatch(authFail(err.response.data))
+        dispatch(authFail(err.response.data.token))
     });
 }
 
