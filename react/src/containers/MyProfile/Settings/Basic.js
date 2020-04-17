@@ -58,15 +58,7 @@ const Basic = (props) => {
         props.updateProfile(localStorage.getItem('token'), values)
     };
 
-
-
     return (
-        // for some reason if u access this page by the url it complains about null field values
-        // but if u go to home then navigate here everything seems to work all right
-        // i blame you for this bug
-        // i've spend hours trying to debug
-        // jokes aside, i believe it has something to do with the way were passing down the props
-        // if u get rid of the props when initializing the component it crashes, same for mapStateToProps
         <Row>
             <Col xs={24} sm={24} md={15} lg={12}>
                 {/* <Skeleton.Item active loading={props.loading}> */}
@@ -160,7 +152,8 @@ const Basic = (props) => {
                         <Input addonBefore={prefixSelector} style={{ width: '100%' }} defaultValue={props.profile.mobile_phone} placeholder="Phone Number" />
                     </Form.Item>
 
-                    <Form.Item label="Upload Avatar">
+                    {/* disabled for now since we're not using it */}
+                    {/* <Form.Item label="Upload Avatar">
                         <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
                             <Upload.Dragger name="files" action="/upload.do">
                                 <p className="ant-upload-drag-icon">
@@ -169,7 +162,7 @@ const Basic = (props) => {
                                 <p className="ant-upload-text">Click or drag file to this area to upload</p>
                             </Upload.Dragger>
                         </Form.Item>
-                    </Form.Item>
+                    </Form.Item> */}
 
                     <Form.Item>
 
@@ -201,7 +194,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        success: (new_profile) => dispatch(actions.updateProfileSuccess(new_profile)),
+        // success: (new_profile) => dispatch(actions.updateProfileSuccess(new_profile)),
         updateProfile: (token, profile) => dispatch(actions.updateProfile(token, profile))
     }
 }

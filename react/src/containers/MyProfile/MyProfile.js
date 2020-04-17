@@ -70,11 +70,12 @@ const MyProfile = (props) => {
                                                 <div>Basic Settings</div>
                                             </Link>
                                         </Menu.Item>
-                                        <Menu.Item style={styles.menuItem} key={securityPATH}>
+                                        {/* disabled for now */}
+                                        {/* <Menu.Item style={styles.menuItem} key={securityPATH}>
                                             <Link to={securityPATH}>
                                                 <div>Security Settings</div>
                                             </Link>
-                                        </Menu.Item>
+                                        </Menu.Item> */}
                                     </Menu>
                                 </Col>
                                 <Col xs={24} sm={24} md={17} lg={17} style={{ padding: '8px 40px', width: '100%' }} >

@@ -101,10 +101,13 @@ export const updateProfileStart = () => {
     }
 }
 
-export const updateProfileSuccess = () => {
+export const updateProfileSuccess = (new_profile) => {
     return {
         type: actionTypes.UPDATE_PROFILE_SUCCESS,
         loading: false,
+        payload: {
+            profile: new_profile
+        }
     }
 }
 
@@ -185,16 +188,17 @@ export const authCheckState = () => dispatch => {
 // and navigating to my profile
 // i ll try fixing that first
 export const updateProfile = (token, profile) => dispatch => {
-    dispatch(updateProfileStart())
+    dispatch(updateProfileStart());
     axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
     axiosInstance.put('/rest-auth/user/', profile)
         .then(res => {
-            dispatch(updateProfileSuccess())
-            dispatch(getProfile(token))
+            dispatch(updateProfileSuccess(res.data))
+            // dispatch(getProfile(token))
         })
         .catch(err => {
+            console.log('wtf', err)
             // console.log('failed updating', err.message)
-            dispatch(updateProfileFail(err.message))    //this works
+            dispatch(updateProfileFail(err))    //this works
             // dispatch(updateProfileFail(err.response.data))
         })
 }

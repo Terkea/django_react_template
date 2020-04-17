@@ -48,7 +48,7 @@ const styles = {
 }
 
 const goBackButton = {
-  type: "danger",
+
   htmlType: "submit",
   style: {
     marginLeft: '10px',
