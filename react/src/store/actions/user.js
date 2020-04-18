@@ -144,6 +144,13 @@ export const checkAuthTimeout = (expirationTime) => dispatch => {
 }
 
 export const authLogout = () => {
+    // delete the token from db
+    axiosInstance.post('/rest-auth/logout/', {
+        token: localStorage.getItem('token')
+    })
+        .then(res => null)
+        .catch(err => null)
+    
     if (localStorage.getItem('token')) { localStorage.removeItem('token') };
     if (localStorage.getItem('expirationDate')) { localStorage.removeItem('expirationDate') };
     return {

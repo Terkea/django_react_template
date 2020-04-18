@@ -41,8 +41,6 @@ export const runNotifications = (notificationMessage, outcome) => {
     }
     if (Array.isArray(notificationMessage)) {
         for (let i in notificationMessage) {
-            console.log("notificationMessage")
-            console.log(notificationMessage[i])
             showNotification({ ...notificationProps, description: notificationMessage[i] }, notificationMessage[i]);
         }
     } else {
