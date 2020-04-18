@@ -143,18 +143,11 @@ export const checkAuthTimeout = (expirationTime) => dispatch => {
 
 }
 
-export const authLogout = () => {
-    // delete the token from db
-    axiosInstance.post('/rest-auth/logout/', {
-        token: localStorage.getItem('token')
-    })
-        .then(res => null)
-        .catch(err => null)
-    
+export const authReset = () => {
     if (localStorage.getItem('token')) { localStorage.removeItem('token') };
     if (localStorage.getItem('expirationDate')) { localStorage.removeItem('expirationDate') };
     return {
-        type: actionTypes.AUTH_LOGOUT,
+        type: actionTypes.AUTH_RESET,
         loading: null,
         error: null,
         payload: {
@@ -163,6 +156,18 @@ export const authLogout = () => {
             email: null
         },
     };
+}
+
+export const authLogout = () => dispatch => {
+    if (localStorage.getItem('token')) {
+        // delete the token from db
+        axiosInstance.post('/rest-auth/logout/', {
+            token: localStorage.getItem('token')
+        })
+            .then(res => null)
+            .catch(err => null)
+    }
+    dispatch(authReset());
 }
 
 // verify the integrity of the token

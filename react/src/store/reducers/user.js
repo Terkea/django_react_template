@@ -46,7 +46,7 @@ const authFail = (state, action) => {
     });
 }
 
-const authLogout = (state, action) => {
+const authReset = (state, action) => {
     return updateObject(state, {
         loading: action.loading,
         error: action.error,
@@ -86,7 +86,7 @@ const handlers = {
     [actionTypes.AUTH_LOGIN_CODE_SENT_SUCCESS]: authLoginCodeSentSuccess,
     [actionTypes.AUTH_SUCCESS]: authSuccess,
     [actionTypes.AUTH_FAIL]: authFail,
-    [actionTypes.AUTH_LOGOUT]: authLogout,
+    [actionTypes.AUTH_RESET]: authReset,
 
     [actionTypes.UPDATE_PROFILE_START]: updateProfileStart,
     [actionTypes.UPDATE_PROFILE_SUCCESS]: updateProfileSuccess,

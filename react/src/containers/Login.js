@@ -228,7 +228,7 @@ const mapDispatchToProps = dispatch => { //
   return {
     sendLoginCode: (email, callback) => dispatch(actions.authSendLoginCode(email, callback)),
     validateLoginCode: (email, loginCode, callback) => dispatch(actions.authValidateLogin(email, loginCode, callback)),
-    resetUserState: () => dispatch(actions.authLogout()),
+    resetUserState: () => dispatch(actions.authReset()),
   }
 }
 
