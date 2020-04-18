@@ -1,6 +1,5 @@
 import * as actionTypes from './actionTypes';
 
-
 export const addModal = (id) => {
     return {
         type: actionTypes.ADD_MODAL,

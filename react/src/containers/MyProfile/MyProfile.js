@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom'
-
 import { Switch, Route, Link, useLocation } from 'react-router-dom';
 import { Row, Col, Typography, Menu, Button, Layout } from 'antd';
 
 import BasicSettings from './Settings/Basic';
 import SecuritySettings from './Settings/Security';
 
-
-// destructure the props
 const { Title } = Typography;
 const { Content } = Layout;
 
@@ -80,7 +77,6 @@ const MyProfile = (props) => {
                                 </Col>
                                 <Col xs={24} sm={24} md={17} lg={17} style={{ padding: '8px 40px', width: '100%' }} >
                                     <Switch>
-                                        {/* <Route exact path="/" component={Login} /> */}
                                         <Route exact path={`${basicPATH}`} component={BasicSettings} />
                                         <Route exact path={`${securityPATH}`} component={SecuritySettings} />
                                     </Switch>
@@ -98,7 +94,6 @@ const mapStateToProps = (state) => {
     return {
         loading: state.user.loading,
         profile: state.user.payload.profile,
-        // error: state.user.error
     }
 }
 

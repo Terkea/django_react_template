@@ -19,15 +19,11 @@ const CustomLayout = props => {
                     selectedKeys={[pathname]}
                     style={{ lineHeight: '64px' }}
                 >
-
                     <Menu.Item key="/">
                         <Link to="/">Home</Link>
                     </Menu.Item>
-
                     {
                         props.isAuthenticated ?
-                            // heres a bug where on /security the menu item active class fades, 
-                            // same for my_profile/
                             <Menu.Item key="/my_profile/basic/">
                                 <Link to="/my_profile/">My Profile</Link>
                             </Menu.Item>
@@ -36,7 +32,6 @@ const CustomLayout = props => {
                                 <Link to="/login/">Login</Link>
                             </Menu.Item>
                     }
-
                     {
                         props.isAuthenticated ?
                             <Menu.Item key="/logout/" onClick={props.logout}>
@@ -47,7 +42,6 @@ const CustomLayout = props => {
                                 <Link to="/signup/">Sign up</Link>
                             </Menu.Item>
                     }
-
                 </Menu>
             </Header>
             <Content style={{ padding: '0 50px' }}>
@@ -61,7 +55,6 @@ const CustomLayout = props => {
         </Layout>
     );
 }
-
 
 const mapDispatchToProps = dispatch => {
     return {

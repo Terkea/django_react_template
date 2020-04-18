@@ -1,19 +1,18 @@
 import axiosInstance from '../../axiosConfig';
 import * as actionTypes from './actionTypes';
 
-// one year
 const SESSION_TIMEOUT = 3600 * 24 * 365;
-
 
 export const authStart = (email) => {
     return {
         type: actionTypes.AUTH_START,
+        error: null,
         payload: {
             token: null,
             profile: null,
             email: email
         },
-        loading: true
+        loading: true,
     }
 }
 
@@ -29,13 +28,13 @@ export const authStart = (email) => {
 * we'll have to decompose it and build an array out of that
 * before pasing it to the view where it has to be rendered
 */
-export const authValidateLogin = (email, loginCode) => dispatch => {
-    // shows loading again
+export const authValidateLogin = (email, loginCode, notificationCallback = (message, outcome) => { }) => dispatch => {
     dispatch(authStart(email));
     axiosInstance.post('passwordless/auth/token/', {
         email: email,
         token: loginCode
     }).then(res => {
+        notificationCallback("You have successfully logged in!", "SUCCESS")
         const token = res.data.token;
         const expirationDate = new Date(new Date().getTime() + SESSION_TIMEOUT);
         localStorage.setItem('token', token);
@@ -46,24 +45,28 @@ export const authValidateLogin = (email, loginCode) => dispatch => {
         // Axios catch error returns javascript error or bad server response
         // The server replies to wrong tokens with a response saying what the problem is
         if (err.response) {
+            notificationCallback(err.response.data.token, "ERROR")
             dispatch(authFail(err.response.data.token))
         } else {
-            dispatch(authFail("Network Error"))
+            notificationCallback(err.message, "ERROR")
+            dispatch(authFail([err.message]))
         }
     });
 }
 
-export const authSendLoginCode = email => dispatch => {
+export const authSendLoginCode = (email, notificationCallback = (message, outcome) => { }) => dispatch => {
     dispatch(authStart(email));
     axiosInstance.post('passwordless/auth/email/', {
         email: email
     })
         .then(res => {
+            notificationCallback("The code was sent to your email.", "SUCCESS")
             dispatch(authLoginCodeSentSuccess());
         })
         .catch(err => {
             // Axios catch error returns javascript error or bad server response
-            dispatch(authFail(err.message));
+            notificationCallback(err.message, "ERROR")
+            dispatch(authFail([err.message]));
         })
 }
 
@@ -94,6 +97,20 @@ export const authFail = (error) => {
     }
 }
 
+export const updateProfile = (token, profile, notificationCallback = (message, outcome) => { }) => dispatch => {
+    dispatch(updateProfileStart());
+    axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
+    axiosInstance.put('/rest-auth/user/', profile)
+        .then(res => {
+            dispatch(updateProfileSuccess(res.data))
+            notificationCallback("Profile Updated Successfully", "SUCCESS");
+        })
+        .catch(err => {
+            notificationCallback(err.message, "ERROR");
+            dispatch(updateProfileFail(err))
+        })
+}
+
 export const updateProfileStart = () => {
     return {
         type: actionTypes.UPDATE_PROFILE_START,
@@ -111,7 +128,7 @@ export const updateProfileSuccess = (new_profile) => {
     }
 }
 
-export const updateProfileFail = (error) => {
+export const updateProfileFail = (error, ) => {
     return {
         type: actionTypes.UPDATE_PROFILE_FAIL,
         loading: false,
@@ -119,7 +136,6 @@ export const updateProfileFail = (error) => {
     }
 }
 
-// this doesnt make any sense
 export const checkAuthTimeout = (expirationTime) => dispatch => {
     setTimeout(() => {
         dispatch(authLogout());
@@ -142,7 +158,6 @@ export const authLogout = () => {
     };
 }
 
-
 // verify the integrity of the token
 export const getProfile = token => dispatch => {
     axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
@@ -152,7 +167,6 @@ export const getProfile = token => dispatch => {
         })
         .catch(err => {
             // Axios catch error returns javascript error or bad server response
-            // dispatch(authFail(err));
             authFail(err.message)
             dispatch(authLogout());
         })
@@ -180,25 +194,4 @@ export const authCheckState = () => dispatch => {
             dispatch(checkAuthTimeout(SESSION_TIMEOUT));
         }
     }
-}
-
-
-// theres a lot of work left to be done in here 
-// but since you can only test it by accessing home 
-// and navigating to my profile
-// i ll try fixing that first
-export const updateProfile = (token, profile) => dispatch => {
-    dispatch(updateProfileStart());
-    axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
-    axiosInstance.put('/rest-auth/user/', profile)
-        .then(res => {
-            dispatch(updateProfileSuccess(res.data))
-            // dispatch(getProfile(token))
-        })
-        .catch(err => {
-            console.log('wtf', err)
-            // console.log('failed updating', err.message)
-            dispatch(updateProfileFail(err))    //this works
-            // dispatch(updateProfileFail(err.response.data))
-        })
 }

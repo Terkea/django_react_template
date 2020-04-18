@@ -1,7 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
 
-
 const addModal = (state, action) => {
     const modalArray = [...state.Modal,
     {
@@ -9,7 +8,7 @@ const addModal = (state, action) => {
         visible: false
 
     }]
-    return { Modal: modalArray }
+    return updateObject(state, { Modal: modalArray })
 }
 
 const deleteModal = (state, action) => {
@@ -17,7 +16,7 @@ const deleteModal = (state, action) => {
         const { id, visible } = modal;
         return (id !== action.id) ? true : false;
     });
-    return { Modal: modalArray }
+    return updateObject(state, { Modal: modalArray })
 }
 
 const updateVisibility = (state, action) => {
@@ -32,7 +31,7 @@ const updateVisibility = (state, action) => {
             return Modal;
         }
     })
-    return { Modal: modalArray }
+    return updateObject(state, { Modal: modalArray })
 }
 
 const handlers = {
@@ -41,7 +40,7 @@ const handlers = {
     [actionTypes.UPDATE_VISIBILITY]: updateVisibility,
 }
 
-const reducer = (state = { Modal: [] }, action) =>
+const reducer = (state = { Modal: [], Notification: [] }, action) =>
     handlers[action.type] ? handlers[action.type](state, action) : state
 
 export default reducer;

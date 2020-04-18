@@ -5,9 +5,10 @@ import { UserOutlined, UploadOutlined, InboxOutlined } from '@ant-design/icons';
 
 
 import { connect } from 'react-redux';
-import { withRouter, Redirect } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom';
+import { runNotifications } from '../../../Helpers/notificationHelpers';
 
-import * as actions from '../../../store/actions/user'; //this works like a namespace
+import * as actions from '../../../store/actions/user';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -48,23 +49,18 @@ const normFile = e => {
 };
 
 const Basic = (props) => {
-    // console.log(props)
-    // console.log(props.profile)
     if (props.isAuthenticated) {
         return <Redirect to='/' />
     }
 
     const onFinish = values => {
-        props.updateProfile(localStorage.getItem('token'), values)
+        props.updateProfile(localStorage.getItem('token'), values, runNotifications)
     };
 
     return (
         <Row>
             <Col xs={24} sm={24} md={15} lg={12}>
-                {/* <Skeleton.Item active loading={props.loading}> */}
-                {/* would like to try to implement skeleton later, it doesn't work now for some reason */}
                 <Title level={4} >Basic settings</Title>
-                {/* </Skeleton.Item> */}
                 <Form {...layout} layout="vertical" name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
                     <Form.Item
                         name={'email'}
@@ -75,11 +71,8 @@ const Basic = (props) => {
                             },
                         ]}
                     >
-                        {/* <Skeleton.Input active loading={props.loading}> */}
                         <Input disabled defaultValue={props.profile.email} placeholder="Email" />
-                        {/* </Skeleton.Input> */}
                     </Form.Item>
-
                     <Form.Item
                         name={'first_name'}
                         rules={[
@@ -91,7 +84,6 @@ const Basic = (props) => {
                     >
                         <Input defaultValue={props.profile.first_name} placeholder="First Name" />
                     </Form.Item>
-
                     <Form.Item
                         name={'last_name'}
                         rules={[
@@ -103,7 +95,6 @@ const Basic = (props) => {
                     >
                         <Input defaultValue={props.profile.last_name} placeholder="Last Name" />
                     </Form.Item>
-
                     <Form.Item
                         name={'address'}
                         rules={[
@@ -115,7 +106,6 @@ const Basic = (props) => {
                     >
                         <Input defaultValue={props.profile.address} placeholder="Address" />
                     </Form.Item>
-
                     <Form.Item
                         name={'postcode'}
                         rules={[
@@ -127,7 +117,6 @@ const Basic = (props) => {
                     >
                         <Input defaultValue={props.profile.postcode} placeholder="Post Code" />
                     </Form.Item>
-
                     <Form.Item
                         name={'city'}
                         rules={[
@@ -139,7 +128,6 @@ const Basic = (props) => {
                     >
                         <Input defaultValue={props.profile.city} placeholder="City" />
                     </Form.Item>
-
                     <Form.Item
                         name="mobile_phone"
                         rules={[
@@ -151,7 +139,6 @@ const Basic = (props) => {
                     >
                         <Input addonBefore={prefixSelector} style={{ width: '100%' }} defaultValue={props.profile.mobile_phone} placeholder="Phone Number" />
                     </Form.Item>
-
                     {/* disabled for now since we're not using it */}
                     {/* <Form.Item label="Upload Avatar">
                         <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
@@ -163,16 +150,13 @@ const Basic = (props) => {
                             </Upload.Dragger>
                         </Form.Item>
                     </Form.Item> */}
-
                     <Form.Item>
-
                         <Button block type="primary" htmlType="submit">
                             Submit
                         </Button>
                     </Form.Item>
                 </Form>
             </Col>
-
             <Col xs={10} md={4}>
                 <Avatar shape="square" style={{
                     display: "flex",
@@ -188,14 +172,12 @@ const mapStateToProps = (state) => {
     return {
         loading: state.user.loading,
         profile: state.user.payload.profile,
-        // error: state.user.error
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        // success: (new_profile) => dispatch(actions.updateProfileSuccess(new_profile)),
-        updateProfile: (token, profile) => dispatch(actions.updateProfile(token, profile))
+        updateProfile: (token, profile, callback) => dispatch(actions.updateProfile(token, profile, callback))
     }
 }
 

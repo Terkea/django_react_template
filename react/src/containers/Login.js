@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, notification, Row, Col, Typography, Steps, AutoComplete, Spin } from 'antd';
+import { Form, Input, Button, Row, Col, Typography, Steps, AutoComplete } from 'antd';
 import {
   LoadingOutlined,
   UserOutlined,
@@ -8,12 +8,14 @@ import {
   ToolOutlined,
   SmileOutlined,
   FileDoneOutlined,
-  CloseCircleOutlined
+  CloseCircleOutlined,
+  CheckCircleOutlined
 } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
-import { withRouter, Redirect } from 'react-router-dom'
-import * as actions from '../store/actions/user'; //this works like a namespace
+import { withRouter, Redirect } from 'react-router-dom';
+import * as actions from '../store/actions/user';
+import { runNotifications } from '../Helpers/notificationHelpers';
 
 
 const { Title, Text } = Typography;
@@ -83,14 +85,13 @@ const Login = (props) => {
 
 
   const onFinishEmail = values => {
-    props.sendLoginCode(values.email)
+    props.sendLoginCode(values.email, runNotifications)
     setCurrent(current + 1)
   }
 
   const onFinishToken = values => {
-    props.validateLoginCode(props.email, values.token);
+    props.validateLoginCode(props.email, values.token, runNotifications);
   }
-
 
   const steps = [
     {
@@ -129,7 +130,7 @@ const Login = (props) => {
                 Request token
           </Button>
             </Col>
-            <Col sm={13} md={14}>
+            <Col sm={4} md={14}>
               <Button {...goBackButton} onClick={() => { props.history.push('/') }}>
                 Go Back
               </Button>
@@ -161,7 +162,7 @@ const Login = (props) => {
                 Validate token
           </Button>
             </Col>
-            <Col sm={13} md={14}>
+            <Col sm={4} md={14}>
               <Button {...goBackButton} onClick={() => {
                 props.resetUserState();
                 setCurrent(0);
@@ -181,7 +182,6 @@ const Login = (props) => {
           <Title level={4} style={{ marginBottom: '30px' }} >Welcome back, we'll redirect you to the homepage in one moment.</Title>
           <LoadingOutlined style={{ fontSize: '3em' }} />
           {/* execute the following only if the current step is login, which is has 2 as index value */}
-          {/* for some reason i cant get rid of the timeoutid */}
           <div style={{ display: "none" }}>{current === 2 ? setTimeout(() => props.history.push('/'), 3000) : null}</div>
         </div>
       ),
@@ -193,45 +193,20 @@ const Login = (props) => {
     if (localStorage.getItem('token')) {
       setCurrent(2)
     }
-
-    if (props.error) {
-      if (Array.isArray(props.error)) {
-        let i;
-        for (i in props.error) {
-          notification.error({
-            message: "Error",
-            description: props.error[i],
-            duration: 10,
-          });
-        }
-      } else {
-        notification.error({
-          message: "Error",
-          description: props.error,
-          duration: 10,
-        });
-      }
-    }
   })
-
-
 
   return (
     <div style={styles.svgBackground}>
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
-        <Col xs={16} sm={6}>
+        <Col sm={14} md={14} lg={6} >
           <RocketOutlined style={styles.logo} />
           <Title align="middle" style={styles.titleStyle}>{formTitle}</Title>
           <div>
             <Steps current={current}>
-              {console.log((props.error) ? "error" : "")}
               {steps.map(item => (
                 <Step key={item.title} title={item.title} icon={item.icon} status={item.error} description={item.description} />
               ))}
             </Steps>
-            {/* incase theres no error and the token is valid, pass */}
-            {/* {current == 2 && localStorage.getItem('token') ? setCurrent(3) : null} */}
-            {/* make the steps more dynamic https://ant.design/components/steps/ */}
             <div className="steps-content" style={{ marginTop: '30px' }}>{steps[current].content}</div>
           </div>
 
@@ -249,11 +224,10 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => { // 
   return {
-    // add the email to the state till the token is send over the email provided
-    sendLoginCode: (email) => dispatch(actions.authSendLoginCode(email)),
-    validateLoginCode: (email, loginCode) => dispatch(actions.authValidateLogin(email, loginCode)),
+    sendLoginCode: (email, callback) => dispatch(actions.authSendLoginCode(email, callback)),
+    validateLoginCode: (email, loginCode, callback) => dispatch(actions.authValidateLogin(email, loginCode, callback)),
     resetUserState: () => dispatch(actions.authLogout()),
   }
 }

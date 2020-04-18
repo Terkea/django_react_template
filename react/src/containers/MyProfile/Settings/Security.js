@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
-
 import { List, Avatar, Typography, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-
 import SetPassword from './components/SetPassword'
 import CustomModal from '../../CustomModal'
 
-import * as actions from '../../../store/actions/user'; //this works like a namespace
 
 const { Title } = Typography;
 
@@ -51,7 +48,6 @@ const data = [
     },
 ];
 
-
 const Security = (props) => {
     return (
         <div>
@@ -65,17 +61,14 @@ const Security = (props) => {
                             title={item.title}
                             description={item.description}
                         />
-
                         <CustomModal title={item.title} id={item.id} clickComponent={item.clickComponent}>
                             {item.showComponent}
                         </CustomModal>
-
                     </List.Item>
                 )}
             />
         </div >
     )
 }
-
 
 export default Security;

@@ -1,11 +1,10 @@
 import { combineReducers } from 'redux'
-
 import user from './user'
-import uiState from './uiState'
+import userInterface from './userInterface'
 
 const allReducers = combineReducers({
     user,
-    uiState,
+    userInterface,
 })
 
 export default allReducers

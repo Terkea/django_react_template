@@ -12,7 +12,6 @@ const SetPassword = () => {
                 name="changePassword"
                 onFinish={onFinish}
                 scrollToFirstError
-            // style={styles.formStyle}
             >
                 <Form.Item
                     name="password"

@@ -1,16 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux';
-
 import { Modal, Row, Col } from 'antd';
-import { Fragment } from 'react';
-import * as actions from '../store/actions/uiState';
+import * as actions from '../store/actions/userInterface';
 
 
 class CustomModal extends React.Component {
-    // const [visible, setVisibility] = useState(false);
-    // const hideModal = () => {
-    //     setVisibility(false);
-    // }
     componentDidMount() {
         this.props.addModal(this.props.id)
     }
@@ -72,7 +66,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-
 export default connect(mapStateToProps, mapDispatchToProps)(CustomModal);
-
-
