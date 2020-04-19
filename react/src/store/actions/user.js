@@ -56,6 +56,9 @@ export const authValidateLogin = (email, loginCode, notificationCallback = (mess
 
 export const authSendLoginCode = (email, notificationCallback = (message, outcome) => { }) => dispatch => {
     dispatch(authStart(email));
+    // for some reason the headers have to be cleared when
+    // making requests anonymously otherwise i'll pick on the ones used previously
+    delete axiosInstance.defaults.headers.common["Authorization"]
     axiosInstance.post('passwordless/auth/email/', {
         email: email
     })
@@ -64,6 +67,9 @@ export const authSendLoginCode = (email, notificationCallback = (message, outcom
             dispatch(authLoginCodeSentSuccess());
         })
         .catch(err => {
+            console.log(err)
+            console.log(err.response)
+            console.log(err.response.data)
             // Axios catch error returns javascript error or bad server response
             notificationCallback(err.message, "ERROR")
             dispatch(authFail([err.message]));
@@ -144,6 +150,14 @@ export const checkAuthTimeout = (expirationTime) => dispatch => {
 }
 
 export const authReset = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        // delete the token from db
+        axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
+        axiosInstance.post('/rest-auth/logout/')
+            .then(res => null)
+            .catch(err => null)
+    }
     if (localStorage.getItem('token')) { localStorage.removeItem('token') };
     if (localStorage.getItem('expirationDate')) { localStorage.removeItem('expirationDate') };
     return {
@@ -159,15 +173,17 @@ export const authReset = () => {
 }
 
 export const authLogout = () => dispatch => {
-    if (localStorage.getItem('token')) {
-        // delete the token from db
-        axiosInstance.post('/rest-auth/logout/', {
-            token: localStorage.getItem('token')
-        })
-            .then(res => null)
-            .catch(err => null)
-    }
-    dispatch(authReset());
+    dispatch(authReset())
+    // if (localStorage.getItem('token')) {
+    //     // delete the token from db
+    //     axiosInstance.post('/rest-auth/logout/', {
+    //         token: localStorage.getItem('token')
+    //     })
+    //         .then(res => null)
+    //         .catch(err => null)
+    // }
+    // if (localStorage.getItem('token')) { localStorage.removeItem('token') };
+    // if (localStorage.getItem('expirationDate')) { localStorage.removeItem('expirationDate') };
 }
 
 // verify the integrity of the token
