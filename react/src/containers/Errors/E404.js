@@ -1,23 +1,13 @@
 import React from 'react'
 import { Result, Button, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
+import SvgBackground from '../SvgBackground';
 
-const styles = {
-    svgBackground: {
-        backgroundImage: "url(" + 'https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg)',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center 110px',
-        backgroundSize: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh',
-        overflow: 'auto'
-    }
-}
+
 
 const Error_404 = () => {
     return (
-        <div style={styles.svgBackground}>
+        <SvgBackground>
             <Row type="flex" justify="center" align="middle" style={{ height: '100vh' }}>
                 <Col span={24}>
                     <Result
@@ -30,7 +20,7 @@ const Error_404 = () => {
                     />
                 </Col>
             </Row>
-        </div>
+        </SvgBackground>
     )
 }
 

@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 import * as actions from '../store/actions/user';
 import { runNotifications } from '../Helpers/notificationHelpers';
-
+import SvgBackground from '../containers/SvgBackground'
 
 const { Title, Text } = Typography;
 const { Step } = Steps;
@@ -36,16 +36,6 @@ const styles = {
     fontSize: '100px',
     width: '100%',
     marginBottom: '30px'
-  },
-  svgBackground: {
-    backgroundImage: "url(" + 'https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg)',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center 110px',
-    backgroundSize: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-    overflow: 'auto'
   }
 }
 
@@ -196,7 +186,7 @@ const Login = (props) => {
   })
 
   return (
-    <div style={styles.svgBackground}>
+    <SvgBackground>
       <Row type="flex" justify="center" align="middle" style={styles.heightForTheRow}>
         <Col sm={14} md={14} lg={6} >
           <RocketOutlined style={styles.logo} />
@@ -212,7 +202,7 @@ const Login = (props) => {
 
         </Col>
       </Row>
-    </div >
+    </SvgBackground>
   );
 };
 

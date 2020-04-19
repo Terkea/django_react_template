@@ -6,8 +6,8 @@ import * as actions from './store/actions/user';
 
 import CustomLayout from './containers/Layout';
 
-import Login from './containers/Login';
-import MyProfile from './containers/MyProfile/MyProfile';
+import Login from './components/Login';
+import MyProfile from './components/MyProfile/index';
 import Errors from './containers/Errors/Error';
 
 const App = (props) => {
