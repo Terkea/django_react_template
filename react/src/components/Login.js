@@ -15,7 +15,7 @@ import {
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 import * as actions from '../store/actions/user';
-import { runNotifications } from '../Helpers/notificationHelpers';
+import { clearNotifications, runNotifications } from '../Helpers/notificationHelpers';
 import SvgBackground from '../containers/SvgBackground'
 
 const { Title, Text } = Typography;
@@ -56,7 +56,6 @@ const Login = (props) => {
   const formTitle = (props.formTitle) ? props.formTitle : "Login";
   const formSuccessTitle = (props.formSuccessTitle) ? props.formSuccessTitle : "Login Success";
 
-
   const onWebsiteChange = value => {
     if (!value || value.search('@') !== -1) {
       setAutoCompleteResult([]);
@@ -73,20 +72,26 @@ const Login = (props) => {
   const [email_form] = Form.useForm();
   const [token_form] = Form.useForm();
 
-
   const onFinishEmail = values => {
-    props.sendLoginCode(values.email, runNotifications)
-    setCurrent(current + 1)
+    const callbackFunction = (notificationMessage, outcome) => {
+      runNotifications(notificationMessage, outcome);
+      if (outcome === "SUCCESS") {
+        setCurrent(1);
+      }
+    }
+    props.resetUserState();
+    props.sendLoginCode(values.email, callbackFunction)
   }
 
   const onFinishToken = values => {
+    props.resetUserState();
     props.validateLoginCode(props.email, values.token, runNotifications);
   }
 
   const steps = [
     {
       title: 'Email',
-      icon: <UserOutlined />,
+      icon: (current === 0) ? ((props.error) ? <CloseCircleOutlined /> : ((props.loading) ? <LoadingOutlined /> : (< UserOutlined />))) : < UserOutlined />,
       content: (
         <Form
           form={email_form}
@@ -118,7 +123,7 @@ const Login = (props) => {
             <Col sm={20} md={10}>
               <Button type="primary" htmlType="submit" style={{ marginRight: '10px', marginTop: "10px" }}>
                 Request token
-          </Button>
+              </Button>
             </Col>
             <Col sm={4} md={14}>
               <Button {...goBackButton} onClick={() => { props.history.push('/') }}>
@@ -131,8 +136,8 @@ const Login = (props) => {
     },
     {
       title: 'Token',
-      icon: (props.error) ? <CloseCircleOutlined /> : ((props.loading) ? <LoadingOutlined /> : (< FileDoneOutlined />)),
-      error: (props.error) ? "error" : "",
+      icon: (current === 1) ? ((props.error) ? <CloseCircleOutlined /> : ((props.loading) ? <LoadingOutlined /> : (< FileDoneOutlined />))) : < FileDoneOutlined />,
+      error: (props.error && current === 1) ? "error" : "",
       content: (
         <Form
           form={token_form}
@@ -150,7 +155,7 @@ const Login = (props) => {
             <Col sm={20} md={10}>
               <Button type="primary" htmlType="submit" style={{ marginRight: '10px', marginTop: "10px" }}>
                 Validate token
-          </Button>
+              </Button>
             </Col>
             <Col sm={4} md={14}>
               <Button {...goBackButton} onClick={() => {
@@ -169,10 +174,10 @@ const Login = (props) => {
       icon: <SmileOutlined />,
       content: (
         <div align="middle">
-          <Title level={4} style={{ marginBottom: '30px' }} >Welcome back, we'll redirect you to the homepage in one moment.</Title>
+          <Title level={4} style={{ marginBottom: '30px' }}>Welcome back, we'll redirect you to the homepage in one moment.</Title>
           <LoadingOutlined style={{ fontSize: '3em' }} />
           {/* execute the following only if the current step is login, which is has 2 as index value */}
-          <div style={{ display: "none" }}>{current === 2 ? setTimeout(() => props.history.push('/'), 3000) : null}</div>
+          <div style={{ display: "none" }}>{current === 2 ? setTimeout(() => { clearNotifications(); props.history.push('/'); }, 3000) : null}</div>
         </div>
       ),
     },

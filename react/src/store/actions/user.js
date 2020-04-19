@@ -45,11 +45,11 @@ export const authValidateLogin = (email, loginCode, notificationCallback = (mess
         // Axios catch error returns javascript error or bad server response
         // The server replies to wrong tokens with a response saying what the problem is
         if (err.response) {
-            notificationCallback(err.response.data.token, "ERROR")
-            dispatch(authFail(err.response.data.token))
+            notificationCallback(err.response.data.token, "ERROR");
+            dispatch(authFail());
         } else {
-            notificationCallback(err.message, "ERROR")
-            dispatch(authFail([err.message]))
+            notificationCallback(err.message, "ERROR");
+            dispatch(authFail());
         }
     });
 }
@@ -62,17 +62,15 @@ export const authSendLoginCode = (email, notificationCallback = (message, outcom
     axiosInstance.post('passwordless/auth/email/', {
         email: email
     })
+        //beware: ORDER MATTERS
         .then(res => {
-            notificationCallback("The code was sent to your email.", "SUCCESS")
             dispatch(authLoginCodeSentSuccess());
+            notificationCallback("The code was sent to your email.", "SUCCESS")
         })
         .catch(err => {
-            console.log(err)
-            console.log(err.response)
-            console.log(err.response.data)
             // Axios catch error returns javascript error or bad server response
+            dispatch(authFail());
             notificationCallback(err.message, "ERROR")
-            dispatch(authFail([err.message]));
         })
 }
 
@@ -95,11 +93,11 @@ export const authSuccess = (token, profile) => {
     }
 }
 
-export const authFail = (error) => {
+export const authFail = () => {
     return {
         type: actionTypes.AUTH_FAIL,
         loading: false,
-        error: error,
+        error: true,
     }
 }
 
@@ -112,8 +110,8 @@ export const updateProfile = (token, profile, notificationCallback = (message, o
             notificationCallback("Profile Updated Successfully", "SUCCESS");
         })
         .catch(err => {
+            dispatch(updateProfileFail())
             notificationCallback(err.message, "ERROR");
-            dispatch(updateProfileFail(err))
         })
 }
 
@@ -134,11 +132,11 @@ export const updateProfileSuccess = (new_profile) => {
     }
 }
 
-export const updateProfileFail = (error, ) => {
+export const updateProfileFail = () => {
     return {
         type: actionTypes.UPDATE_PROFILE_FAIL,
         loading: false,
-        error: error
+        error: true
     }
 }
 
@@ -150,16 +148,6 @@ export const checkAuthTimeout = (expirationTime) => dispatch => {
 }
 
 export const authReset = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        // delete the token from db
-        axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
-        axiosInstance.post('/rest-auth/logout/')
-            .then(res => null)
-            .catch(err => null)
-    }
-    if (localStorage.getItem('token')) { localStorage.removeItem('token') };
-    if (localStorage.getItem('expirationDate')) { localStorage.removeItem('expirationDate') };
     return {
         type: actionTypes.AUTH_RESET,
         loading: null,
@@ -172,18 +160,18 @@ export const authReset = () => {
     };
 }
 
-export const authLogout = () => dispatch => {
+export const authLogout = (notificationCallback = (message, outcome) => { }) => dispatch => {
     dispatch(authReset())
-    // if (localStorage.getItem('token')) {
-    //     // delete the token from db
-    //     axiosInstance.post('/rest-auth/logout/', {
-    //         token: localStorage.getItem('token')
-    //     })
-    //         .then(res => null)
-    //         .catch(err => null)
-    // }
-    // if (localStorage.getItem('token')) { localStorage.removeItem('token') };
-    // if (localStorage.getItem('expirationDate')) { localStorage.removeItem('expirationDate') };
+    const token = localStorage.getItem('token');
+    if (token) {
+        // delete the token from db
+        axiosInstance.defaults.headers.common = { 'Authorization': `Token ${token}` }
+        axiosInstance.post('/rest-auth/logout/')
+            .then(res => notificationCallback("You have been successfully logged out.", "SUCCESS"))
+            .catch(err => notificationCallback("Your client has failed to log out.", "ERROR"))
+    }
+    if (localStorage.getItem('token')) { localStorage.removeItem('token') };
+    if (localStorage.getItem('expirationDate')) { localStorage.removeItem('expirationDate') };
 }
 
 // verify the integrity of the token
@@ -195,7 +183,7 @@ export const getProfile = token => dispatch => {
         })
         .catch(err => {
             // Axios catch error returns javascript error or bad server response
-            authFail(err.message)
+            authFail()
             dispatch(authLogout());
         })
 }

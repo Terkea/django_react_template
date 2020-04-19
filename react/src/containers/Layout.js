@@ -3,6 +3,8 @@ import { Layout, Menu } from 'antd';
 import { Link, withRouter, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/user';
+import { clearNotifications, runNotifications } from '../Helpers/notificationHelpers';
+
 
 const { Header, Content, Footer } = Layout;
 
@@ -29,17 +31,22 @@ const CustomLayout = props => {
                             </Menu.Item>
                             :
                             <Menu.Item key="/login/">
-                                <Link to="/login/">Login</Link>
+                                <Link to="/login/" onClick={clearNotifications}>Login</Link>
                             </Menu.Item>
                     }
                     {
                         props.isAuthenticated ?
-                            <Menu.Item key="/logout/" onClick={props.logout}>
+                            <Menu.Item key="/logout/" onClick={() => {
+                                clearNotifications();
+                                props.logout(runNotifications);
+                                props.history.push('/')
+                            }
+                            }>
                                 Logout
                             </Menu.Item>
                             :
                             < Menu.Item key="/signup/">
-                                <Link to="/signup/">Sign up</Link>
+                                <Link to="/signup/" onClick={clearNotifications}>Sign up</Link>
                             </Menu.Item>
                     }
                 </Menu>
@@ -58,7 +65,7 @@ const CustomLayout = props => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        logout: () => dispatch(actions.authLogout())
+        logout: (callback) => dispatch(actions.authLogout(callback))
     }
 }
 

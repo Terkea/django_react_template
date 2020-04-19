@@ -6,10 +6,15 @@ import {
 } from '@ant-design/icons';
 
 const showNotification = (props, notificationKey) => {
+    closeNotification(notificationKey);
     const notificationProps = {
         ...props, key: notificationKey
     }
     notification.open(notificationProps);
+}
+
+export const clearNotifications = () => {
+    notification.destroy();
 }
 
 export const closeNotification = (notificationKey) => {
@@ -17,7 +22,7 @@ export const closeNotification = (notificationKey) => {
 }
 
 
-export const runNotifications = (notificationMessage, outcome) => {
+export const runNotifications = (notificationMessage = "", outcome = "") => {
     let notificationProps;
     switch (outcome) {
         case "SUCCESS":
@@ -44,6 +49,6 @@ export const runNotifications = (notificationMessage, outcome) => {
             showNotification({ ...notificationProps, description: notificationMessage[i] }, notificationMessage[i]);
         }
     } else {
-        showNotification({ ...notificationProps, description: notificationMessage }, `open${Date.now()}`);
+        showNotification({ ...notificationProps, description: notificationMessage }, notificationMessage);
     }
 };
