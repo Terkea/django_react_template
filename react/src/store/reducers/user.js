@@ -3,65 +3,64 @@ import { updateObject } from '../utility';
 
 const initialState = {
     loading: false,
-    error: {
-        login: null,
-        register: null,
-        update_profile: null
-    },
+    error: null,
     payload: {
         token: null,
-        profile: null
+        profile: null,
+        email: null
     }
 }
 
-const authStart = (state) => {
+const authStart = (state, action) => {
     return updateObject(state, {
-        loading: true
+        loading: action.loading,
+        payload: {
+            token: action.payload.token,
+            profile: action.payload.profile,
+            email: action.payload.email,
+        }
     });
 }
 
 const authSuccess = (state, action) => {
     return updateObject(state, {
+        loading: action.loading,
+        error: action.error,
         payload: {
             token: action.payload.token,
-            profile: action.payload.profile
+            profile: action.payload.profile,
         },
-        error: {
-            login: null,
-            register: null
-        },
-        loading: false,
+    });
+}
+
+const authLoginCodeSentSuccess = (state, action) => {
+    return updateObject(state, {
+        loading: action.loading,
     });
 }
 
 const authFail = (state, action) => {
     return updateObject(state, {
+        loading: action.loading,
         error: action.error,
-        loading: false,
     });
 }
 
-const registerFail = (state, action) => {
+const authReset = (state, action) => {
     return updateObject(state, {
+        loading: action.loading,
         error: action.error,
-        loading: false,
-    });
-}
-
-
-const authLogout = (state) => {
-    return updateObject(state, {
         payload: {
-            token: null,
-            profile: null
+            token: action.payload.token,
+            profile: action.payload.profile,
+            email: action.payload.email
         },
     });
 }
 
-
-const updateProfileStart = (state) => {
+const updateProfileStart = (state, action) => {
     return updateObject(state, {
-        loading: true
+        loading: action.loading
     });
 }
 
@@ -76,7 +75,7 @@ const updateProfileSuccess = (state, action) => {
 
 const updateProfileFail = (state, action) => {
     return updateObject(state, {
-        loading: false,
+        loading: action.loading,
         error: action.error,
     });
 }
@@ -84,11 +83,10 @@ const updateProfileFail = (state, action) => {
 
 const handlers = {
     [actionTypes.AUTH_START]: authStart,
+    [actionTypes.AUTH_LOGIN_CODE_SENT_SUCCESS]: authLoginCodeSentSuccess,
     [actionTypes.AUTH_SUCCESS]: authSuccess,
     [actionTypes.AUTH_FAIL]: authFail,
-    [actionTypes.AUTH_LOGOUT]: authLogout,
-
-    [actionTypes.REGISTER_FAIL]: registerFail,
+    [actionTypes.AUTH_RESET]: authReset,
 
     [actionTypes.UPDATE_PROFILE_START]: updateProfileStart,
     [actionTypes.UPDATE_PROFILE_SUCCESS]: updateProfileSuccess,

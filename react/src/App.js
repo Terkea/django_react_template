@@ -6,9 +6,8 @@ import * as actions from './store/actions/user';
 
 import CustomLayout from './containers/Layout';
 
-import Login from './containers/Login';
-import Signup from './containers/Signup';
-import MyProfile from './containers/MyProfile/MyProfile';
+import Login from './components/Login';
+import MyProfile from './components/MyProfile/index';
 import Errors from './containers/Errors/Error';
 
 const App = (props) => {
@@ -21,13 +20,11 @@ const App = (props) => {
     <div>
       <Router>
         <Switch>
-
-          <Route {...props} exact path='/login/' component={Login} />
-          <Route {...props} exact path='/signup/' component={Signup} />
-
-
+          <Route exact path='/login/' component={Login} />
+          {/* Signup is the same page as success because due to this method of authentification registering is not required
+          but it will be implemented anyways as visitors may not know this */}
+          <Route exact path='/signup/' render={() => <Login formTitle="Register" formSuccessTitle="Register Success" />} />
           <Route path='/error/' component={Errors} />
-
           <CustomLayout {...props}>
             <Route path='/my_profile/' component={MyProfile} />
           </CustomLayout>
@@ -36,7 +33,6 @@ const App = (props) => {
     </div>
   );
 }
-
 
 const mapStateToProps = state => {
   return {

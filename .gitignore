@@ -8,6 +8,7 @@ __pycache__/
 
 # Django migrations
 migrations
+**migrations/
 
 # Distribution / packaging
 .Python
