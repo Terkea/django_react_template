@@ -148,7 +148,8 @@ REST_AUTH_SERIALIZERS = {
 # CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
+    'http://localhost:3000', # react dev
+    'http://localhost', # react prod
 )
 
 CSRF_COOKIE_NAME = "csrftoken"
