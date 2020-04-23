@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
 
@@ -12,11 +12,11 @@ services:
       - 3001:3000
 
   backend:
-    container_name: django-dev
-    build:
-      context: django
-    command: python django/manage.py runserver 0.0.0.0:8000
-    volumes:
-    - .:/code
-    ports:
-    - 8001:8000
+      container_name: django-dev
+      build:
+        context: django
+      command: python django/manage.py runserver 0.0.0.0:8000
+      volumes:
+      - .:/code
+      ports:
+      - 8001:8000

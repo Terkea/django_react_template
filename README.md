@@ -13,10 +13,16 @@ Theres a bug when launching docker-compose on WSL, do it locally
 
 #### ENVS
 ##### RUN PROD
+
+*In case django complains about migrations at any point go with*
+```bash
+docker-compose.exe exec backend django/manage.py migrate --run-syncdb
+```
+
 ```bash
 docker-compose -f docker-compose.prod.yml up -d --build
 docker-compose.exe -f docker-compose.prod.yml exec backend django/manage.py makemigrations
-docker-compose.exe -f docker-compose.prod.yml exec backend django/manage.py makemigrations
+docker-compose.exe -f docker-compose.prod.yml exec backend django/manage.py migrate
 ```
 
 ##### RUN DEV
