@@ -8,6 +8,7 @@ Theres a bug when launching docker-compose on WSL, do it locally
  * react dockerfile for production
  * http://localhost:3001/my_profile/basic/ works when logged out
  * docker-compose dev volumes on react dont work
+ * examine the docker-containers volumes. i might had been sloppy when writing them
 ### Docker
 
 #### ENVS
