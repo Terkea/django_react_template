@@ -1,3 +1,6 @@
+![login](/img/login_error.gif)
+![login](/img/login_success.gif)
+![login](/img/update_profile.gif)
 # Installation
 ## React
 ```bash
