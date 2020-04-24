@@ -25,8 +25,8 @@ python3 manage.py runserver
 
 ## Docker
 ```bash
-# build the images
-docker-compose up -d --build
+# build the images , use -d to hide logs
+docker-compose up --build
 # apply the migrations
 docker-compose exec backend django/manage.py makemigrations
 docker-compose exec backend django/manage.py migrate 

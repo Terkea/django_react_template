@@ -5,18 +5,19 @@ services:
   frontend:
     container_name: react-dev
     build:
-      context: react
+      context: ./react
     volumes:
-      - ./react/src:/app/src
+      - ./react:/app
     ports:
-      - 3001:3000
+      - 3000:3000
+    restart: on-failure
 
   backend:
       container_name: django-dev
       build:
         context: django
-      command: python django/manage.py runserver 0.0.0.0:8000
+      command: python manage.py runserver 0.0.0.0:8000
       volumes:
-      - .:/code
+      - ./django:/code
       ports:
-      - 8001:8000
+      - 8000:8000

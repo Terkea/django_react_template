@@ -36,13 +36,17 @@ const MyProfile = (props) => {
     const basicPATH = `${url}basic/`;
     const securityPATH = `${url}security/`
 
-    if (props.isAuthenticated) {
-        return <Redirect to='/' />
-    }
+
 
     return (
         <>
-            <Redirect to={basicPATH} /> {/*By Default Redirect to Basic Settings*/}
+            {
+                (localStorage.getItem('token')) ?
+                    <Redirect to={basicPATH} /> /*By Default Redirect to Basic Settings*/
+                    :
+                    <Redirect to='/' />
+
+            }
             <Row justify="center">
                 <Col xs={24} sm={20} md={24} lg={18}>
                     {(props.profile) ?
