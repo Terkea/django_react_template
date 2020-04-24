@@ -23,3 +23,12 @@ python3 manage.py migrate --run-syncdb
 python3 manage.py runserver
 ```
 
+## Docker
+```bash
+# build the images
+docker-compose up -d --build
+# apply the migrations
+docker-compose exec backend django/manage.py makemigrations
+docker-compose exec backend django/manage.py migrate 
+docker-compose exec backend django/manage.py migrate --run-syncdb
+```
