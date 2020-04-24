@@ -1,31 +1,22 @@
-version: '3'
+version: '3.7'
 
 services:
-  db:
-    container_name: postgres_db
-    image: postgres
-    ports:
-      - "5432:5432"
 
-  web:
-    container_name: server
-    build: .
-    command: python src/manage.py runserver 0.0.0.0:8000
+  frontend:
+    container_name: react-dev
+    build:
+      context: react
     volumes:
-    - .:/code
+      - ./react/src:/app/src
     ports:
-    - 80:8000
-    depends_on:
-      - db
+      - 3001:3000
 
-  pgadmin:
-    container_name: pgadmin4_
-    image: dpage/pgadmin4
-    restart: always
-    depends_on:
-      - db
-    ports:
-      - 5555:80
-    environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+  backend:
+      container_name: django-dev
+      build:
+        context: django
+      command: python django/manage.py runserver 0.0.0.0:8000
+      volumes:
+      - .:/code
+      ports:
+      - 8001:8000
