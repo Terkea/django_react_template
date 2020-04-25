@@ -1,7 +1,7 @@
 # React
 ## Introduction
 
-This documentation will assume a fair knowledge of React as well as some of the tools that were used, including:
+This documentation will assume a fair knowledge of React as well as some of the tools that we are used, including:
 
 - [Ant Design](https://ant.design) as the UI webkit.
 - [React Hooks](https://reactjs.org/docs/hooks-intro.html)
