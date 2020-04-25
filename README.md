@@ -1,6 +1,6 @@
 # A Django & React Template
 A Django and React Template that will help you skip a lot of boilerplate and initial project setup, which features:
-- [Passwordless](https://auth0.com/docs/connections/passwordless) user authentification/registration, which is a more modern and secure way of logging in
+- [Passwordless](https://auth0.com/docs/connections/passwordless) user authentification/registration, which is a more modern and secure way of logging in, used by [Medium](https://medium.com/), [Microsoft](https://www.youtube.com/watch?v=8Na793pxKpk) and plenty more.
 - Functionality to update the user profile.
 
 This template is based on the [Ant Design](https://ant.design) ui kit powered by [Django REST](https://www.django-rest-framework.org/).
