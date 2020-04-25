@@ -1,5 +1,7 @@
 # A Django & React Template
-A Django and React Template that will help you skip a lot of boilerplate and initial project setup, which futures token user authentification and registration plus the functionality for the my profile.
+A Django and React Template that will help you skip a lot of boilerplate and initial project setup, which features:
+- [Passwordless](https://auth0.com/docs/connections/passwordless) user authentification/registration, which is a more modern and secure way of logging in
+- Functionality to update the user profile.
 
 This template is based on the [Ant Design](https://ant.design) ui kit powered by [Django REST](https://www.django-rest-framework.org/).
 
@@ -8,7 +10,7 @@ This template is based on the [Ant Design](https://ant.design) ui kit powered by
 ![login](/img/update_profile.gif)
 
 # Motivation
-When starting a new project it can be incredibly time consuming to reach the milestone that will let you finally start implementing your ideas, and doing actual work.
+When starting a new project it can be incredibly time consuming to reach the milestone that finally will let you start implementing your ideas, and doing actual work.
 
 The goal of this project is to be just that, a solid modern project template that you can easily pick up on and not worry too much about the boilerplate.
 
