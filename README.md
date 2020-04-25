@@ -61,7 +61,7 @@ For more details about all the potential customizations don't hesitate and check
 
 ### Django user model
 Custom fields can be appended to the default `userprofile model` that we provided by editing the model itself and the serializer.
-
+which can be located in `django/api/models/` and `django/api/serializers/
 
 
 # Documentation
