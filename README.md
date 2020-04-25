@@ -1,28 +1,36 @@
 # A Django & React Template
 A Django and React Template that will help you skip a lot of boilerplate and initial project setup, which features:
-- [Passwordless](https://auth0.com/docs/connections/passwordless) user authentification/registration, which is a more modern and secure way of logging in
+- [Passwordless](https://auth0.com/docs/connections/passwordless) user authentification/registration, which is a more modern and secure way of logging in, used by [Medium](https://medium.com/), [Microsoft](https://www.youtube.com/watch?v=8Na793pxKpk) and plenty more.
 - Functionality to update the user profile.
+- Responsiveness
 
-This template is based on the [Ant Design](https://ant.design) ui kit powered by [Django REST](https://www.django-rest-framework.org/).
+This template is based on the [Ant Design](https://ant.design) ui kit and is powered by the [Django REST](https://www.django-rest-framework.org/) Framework.
 
-![login](/img/login_error.gif)
-![login](/img/login_success.gif)
-![login](/img/update_profile.gif)
+![login](./img/login_error.gif)
+![login](./img/login_success.gif)
+![login](./img/update_profile.gif)
 
 # Motivation
-When starting a new project it can be incredibly time consuming to reach the milestone that finally will let you start implementing your ideas, and doing actual work.
+When starting a new project it can be incredibly time consuming to reach the milestone that will finally let you start implementing your ideas, and doing actual work.
 
 The goal of this project is to be just that, a solid modern project template that you can easily pick up on and not worry too much about the boilerplate.
 
+# DISCLAIMER
+Please bear in mind that this is a development version, for production you would ideally have to change a lot of settings and it is recommended that you go through them yourself and check what needs to be changed to make it safe for production deployment.
+
 # Installation
-## Docker
+## Option 1
+### > **Docker**
 To install it with docker, you only need to run the following command:
 ```bash
 # Make sure that you have Docker installed, use -d to hide logs
 docker-compose up --build
 ```
-Otherwise you may install it the regular separate way:
-## React
+You can access it through [localhost:3000](http://localhost:3000/) by default.
+
+## Option 2
+### > **React**
+
 ```bash
 cd react
 # Install the node packages
@@ -31,11 +39,11 @@ npm install
 npm start
 ```
 
-## Django
+### > **Django**
 ```bash
 cd django
 # Create the virtual environment
-python3 -m venv env 
+python -m venv env 
 # You need to activate everytime you open a new terminal
 ./env/Scripts/activate
 # Install the requirements
@@ -47,7 +55,10 @@ python manage.py migrate --run-syncdb
 # Run the server
 python manage.py runserver
 ```
+You can access it through [localhost:3000](http://localhost:3000/) by default.
 # Documentation
-The documentation is currently under construction and it is yet to be decided what it is going to cover and how detailed it will be.
-- [React](./docs/react/README.md)
-- [Django](./docs/django/README.md)
+## **[React](./docs/react/README.md)**
+
+## **[Django](./docs/django/README.md)**
+
+
