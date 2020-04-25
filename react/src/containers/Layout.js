@@ -9,8 +9,20 @@ import { clearNotifications, runNotifications } from '../Helpers/notificationHel
 const { Header, Content, Footer } = Layout;
 
 const CustomLayout = props => {
+    const getFirstPath = () => {
+        // This function can be used to reliably get the first part of the the path in an pathname
+        let i = 1;
+        let firstPath;
+        do {
+            firstPath = '/' + pathname.split("/")[i];
+            i++;
+        }
+        while (firstPath === "");
+        return firstPath
+    }
     const { pathname } = useLocation()
-    const url = props.match.url;
+    const firstPath = getFirstPath();
+
     return (
         <Layout className="layout" style={{ minHeight: '100vh', overflow: "auto" }}>
             <Header>
@@ -18,7 +30,7 @@ const CustomLayout = props => {
                 <Menu
                     theme="dark"
                     mode="horizontal"
-                    selectedKeys={[pathname]}
+                    selectedKeys={[firstPath]}
                     style={{ lineHeight: '64px' }}
                 >
                     <Menu.Item key="/">
@@ -26,17 +38,17 @@ const CustomLayout = props => {
                     </Menu.Item>
                     {
                         props.isAuthenticated ?
-                            <Menu.Item key="/my_profile/basic/">
+                            <Menu.Item key="/my_profile">
                                 <Link to="/my_profile/">My Profile</Link>
                             </Menu.Item>
                             :
-                            <Menu.Item key="/login/">
+                            <Menu.Item key="/login">
                                 <Link to="/login/" onClick={clearNotifications}>Login</Link>
                             </Menu.Item>
                     }
                     {
                         props.isAuthenticated ?
-                            <Menu.Item key="/logout/" onClick={() => {
+                            <Menu.Item key="/logout" onClick={() => {
                                 clearNotifications();
                                 props.logout(runNotifications);
                                 props.history.push('/')
@@ -45,7 +57,7 @@ const CustomLayout = props => {
                                 Logout
                             </Menu.Item>
                             :
-                            < Menu.Item key="/signup/">
+                            < Menu.Item key="/signup">
                                 <Link to="/signup/" onClick={clearNotifications}>Sign up</Link>
                             </Menu.Item>
                     }

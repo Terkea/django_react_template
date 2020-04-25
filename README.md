@@ -2,27 +2,35 @@
 A Django and React Template that will help you skip a lot of boilerplate and initial project setup, which features:
 - [Passwordless](https://auth0.com/docs/connections/passwordless) user authentification/registration, which is a more modern and secure way of logging in, used by [Medium](https://medium.com/), [Microsoft](https://www.youtube.com/watch?v=8Na793pxKpk) and plenty more.
 - Functionality to update the user profile.
+- Responsiveness
 
-This template is based on the [Ant Design](https://ant.design) ui kit powered by [Django REST](https://www.django-rest-framework.org/).
+This template is based on the [Ant Design](https://ant.design) ui kit and is powered by the [Django REST](https://www.django-rest-framework.org/) Framework.
 
-![login](/img/login_error.gif)
-![login](/img/login_success.gif)
-![login](/img/update_profile.gif)
+![login](./img/login_error.gif)
+![login](./img/login_success.gif)
+![login](./img/update_profile.gif)
 
 # Motivation
-When starting a new project it can be incredibly time consuming to reach the milestone that finally will let you start implementing your ideas, and doing actual work.
+When starting a new project it can be incredibly time consuming to reach the milestone that will finally let you start implementing your ideas, and doing actual work.
 
 The goal of this project is to be just that, a solid modern project template that you can easily pick up on and not worry too much about the boilerplate.
 
+# DISCLAIMER
+Please bear in mind that this is a development version, for production you would ideally have to change a lot of settings and it is recommended that you go through them yourself and check what needs to be changed to make it safe for production deployment.
+
 # Installation
-## Docker
+## Option 1
+### > **Docker**
 To install it with docker, you only need to run the following command:
 ```bash
 # Make sure that you have Docker installed, use -d to hide logs
 docker-compose up --build
 ```
-Otherwise you may install it the regular separate way:
-## React
+You can access it through [localhost:3000](http://localhost:3000/) by default.
+
+## Option 2
+### > **React**
+
 ```bash
 cd react
 # Install the node packages
@@ -31,11 +39,11 @@ npm install
 npm start
 ```
 
-## Django
+### > **Django**
 ```bash
 cd django
 # Create the virtual environment
-python3 -m venv env 
+python -m venv env 
 # You need to activate everytime you open a new terminal
 ./env/Scripts/activate
 # Install the requirements
@@ -48,42 +56,11 @@ python manage.py migrate --run-syncdb
 python manage.py runserver
 ```
 
-# Customization
-##  Antd Theming
-![antd theming](https://zos.alipayobjects.com/rmsportal/zTFoszBtDODhXfLAazfSpYbSLSEeytoG.png)
-ANTD is using Less as the development language for styling. A set of less variables are defined for each design aspect that can be customized to your needs.
-There are some major variables below, all less variables could be found in [Default Variables.](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less). 
-
-Your custom changes should go on `react/config-overrides.js`.
-
-For more details about all the potential customizations don't hesitate and check on [their page](https://ant.design/docs/react/customize-theme) which covers them all.
-
-## Django user model
-Custom fields can be appended to the default `userprofile model` that we provided by editing the model itself and the serializer.
-which can be located in `django/api/models/` and `django/api/serializers/
-
-## Configuring the SMTP Server
-Update the following constants to get your smtp server up and running
-```python
-# SMTP SETTINGS
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-PASSWORDLESS_AUTH = {
-    'PASSWORDLESS_AUTH_TYPES': ['EMAIL'],
-    'PASSWORDLESS_EMAIL_NOREPLY_ADDRESS': "dev.terkea@gmail.com",
-}
-```
-
-Then be sure you change from backends `console` to `smtp`
-```python
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-```
+You can access it through [localhost:3000](http://localhost:3000/) by default.
 
 # Documentation
-The documentation is currently under construction and it is yet to be decided what it is going to cover and how detailed it will be.
-- [React](./docs/react/README.md)
-- [Django](./docs/django/README.md)
+## **[React](./docs/react/README.md)**
+
+## **[Django](./docs/django/README.md)**
+
+

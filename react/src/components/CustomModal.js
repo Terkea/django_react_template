@@ -13,14 +13,10 @@ class CustomModal extends React.Component {
         let visibility;
         modalArray.map(modal => {
             const { id, visible } = modal;
-            console.log("visible")
-            console.log(visible);
             if (id === this.props.id) {
                 visibility = visible;
             }
         })
-        console.log('modalArray');
-        console.log(modalArray);
         return visibility;
     }
 
@@ -53,7 +49,7 @@ class CustomModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        modalArray: state.uiState.Modal
+        modalArray: state.userInterface.Modal
     }
 }
 
