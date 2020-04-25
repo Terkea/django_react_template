@@ -74,8 +74,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -148,15 +147,15 @@ REST_AUTH_SERIALIZERS = {
 # CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000', # react dev local
-    'http://localhost:3001', # react dev docker
-    'http://localhost', # react prod
+    'http://localhost:3000',  # react dev local
+    'http://localhost:3001',  # react dev docker
+    'http://localhost',  # react prod
 )
 
 CSRF_COOKIE_NAME = "csrftoken"
 
 
-# This will avoid the need for an SMTP server as e-mails will be printed to the console. 
+# This will avoid the need for an SMTP server as e-mails will be printed to the console.
 # For more information, please refer to:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -179,16 +178,14 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 # passwordless config
 PASSWORDLESS_AUTH = {
-# Allowed auth types, can be EMAIL, MOBILE, or both.
+    # Allowed auth types, can be EMAIL, MOBILE, or both.
     'PASSWORDLESS_AUTH_TYPES': ['EMAIL'],
 
     # The email the callback token is sent from
-    'PASSWORDLESS_EMAIL_NOREPLY_ADDRESS': "dev.terkea@gmail.com",
+    'PASSWORDLESS_EMAIL_NOREPLY_ADDRESS': "your.config.email@email.com",
 }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':
-('rest_framework.authentication.TokenAuthentication',
-)}
-
-
+    ('rest_framework.authentication.TokenAuthentication',
+     )}
