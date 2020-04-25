@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { List, Avatar, Typography, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import SetPassword from './components/SetPassword'
-import CustomModal from '../../CustomModal';
+import CustomModal from '../../../Helpers/CustomModal';
 
 
 const { Title } = Typography;

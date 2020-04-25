@@ -56,7 +56,9 @@ Your custom changes should go in `react/config-overrides.js`.
 
 For all of the potential customizations don't hesitate to check [their documentation](https://ant.design/docs/react/customize-theme) which covers them all.
 
-# Layout Component ([Layout.js](../../react/src/containers/Layout.js))
+# Layout Component
+Layout Component ([Layout.js](../../react/src/containers/Layout.js))
+
 In this template the layout component is to be used to display the main content of the webpage.
 ## Navbar
 - When logged out:
@@ -87,11 +89,17 @@ When the user is logged in the store looks the following:
     - error - is a boolen, that can be used, for example, to set a given element to show that it errored out, such as an icon.
     - email - note that email is moved inside profile once the user has logged in. 
 
-# [Login](../../react/src/components/Login.js) / [Register](../../react/src/App.js)
+# Login / Register 
+Login ([Login.js](../../react/src/components/Login.js)) / Register ([App.js](../../react/src/App.js))
+
 Both of these do exactly the same thing, they sign in the user whether they are registered or not, the reason why a registration page exists is to not confuse users that may be looking for the common register/login pages.
-# [My Profile](../../react/src/components/MyProfile/index.js)
+# My Profile
+My Profile ([MyProfile/index.js](../../react/src/components/MyProfile/index.js))
+
 More options will be added in the future, these existing ones are just a proof of concept or example.
-# [Notifications](../../react/src/Helpers/notificationHelpers.js)
+# Notifications
+Notifications ([notificationHelpers.js](../../react/src/Helpers/notificationHelpers.js))
+
 The current notification system is based on the [Ant Design notifications](https://ant.design/components/notification/) and it is implemented as a callback for actions that are dispatched to the store, this callback is optional but it is currently the way to run a notification when the axios request returns its promise.
 
 A good example of how to use these notifications can  be seen in `Basic.js`.
