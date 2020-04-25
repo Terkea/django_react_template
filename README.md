@@ -45,3 +45,7 @@ python manage.py migrate --run-syncdb
 # Run the server
 python manage.py runserver
 ```
+# Documentation
+The documentation is currently under construction and it is yet to be decided what it is going to cover and how detailed it will be.
+- [React](./docs/react/README.md)
+- [Django](./docs/django/README.md)
