@@ -55,7 +55,9 @@ python manage.py migrate --run-syncdb
 # Run the server
 python manage.py runserver
 ```
+
 You can access it through [localhost:3000](http://localhost:3000/) by default.
+
 # Documentation
 ## **[React](./docs/react/README.md)**
 
