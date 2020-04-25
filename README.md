@@ -47,6 +47,23 @@ python manage.py migrate --run-syncdb
 # Run the server
 python manage.py runserver
 ```
+
+# Customization
+## React
+###  Antd Theming
+![antd theming](https://zos.alipayobjects.com/rmsportal/zTFoszBtDODhXfLAazfSpYbSLSEeytoG.png)
+ANTD is using Less as the development language for styling. A set of less variables are defined for each design aspect that can be customized to your needs.
+There are some major variables below, all less variables could be found in [Default Variables.](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less). 
+
+Your custom changes should go on `react/config-overrides.js`.
+
+For more details about all the potential customizations don't hesitate and check on [their page](https://ant.design/docs/react/customize-theme) which covers them all.
+
+### Django user model
+Custom fields can be appended to the default `userprofile model` that we provided by editing the model itself and the serializer.
+
+
+
 # Documentation
 The documentation is currently under construction and it is yet to be decided what it is going to cover and how detailed it will be.
 - [React](./docs/react/README.md)
