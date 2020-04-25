@@ -1,7 +1,7 @@
 # A Django & React Template
-A Django and React Template that will help you skip a lot of boilerplate and initial project setup. 
+A Django and React Template that will help you skip a lot of boilerplate and initial project setup, which futures token user authentification and registration plus the functionality for the my profile.
 
-This template is based on the [Ant Design](https://ant.design) webkit.
+This template is based on the [Ant Design](https://ant.design) ui kit powered by [Django REST](https://www.django-rest-framework.org/).
 
 ![login](/img/login_error.gif)
 ![login](/img/login_success.gif)
