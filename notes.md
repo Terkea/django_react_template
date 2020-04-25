@@ -3,7 +3,7 @@ Theres a bug when launching docker-compose on WSL, do it locally
 
 
 # TODO
- * django requirements are fucked
+ * django requirements are not working
  * django dockerfile is on prod more, need to switch to gunicorn or something similar to it
  * react dockerfile for production
  * http://localhost:3001/my_profile/basic/ works when logged out
