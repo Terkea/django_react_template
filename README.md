@@ -1,4 +1,7 @@
 # A Django & React Template
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 A Django and React Template that will help you skip a lot of boilerplate and initial project setup, which features:
 - [Passwordless](https://auth0.com/docs/connections/passwordless) user authentification/registration, which is a more modern and secure way of logging in, used by [Medium](https://medium.com/), [Microsoft](https://www.youtube.com/watch?v=8Na793pxKpk) and plenty more.
 - Functionality to update the user profile.
@@ -235,3 +238,22 @@ Then be sure you change from backends `console` to `smtp`
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ```
 
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/vadimstasiev"><img src="https://avatars1.githubusercontent.com/u/17814261?v=4" width="100px;" alt=""/><br /><sub><b>AName* name("Vadim");</b></sub></a><br /><a href="https://github.com/Terkea/django_react_template/commits?author=vadimstasiev" title="Tests">⚠️</a> <a href="https://github.com/Terkea/django_react_template/commits?author=vadimstasiev" title="Documentation">📖</a> <a href="#maintenance-vadimstasiev" title="Maintenance">🚧</a> <a href="https://github.com/Terkea/django_react_template/pulls?q=is%3Apr+reviewed-by%3Avadimstasiev" title="Reviewed Pull Requests">👀</a> <a href="#tutorial-vadimstasiev" title="Tutorials">✅</a> <a href="https://github.com/Terkea/django_react_template/commits?author=vadimstasiev" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
