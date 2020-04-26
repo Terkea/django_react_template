@@ -27,7 +27,10 @@ To install it with docker, you only need to run the following command:
 docker-compose up --build
 ```
 You can access it through [localhost:3000](http://localhost:3000/) by default.
-
+#### To Remove the containers use:
+```bash
+docker-compose down
+```
 ## Option 2
 ### > **React**
 
