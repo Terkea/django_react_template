@@ -1,0 +1,29 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "Terkea",
+      "name": "Marian Terchila",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/11928943?v=4",
+      "profile": "https://github.com/Terkea",
+      "contributions": [
+        "test",
+        "doc",
+        "maintenance",
+        "review",
+        "tutorial",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "django_react_template",
+  "projectOwner": "Terkea",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
