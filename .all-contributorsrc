@@ -1,0 +1,29 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "vadimstasiev",
+      "name": "AName* name(\"Vadim\");",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/17814261?v=4",
+      "profile": "https://github.com/vadimstasiev",
+      "contributions": [
+        "test",
+        "doc",
+        "maintenance",
+        "review",
+        "tutorial",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "django_react_template",
+  "projectOwner": "Terkea",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
